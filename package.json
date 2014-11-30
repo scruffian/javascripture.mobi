@@ -1,0 +1,18 @@
+{
+  "name": "FindSuperman",
+  "version": "0.0.1",
+  "author": "Patrick Catanzariti",
+  "description": "Code designed to find the elusive red blue blur",
+  "dependencies": {
+    "underscore": "1.6.x",
+    "react": "1.12.x"
+  },
+  "devDependencies": {
+    "browserify": "latest",
+    "watchify": "latest"
+  },
+  "scripts": {
+    "build-js": "browserify src/main.js > build/main.js -d",
+    "watch-js": "watchify src/main.js -o build/main.js -dv"
+  }
+}
