@@ -1,14 +1,9 @@
+// External
 var React = require( 'react' ),
     page = require( 'page' );
 
-var Reference = require( './reference.jsx' );
-
-function reference( context ) {
-	var layout = React.render(
-		<Reference params={ context.params } />,
-		document.getElementById( 'javascripture' )
-	);
-}
+// Internal
+var reference = require( './reference.jsx' );
 
 function index() {
 	var Index = React.createClass( {
