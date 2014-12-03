@@ -4,15 +4,16 @@
   "author": "Patrick Catanzariti",
   "description": "Code designed to find the elusive red blue blur",
   "dependencies": {
-    "underscore": "1.6.x",
-    "react": "1.12.x"
+    "react": "latest",
+    "page": "latest"
   },
   "devDependencies": {
     "browserify": "latest",
-    "watchify": "latest"
+    "watchify": "latest",
+    "reactify": "latest"
   },
   "scripts": {
-    "build-js": "browserify src/main.js > build/main.js -d",
-    "watch-js": "watchify src/main.js -o build/main.js -dv"
+    "build-js": "browserify -t reactify src/controller.js > build/main.js -d",
+    "watch-js": "watchify -t reactify src/controller.js -o build/main.js -dv"
   }
 }
