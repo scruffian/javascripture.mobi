@@ -2,15 +2,22 @@
 var React = require( 'react' ),
     page = require( 'page' );
 
+React.initializeTouchEvents(true);
+
 // Internal
 var reference = require( './reference.jsx' );
 
 function index() {
 	var Index = React.createClass( {
+		goToReference: function() {
+			page( '/reference' );
+		},
+
 		render: function() {
 			return (
 				<div className="home">
-					Home page <a href="/book/chapter/verse">Start</a>
+					Home page
+					<button onClick={ this.goToReference }>Start</button>
 				</div>
 			);
 		}
