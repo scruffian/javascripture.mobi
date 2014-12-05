@@ -4,7 +4,7 @@ var referenceAPI = {
 	get: function( reference ) {
 		return {
 			'primary': kjv[ reference.book ][ reference.chapter ],
-			'secondary': kjv[ reference.book ][ reference.chapter + 1 ]
+			'secondary': kjv[ reference.book ][ parseInt( reference.chapter ) + 1 ]
 		};
 	},
 	getThreeChapters: function( reference ) {
@@ -126,7 +126,6 @@ module.exports = function ( self ) {
     self.addEventListener( 'message', function ( event ) {
     	var reference = event.data;
     	result = referenceAPI.get( reference );
-    	//data = kjv[ reference.book ][ reference.chapter ][ reference.verse ];
     	self.postMessage( result );
     });
 };

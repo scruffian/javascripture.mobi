@@ -15,7 +15,7 @@
     "webworkify": "latest"
   },
   "scripts": {
-    "build-js": "browserify -t reactify src/controller.js | uglifyjs > build/main.js",
-    "watch-js": "watchify -t reactify src/controller.js -o build/main.js -dv"
+    "build-js": "browserify -t reactify src/bootstrap.js | uglifyjs > build/main.js",
+    "watch-js": "watchify -t reactify src/bootstrap.js -o build/main.js -dv"
   }
 }

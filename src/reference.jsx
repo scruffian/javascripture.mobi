@@ -6,13 +6,15 @@
 var React = require( 'react' );
 
 var Word = React.createClass( {
+	showWordDetails: function() {
+		console.log( this.props.lemma );
+	},
 	render: function() {
 		return (
-			<span className={ this.props.lemma } key={ this.props.key }>{ this.props.word }</span> // Leave that space
+			<span onClick={ this.showWordDetails } className={ this.props.lemma } key={ this.props.key }>{ this.props.word }</span> // Leave that space
 		);
 	}
 } );
-
 
 var Reference = React.createClass( {
 	render: function() {
