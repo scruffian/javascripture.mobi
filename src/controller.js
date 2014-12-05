@@ -1,23 +1,46 @@
 // External
 var React = require( 'react' ),
-    page = require( 'page' );
+    page = require( 'page' ),
+    webworkify = require('webworkify');
 
 React.initializeTouchEvents(true);
 
 // Internal
-var reference = require( './reference.jsx' );
+var referenceTemplate = require( './reference.jsx' );
+var worker = webworkify(require('./worker.js'));
+worker.addEventListener('message', function ( event ) {
+	referenceTemplate( event.data );
+});
+
+
+var reference = function( context ) {
+	var reference = {};
+	reference.book = context.params.book;
+	reference.chapter = context.params.chapter;
+	reference.verse = context.params.verse;
+	worker.postMessage( reference ); // send the worker a message
+};
+
 
 function index() {
 	var Index = React.createClass( {
-		goToReference: function() {
-			page( '/reference' );
+		handleChange: function( event ) {
+			this.setState( {
+				'reference': event.target.value
+			} );
+		},
+
+		goToReference: function( event ) {
+			event.preventDefault();
+			page( this.state.reference );
 		},
 
 		render: function() {
 			return (
 				<div className="home">
-					Home page
-					<button onClick={ this.goToReference }>Start</button>
+					<form onSubmit={ this.goToReference }>
+						<input type="text" onChange={ this.handleChange } />
+					</form>
 				</div>
 			);
 		}

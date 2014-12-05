@@ -1,8 +1,8 @@
 {
-  "name": "FindSuperman",
+  "name": "Javascripture",
   "version": "0.0.1",
-  "author": "Patrick Catanzariti",
-  "description": "Code designed to find the elusive red blue blur",
+  "author": "Ben Dwyer",
+  "description": "A bible discovery app",
   "dependencies": {
     "react": "latest",
     "page": "latest"
@@ -10,10 +10,12 @@
   "devDependencies": {
     "browserify": "latest",
     "watchify": "latest",
-    "reactify": "latest"
+    "reactify": "latest",
+    "uglify-js": "latest",
+    "webworkify": "latest"
   },
   "scripts": {
-    "build-js": "browserify -t reactify src/controller.js > build/main.js -d",
+    "build-js": "browserify -t reactify src/controller.js | uglifyjs > build/main.js",
     "watch-js": "watchify -t reactify src/controller.js -o build/main.js -dv"
   }
 }
