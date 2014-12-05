@@ -1,0 +1,12 @@
+CACHE MANIFEST
+
+#version: 0.1.4
+
+index.html
+build/build.js
+
+# network
+NETWORK:
+*
+http://javascripture.org/javascripture.appcache
+http://www.google-analytics.com/analytics.js
