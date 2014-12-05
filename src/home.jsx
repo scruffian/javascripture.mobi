@@ -2,6 +2,10 @@
 var React = require( 'react' ),
 	page = require( 'page' );
 
+// Internal
+var bible = require( './bible.js' ),
+	reference = require( './reference.js' );
+
 var Home = React.createClass( {
 	handleChange: function( event ) {
 		this.setState( {
@@ -11,7 +15,8 @@ var Home = React.createClass( {
 
 	goToReference: function( event ) {
 		event.preventDefault();
-		page( this.state.reference );
+		var url = bible.parseReference( this.state.reference ).toUrl();
+		page( url );
 	},
 
 	render: function() {
@@ -38,9 +43,10 @@ var Layout = React.createClass( {
 	}
 } );
 
-module.exports = function () {
+module.exports = function ( context, next ) {
 	React.render(
 		<Layout />,
 		document.getElementById('javascripture')
 	);
+	next();
 };

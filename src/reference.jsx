@@ -11,7 +11,7 @@ var Word = React.createClass( {
 	},
 	render: function() {
 		return (
-			<span onClick={ this.showWordDetails } className={ this.props.lemma } key={ this.props.key }>{ this.props.word }</span> // Leave that space
+			<span><span onClick={ this.showWordDetails } className={ this.props.lemma } key={ this.props.key }>{ this.props.word }</span> </span> // Leave that space
 		);
 	}
 } );
