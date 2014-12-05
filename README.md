@@ -1,5 +1,5 @@
-javascripture.org
-=================
+javascripture.mobi
+==================
 
 Rebuilding javascripture.org with React.js and browserify
 
