@@ -2,9 +2,10 @@ var kjv = require( '../data/kjv.js' );
 
 var referenceAPI = {
 	get: function( reference ) {
+		var chapter = parseInt( reference.chapter ) - 1 ;
 		return {
-			'primary': kjv[ reference.book ][ reference.chapter ],
-			'secondary': kjv[ reference.book ][ parseInt( reference.chapter ) + 1 ]
+			'primary': kjv[ reference.book ][ chapter ],
+			'secondary': kjv[ reference.book ][ chapter + 1 ]
 		};
 	},
 	getThreeChapters: function( reference ) {
