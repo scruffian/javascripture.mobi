@@ -119,7 +119,7 @@ var Layout = React.createClass( {
 		return (
 			<div>
 				<Home />
-				<div id="reference"></div>
+				<div id="reference" className="reference"></div>
 				<ReferenceSelector />
 				<Tray />
 			</div>

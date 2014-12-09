@@ -2,10 +2,26 @@ var kjv = require( '../data/kjv.js' );
 
 var referenceAPI = {
 	get: function( reference ) {
-		var chapter = parseInt( reference.chapter ) - 1 ;
+			primaryReference = {
+				book: reference.book,
+				chapter: parseInt( reference.chapter ),
+				verse: reference.verse
+			};
+			secondaryReference = {
+				book: reference.book,
+				chapter: parseInt( reference.chapter ) + 1,
+				verse: reference.verse
+			};
+
 		return {
-			'primary': kjv[ reference.book ][ chapter ],
-			'secondary': kjv[ reference.book ][ chapter + 1 ]
+			'primary': this.getChapterData( primaryReference, kjv ),
+			'secondary': this.getChapterData( secondaryReference, kjv )
+		};
+	},
+	getChapterData: function( reference, version ) {
+		return {
+			reference: reference,
+			data: version[ reference.book ][ reference.chapter - 1 ]
 		};
 	},
 	getThreeChapters: function( reference ) {
@@ -64,7 +80,7 @@ var referenceAPI = {
 			return 'greek';
 		}
 	},
-	getChapterData: function( reference ) {
+	/*getChapterData: function( reference ) {
 		var book = reference.book,
 			chapter = reference.chapter,
 			chapterInArray = chapter - 1,
@@ -87,7 +103,7 @@ var referenceAPI = {
 			}
 		}
 		return result;
-	},
+	},*/
 	getOffsetChapter: function ( reference, offset) {
 		var book = reference.book,
 			chapter = reference.chapter,

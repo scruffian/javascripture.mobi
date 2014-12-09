@@ -12,10 +12,11 @@
     "watchify": "latest",
     "reactify": "latest",
     "uglify-js": "latest",
-    "webworkify": "latest"
+    "webworkify": "latest",
+    "node-sass": "latest"
   },
   "scripts": {
     "build-js": "browserify -t reactify src/bootstrap.js | uglifyjs > build/build.js",
-    "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv"
+    "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv; sass --watch css/layout.scss:css/build.css"
   }
 }
