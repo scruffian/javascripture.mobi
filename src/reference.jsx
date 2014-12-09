@@ -46,7 +46,7 @@ var Reference = React.createClass( {
 				</li>
 			);
 		}, this );
-		console.log( object );
+
 		return (
 			<div>
 				<h1>{ object.reference.book } { object.reference.chapter }</h1>

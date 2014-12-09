@@ -1,10 +1,30 @@
+$tray-height: 40px;
+
 .tray {
 	position: fixed;
 		bottom: 0;
 	width: 100%;
 
 	button {
-		height: 40px;
+		height: $tray-height;
 		width: 20%;
+	}
+}
+
+.tray-targets {
+	.tray-target {
+		overflow: scroll;
+		position: fixed;
+			bottom: $tray-height;
+			left: -400px;
+			top: 0;
+		width: 100%;
+		@media ( min-width: 400px ) {
+			max-width: 400px;
+		}
+
+		&.open {
+			left: 0;
+		}
 	}
 }

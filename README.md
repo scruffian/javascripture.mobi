@@ -11,5 +11,6 @@ To make changes locally you will need to install the necessary node modules, and
 ```
 npm install
 npm run watch-js
+sass --watch css/layout.scss:css/build.css
 
 ```

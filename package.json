@@ -17,6 +17,6 @@
   },
   "scripts": {
     "build-js": "browserify -t reactify src/bootstrap.js | uglifyjs > build/build.js",
-    "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv; sass --watch css/layout.scss:css/build.css"
+    "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv;"
   }
 }
