@@ -5,15 +5,30 @@ var React = require( 'react' ),
 // Enable touch events
 React.initializeTouchEvents( true );
 
+// Singletons
+wordTracking = require( './wordTracking.js' );
+
 // Internal
-var home = require( './home.jsx' );
-var reference = require( './reference.js' );
+var home = require( './home.jsx' ),
+	reference = require( './reference.js' );
+
+	var boot = function( context, next ) {
+		if ( localStorage.reference ) {
+			page( localStorage.reference );
+		}
+	};
+
 
 // Routing
-page( '/', home, reference.boot );
+page( '/', boot );
+page( '/:book', home );
+page( '/:book/:chapter', home );
+page( '/:book/:chapter/:verse', home );
+
+/*page( '/', home, reference.boot );
 page( '/:book', reference.worker );
 page( '/:book/:chapter', reference.worker );
-page( '/:book/:chapter/:verse', reference.worker );
+page( '/:book/:chapter/:verse', reference.worker );*/
 page.start();
 
 // Reload if appcache updates

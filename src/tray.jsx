@@ -2,7 +2,8 @@
 var React = require( 'react/addons' );
 
 // Internal
-var ReferenceSelector = require( './referenceSelector.jsx' );
+var ReferenceSelector = require( './referenceSelector.jsx' ),
+	wordTracking = require( './wordTracking.js' );
 
 var TrayButton = React.createClass( {
 	handleClick: function() {
@@ -23,18 +24,26 @@ var TrayTarget = React.createClass( {
 		} );
 
 		return (
-			<div key={ this.props.name} className={ classes }>{ this.props.content }</div>
+			<div key={ this.props.name } className={ classes }>{ this.props.content }</div>
+		);
+	}
+} );
+
+var WordDetails = React.createClass( {
+	render: function() {
+		var words = wordTracking.trackedWords.map( function( lemma ) {
+			return ( <div key="lemma">{ lemma }</div> );
+		} );
+		return (
+			<div className="word-details">{ words }</div>
 		);
 	}
 } );
 
 var TrayTargets = React.createClass( {
-	referenceSelector: function() {
-		return <ReferenceSelector />;
-	},
 	render: function() {
 		var referenceSelector = <ReferenceSelector />,
-			details = 'details',
+			wordDetails = <WordDetails />,
 			search = 'search',
 			bookmarks = 'bookmarks',
 			settings = 'settings';
@@ -42,7 +51,7 @@ var TrayTargets = React.createClass( {
 		return (
 			<div className="tray-targets">
 				<TrayTarget name="goto" open={ this.props.openTrays.goto } content={ referenceSelector } />
-				<TrayTarget name="details" open={ this.props.openTrays.details } content={ details } />
+				<TrayTarget name="details" open={ this.props.openTrays.details } content={ wordDetails } />
 				<TrayTarget name="search" open={ this.props.openTrays.search } content={ search } />
 				<TrayTarget name="bookmarks" open={ this.props.openTrays.bookmarks } content={ bookmarks } />
 				<TrayTarget name="settings" open={ this.props.openTrays.settings } content={ settings } />

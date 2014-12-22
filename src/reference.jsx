@@ -1,13 +1,13 @@
-/** @jsx React.DOM */
-
-/**
- * External dependencies
- */
+// External
 var React = require( 'react' );
+
+// Internal
+var wordTracking = require( './wordTracking.js' ),
+	referenceAPI = require( './referenceAPI.js' );
 
 var Word = React.createClass( {
 	showWordDetails: function() {
-		console.log( this.props.lemma );
+		wordTracking.add( this.props.lemma );
 	},
 	render: function() {
 		return (
@@ -29,15 +29,14 @@ var Verse = React.createClass( {
 	}
 } );
 
+/*module.exports = function ( data ) {
+	React.render(
+		<Reference data={ data } />,
+		document.getElementById( 'reference' )
+	);
+};*/
+
 var Reference = React.createClass( {
-	render: function() {
-		return (
-			<div>
-				{ this.getChapter( this.props.data.primary ) }
-				{ this.getChapter( this.props.data.secondary ) }
-			</div>
-		);
-	},
 	getChapter: function( object ) {
 		var verses = object.data.map( function( verse, index ) {
 			return (
@@ -53,12 +52,17 @@ var Reference = React.createClass( {
 				<ol className="chapter">{ verses }</ol>
 			</div>
 		);
+	},
+	render: function() {
+		var data = referenceAPI.get( this.props.reference );
+		return (
+			<div id="reference" className="reference">
+				{ this.getChapter( data.primary ) }
+				{ this.getChapter( data.secondary ) }
+			</div>
+		);
 	}
 } );
 
-module.exports = function ( data ) {
-	var layout = React.render(
-		<Reference data={ data } />,
-		document.getElementById( 'reference' )
-	);
-};
+
+module.exports = Reference;
