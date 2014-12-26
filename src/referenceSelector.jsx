@@ -12,9 +12,20 @@ var BookControl = React.createClass( {
 		};
 	},
 	goToReference: function( event ) {
-		var verticalMovement = this.state.clientY - event.touches[0].clientY;
-		alert( 'verticalMovement:  ' + verticalMovement  );
-		if (  verticalMovement > 20 || verticalMovement < -20 ) {
+		var hasScrolled = false,
+			verticalMovement;
+		console.log( this.state.clientY );
+		console.log( event );
+		if ( event.touches && this.state.clientY ) {
+
+			verticalMovement = this.state.clientY - event.touches[0].clientY;
+			alert( 'verticalMovement:  ' + verticalMovement  );
+			if ( verticalMovement > 20 || verticalMovement < -20 ) {
+				hasScrolled = true;
+			}
+
+		}
+		if ( ! hasScrolled ) {
 			// hide the trays
 			this.props.onChangeDisplayState();
 			page( '/' + this.props.name + '/' + this.state.chapter );
@@ -24,13 +35,16 @@ var BookControl = React.createClass( {
 		this.setChapter( event.clientX );
 	},
 	handleTouchMove: function( event ) {
-		this.setChapter( event.touches[0].clientX );
+		if ( event.touches ) {
+			this.setChapter( event.touches[0].clientX );
+		}
 	},
 	touchStart: function( event ) {
-		alert( event.touches[0].clientY );
-		this.setState( {
-			clientY: event.touches[0].clientY
-		} );
+		if ( event.touches ) {
+			this.setState( {
+				clientY: event.touches[0].clientY
+			} );
+		}
 	},
 	setChapter: function( clientX ) {
 		var width = this.getDOMNode().offsetWidth,

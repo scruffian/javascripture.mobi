@@ -3,7 +3,7 @@ var React = require( 'react/addons' );
 
 // Internal
 var ReferenceSelector = require( './referenceSelector.jsx' ),
-	wordTracking = require( './wordTracking.js' )();
+	WordDetails = require( './wordDetails.jsx' );
 
 var TrayButton = React.createClass( {
 	handleClick: function() {
@@ -26,33 +26,6 @@ var TrayTarget = React.createClass( {
 
 		return (
 			<div key={ this.props.name } className={ classes }>{ this.props.content }</div>
-		);
-	}
-} );
-
-var WordDetails = React.createClass( {
-	getInitialState: function() {
-		return {
-			words: []
-		};
-	},
-
-	componentWillMount: function() {
-		var self = this;
-		wordTracking.on( 'change', function() {
-			self.setState( {
-				words: this.trackedWords
-			} );
-		} );
-	},
-
-	render: function() {
-		var words = this.state.words.map( function( lemma ) {
-			return ( <div key={ lemma }>{ lemma }</div> );
-		} );
-
-		return (
-			<div className="word-details">{ words }</div>
 		);
 	}
 } );
@@ -81,7 +54,7 @@ module.exports = React.createClass( {
 	render: function() {
 		return (
 			<div>
-				<TrayTargets displayState={ this.props.displayState } wordTracking={ this.props.wordTracking } onChangeDisplayState={ this.props.onChangeDisplayState } />
+				<TrayTargets displayState={ this.props.displayState } onChangeDisplayState={ this.props.onChangeDisplayState } />
 				<div className="tray">
 					<TrayButton text="Go to" target="goto" onChangeDisplayState={ this.props.onChangeDisplayState } />
 					<TrayButton text="Details" target="details" onChangeDisplayState={ this.props.onChangeDisplayState } />
