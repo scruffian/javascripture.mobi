@@ -8,7 +8,7 @@ var wordTracking = require( './wordTracking.js' )(),
 
 var Word = React.createClass( {
 	showWordDetails: function() {
-		alert( this.props.lemma );
+		this.props.onChangeDisplayState( 'details', true );
 		wordTracking.add( this.props.lemma );
 	},
 	render: function() {
@@ -23,7 +23,7 @@ var Verse = React.createClass( {
 	render: function() {
 		var verse = this.props.verse.map( function( word, index ) {
 			return (
-				<Word word={ word[ 	0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } />
+				<Word word={ word[ 	0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } onChangeDisplayState={ this.props.onChangeDisplayState } />
 			);
 		}, this );
 		return (
@@ -37,7 +37,7 @@ var Reference = React.createClass( {
 		var verses = object.data.map( function( verse, index ) {
 			return (
 				<li key={ index }>
-					<Verse verse={ verse } />
+					<Verse verse={ verse } onChangeDisplayState={ this.props.onChangeDisplayState } />
 				</li>
 			);
 		}, this );

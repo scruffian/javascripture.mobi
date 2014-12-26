@@ -44,10 +44,12 @@ var Layout = React.createClass( {
 		};
 	},
 
-	changeDisplayState: function( target ) {
+	changeDisplayState: function( target, open ) {
 		var state = this.getInitialState();
 		if ( target ) {
-			if ( this.state[ target ] ) {
+			if ( open ) {
+				state[ target ] = true;
+			} else if ( this.state[ target ] ) {
 				state[ target ] = false;
 			} else {
 				state[ target ] = true;
