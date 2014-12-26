@@ -27,7 +27,7 @@ var BookControl = React.createClass( {
 		this.setChapter( event.touches[0].clientX );
 	},
 	touchStart: function( event ) {
-		console.log( event.touches[0] );
+		alert( event.touches[0].clientY );
 		this.setState( {
 			clientY: event.touches[0].clientY
 		} );
@@ -38,7 +38,7 @@ var BookControl = React.createClass( {
 			chapter = Math.ceil( clientX / spacing );
 
 		this.setState( {
-			'chapter': chapter
+			chapter: chapter
 		} );
 	},
 	render: function() {

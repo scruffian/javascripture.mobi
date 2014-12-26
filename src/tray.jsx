@@ -31,7 +31,6 @@ var TrayTarget = React.createClass( {
 } );
 
 var WordDetails = React.createClass( {
-
 	getInitialState: function() {
 		return {
 			words: []
