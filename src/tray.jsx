@@ -3,7 +3,7 @@ var React = require( 'react/addons' );
 
 // Internal
 var ReferenceSelector = require( './referenceSelector.jsx' ),
-	wordTracking = require( './wordTracking.js' );
+	wordTracking = require( './wordTracking.js' )();
 
 var TrayButton = React.createClass( {
 	handleClick: function() {
@@ -30,10 +30,27 @@ var TrayTarget = React.createClass( {
 } );
 
 var WordDetails = React.createClass( {
-	render: function() {
-		var words = wordTracking.trackedWords.map( function( lemma ) {
-			return ( <div key="lemma">{ lemma }</div> );
+
+	getInitialState: function() {
+		return {
+			words: []
+		};
+	},
+
+	componentWillMount: function() {
+		var self = this;
+		wordTracking.on( 'change', function() {
+			self.setState( {
+				words: this.trackedWords
+			} );
 		} );
+	},
+
+	render: function() {
+		var words = this.state.words.map( function( lemma ) {
+			return ( <div key={ lemma }>{ lemma }</div> );
+		} );
+
 		return (
 			<div className="word-details">{ words }</div>
 		);
@@ -82,7 +99,7 @@ module.exports = React.createClass( {
 	render: function() {
 		return (
 			<div>
-				<TrayTargets openTrays={ this.state } />
+				<TrayTargets openTrays={ this.state } wordTracking={ this.props.wordTracking } />
 				<div className="tray">
 					<TrayButton text="Go to" target="goto" openEvent={ this.openTray } />
 					<TrayButton text="Details" target="details" openEvent={ this.openTray } />

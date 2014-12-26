@@ -6,7 +6,8 @@ var React = require( 'react' ),
 var bible = require( './bible.js' ),
 	reference = require( './reference.js' ),
 	Reference = require( './reference.jsx' ),
-	Tray = require( './tray.jsx' );
+	Tray = require( './tray.jsx' ),
+	wordTracking = require( './wordTracking.js' )();
 
 var Home = React.createClass( {
 	handleChange: function( event ) {
@@ -58,7 +59,7 @@ var Layout = React.createClass( {
 			<div>
 				<Home />
 				<Reference reference={ this.props.reference } displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
-				<Tray displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
+				<Tray displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } wordTracking={ wordTracking } />
 			</div>
 		);
 	}

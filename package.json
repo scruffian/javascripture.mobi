@@ -5,7 +5,8 @@
   "description": "A bible discovery app",
   "dependencies": {
     "react": "latest",
-    "page": "latest"
+    "page": "latest",
+    "lodash-node": "latest"
   },
   "devDependencies": {
     "browserify": "latest",

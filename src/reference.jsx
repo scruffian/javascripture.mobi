@@ -2,8 +2,9 @@
 var React = require( 'react' );
 
 // Internal
-var wordTracking = require( './wordTracking.js' ),
+var wordTracking = require( './wordTracking.js' )(),
 	referenceAPI = require( './referenceAPI.js' );
+
 
 var Word = React.createClass( {
 	showWordDetails: function() {
