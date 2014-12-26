@@ -46,10 +46,12 @@ var Layout = React.createClass( {
 
 	changeDisplayState: function( target ) {
 		var state = this.getInitialState();
-		if ( this.state[ target ] ) {
-			state[ target ] = false;
-		} else {
-			state[ target ] = true;
+		if ( target ) {
+			if ( this.state[ target ] ) {
+				state[ target ] = false;
+			} else {
+				state[ target ] = true;
+			}
 		}
 		this.setState( state );
 	},
@@ -103,5 +105,4 @@ module.exports = function ( context, next ) {
 		<Layout reference={ reference } />,
 		document.getElementById('javascripture')
 	);
-	//next();
 };

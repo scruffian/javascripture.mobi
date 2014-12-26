@@ -12,6 +12,9 @@ var BookControl = React.createClass( {
 		};
 	},
 	goToReference: function() {
+		// hide the trays
+		this.props.onChangeDisplayState();
+
 		page( '/' + this.props.name + '/' + this.state.chapter );
 	},
 	handleMouseMove: function( event ) {
@@ -45,19 +48,13 @@ module.exports = React.createClass( {
 		} );
 	},
 
-	goToReference: function( event ) {
-		event.preventDefault();
-		var url = bible.parseReference( this.state.reference ).toUrl();
-		page( url );
-	},
-
 	render: function() {
 		var books = bible.Data.books.map( function( bookArray, index ) {
 			var chapters = parseInt( bible.Data.verses[ index ].length ) - 1;
 			return (
-				<BookControl key={ index } name={ bookArray[0] } chapters={ chapters } />
+				<BookControl key={ index } name={ bookArray[0] } chapters={ chapters } onChangeDisplayState={ this.props.onChangeDisplayState } />
 			);
-		} );
+		}, this );
 		return (
 			<div className="reference-selector">{ books }</div>
 		);

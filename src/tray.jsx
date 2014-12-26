@@ -7,7 +7,7 @@ var ReferenceSelector = require( './referenceSelector.jsx' ),
 
 var TrayButton = React.createClass( {
 	handleClick: function() {
-		this.props.openEvent( this.props.target );
+		this.props.onChangeDisplayState( this.props.target );
 	},
 	render: function() {
 		return (
@@ -59,7 +59,7 @@ var WordDetails = React.createClass( {
 
 var TrayTargets = React.createClass( {
 	render: function() {
-		var referenceSelector = <ReferenceSelector />,
+		var referenceSelector = <ReferenceSelector onChangeDisplayState={ this.props.onChangeDisplayState } />,
 			wordDetails = <WordDetails />,
 			search = 'search',
 			bookmarks = 'bookmarks',
@@ -67,45 +67,27 @@ var TrayTargets = React.createClass( {
 
 		return (
 			<div className="tray-targets">
-				<TrayTarget name="goto" open={ this.props.openTrays.goto } content={ referenceSelector } />
-				<TrayTarget name="details" open={ this.props.openTrays.details } content={ wordDetails } />
-				<TrayTarget name="search" open={ this.props.openTrays.search } content={ search } />
-				<TrayTarget name="bookmarks" open={ this.props.openTrays.bookmarks } content={ bookmarks } />
-				<TrayTarget name="settings" open={ this.props.openTrays.settings } content={ settings } />
+				<TrayTarget name="goto" open={ this.props.displayState.goto } content={ referenceSelector } />
+				<TrayTarget name="details" open={ this.props.displayState.details } content={ wordDetails } />
+				<TrayTarget name="search" open={ this.props.displayState.search } content={ search } />
+				<TrayTarget name="bookmarks" open={ this.props.displayState.bookmarks } content={ bookmarks } />
+				<TrayTarget name="settings" open={ this.props.displayState.settings } content={ settings } />
 			</div>
 		);
 	}
 } );
 
 module.exports = React.createClass( {
-	getInitialState: function() {
-		return {
-			goto: false,
-			details: false,
-			search: false,
-			bookmarks: false,
-			settings: false
-		};
-	},
-	openTray: function( target ) {
-		var state = this.getInitialState();
-		if ( this.state[ target ] ) {
-			state[ target ] = false;
-		} else {
-			state[ target ] = true;
-		}
-		this.setState( state );
-	},
 	render: function() {
 		return (
 			<div>
-				<TrayTargets openTrays={ this.state } wordTracking={ this.props.wordTracking } />
+				<TrayTargets displayState={ this.props.displayState } wordTracking={ this.props.wordTracking } onChangeDisplayState={ this.props.onChangeDisplayState } />
 				<div className="tray">
-					<TrayButton text="Go to" target="goto" openEvent={ this.openTray } />
-					<TrayButton text="Details" target="details" openEvent={ this.openTray } />
-					<TrayButton text="Search" target="search" openEvent={ this.openTray } />
-					<TrayButton text="Bookmarks" target="bookmarks" openEvent={ this.openTray } />
-					<TrayButton text="Settings" target="settings" openEvent={ this.openTray } />
+					<TrayButton text="Go to" target="goto" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton text="Details" target="details" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton text="Search" target="search" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton text="Bookmarks" target="bookmarks" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton text="Settings" target="settings" onChangeDisplayState={ this.props.onChangeDisplayState } />
 				</div>
 			</div>
 		);

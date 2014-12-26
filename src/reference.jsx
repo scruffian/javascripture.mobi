@@ -32,13 +32,6 @@ var Verse = React.createClass( {
 	}
 } );
 
-/*module.exports = function ( data ) {
-	React.render(
-		<Reference data={ data } />,
-		document.getElementById( 'reference' )
-	);
-};*/
-
 var Reference = React.createClass( {
 	getChapter: function( object ) {
 		var verses = object.data.map( function( verse, index ) {
