@@ -21,6 +21,8 @@ $tray-height: 40px;
 			bottom: $tray-height;
 			left: -400px;
 			top: 0;
+		transition-propery: left, right;
+		transition-duration: 0.2s;
 		width: 100%;
 		@media ( min-width: 400px ) {
 			max-width: 400px;
@@ -28,6 +30,15 @@ $tray-height: 40px;
 
 		&.open {
 			left: 0;
+		}
+
+		&.right {
+			left: auto;
+			right: -400px;
+		}
+
+		&.right.open {
+			right: 0;
 		}
 	}
 }

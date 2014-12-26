@@ -25,11 +25,18 @@
   bottom: 40px;
   left: -400px;
   top: 0;
+  transition-propery: left, right;
+  transition-duration: 0.2s;
   width: 100%; }
   @media (min-width: 400px) {
     .tray-targets .tray-target {
       max-width: 400px; } }
   .tray-targets .tray-target.open {
     left: 0; }
+  .tray-targets .tray-target.right {
+    left: auto;
+    right: -400px; }
+  .tray-targets .tray-target.right.open {
+    right: 0; }
 
 /*# sourceMappingURL=build.css.map */
