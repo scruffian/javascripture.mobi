@@ -11,17 +11,26 @@ var BookControl = React.createClass( {
 			chapter: 1
 		};
 	},
-	goToReference: function() {
-		// hide the trays
-		this.props.onChangeDisplayState();
-
-		page( '/' + this.props.name + '/' + this.state.chapter );
+	goToReference: function( event ) {
+		var verticalMovement = this.state.clientY - event.touches[0].clientY;
+		alert( 'verticalMovement:  ' + verticalMovement  );
+		if (  verticalMovement > 20 || verticalMovement < -20 ) {
+			// hide the trays
+			this.props.onChangeDisplayState();
+			page( '/' + this.props.name + '/' + this.state.chapter );
+		}
 	},
 	handleMouseMove: function( event ) {
 		this.setChapter( event.clientX );
 	},
 	handleTouchMove: function( event ) {
 		this.setChapter( event.touches[0].clientX );
+	},
+	touchStart: function( event ) {
+		console.log( event.touches[0] );
+		this.setState( {
+			clientY: event.touches[0].clientY
+		} );
 	},
 	setChapter: function( clientX ) {
 		var width = this.getDOMNode().offsetWidth,
@@ -34,7 +43,7 @@ var BookControl = React.createClass( {
 	},
 	render: function() {
 		return (
-			<div onClick={ this.goToReference } onTouchEnd={ this.goToReference } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
+			<div onClick={ this.goToReference } onTouchEnd={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
 				{ this.props.name } { this.state.chapter }
 			</div>
 		);
