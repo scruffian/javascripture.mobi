@@ -11,6 +11,8 @@
   bottom: 0;
   width: 100%; }
   .tray button {
+    background: #336699;
+    color: white;
     height: 40px;
     width: 20%; }
 
