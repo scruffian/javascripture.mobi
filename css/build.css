@@ -5,18 +5,21 @@
 
 .reference {
   margin: 0 5%; }
+  .reference .word {
+    cursor: pointer; }
 
 .tray {
   position: fixed;
   bottom: 0;
   width: 100%; }
   .tray button {
-    background: #336699;
+    background: #aaccff;
     color: white;
     height: 40px;
     width: 20%; }
 
 .tray-targets .tray-target {
+  background: grey;
   overflow: scroll;
   position: fixed;
   bottom: 40px;

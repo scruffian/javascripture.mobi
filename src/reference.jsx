@@ -12,8 +12,9 @@ var Word = React.createClass( {
 		wordTracking.add( this.props.lemma );
 	},
 	render: function() {
+		var className = 'word ' + this.props.lemma;
 		return (
-			<span><span onClick={ this.showWordDetails } className={ this.props.lemma } key={ this.props.key }>{ this.props.word }</span> </span> // Leave that space
+			<span><span className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word }</span> </span> // Leave that space
 		);
 	}
 } );
