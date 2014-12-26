@@ -8,6 +8,7 @@ var wordTracking = require( './wordTracking.js' )(),
 
 var Word = React.createClass( {
 	showWordDetails: function() {
+		alert( this.props.lemma );
 		wordTracking.add( this.props.lemma );
 	},
 	render: function() {
