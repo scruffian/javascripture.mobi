@@ -24,7 +24,9 @@ page( '/:book', home );
 page( '/:book/:chapter', home );
 page( '/:book/:chapter/:verse', home );
 
-page.start( { hashbang: true } );
+start = function() {
+	page.start( { hashbang: true } );
+};
 
 // Reload if appcache updates
 window.applicationCache.addEventListener('updateready', function( event ) {
