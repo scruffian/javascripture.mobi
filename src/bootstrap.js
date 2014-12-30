@@ -28,6 +28,10 @@ start = function() {
 	page.start( { hashbang: true } );
 };
 
+if ( window.location.hash ) {
+	start();
+}
+
 // Reload if appcache updates
 window.applicationCache.addEventListener('updateready', function( event ) {
 	if ( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
