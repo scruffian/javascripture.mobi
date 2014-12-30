@@ -98,10 +98,21 @@ workerFunctions = {
 };
 
 module.exports = function ( context, next ) {
-	var reference = {};
+	var reference = {},
+		referenceString = '/';
 	reference.book = context.params.book;
 	reference.chapter = context.params.chapter;
 	reference.verse = context.params.verse;
+
+	referenceString += reference.book;
+	if ( reference.chapter ) {
+		referenceString += '/' + reference.chapter;
+	}
+	if ( reference.verse ) {
+		referenceString += '/' + reference.verse;
+	}
+	localStorage.reference = referenceString;
+
 
 	React.render(
 		<Layout reference={ reference } />,

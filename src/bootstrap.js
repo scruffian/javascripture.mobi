@@ -28,7 +28,7 @@ start = function() {
 	page.start( { hashbang: true } );
 };
 
-if ( window.location.hash ) {
+if ( window.location.hash || localStorage.reference ) {
 	start();
 }
 
