@@ -71,7 +71,7 @@ var Layout = React.createClass( {
 
 
 // External
-var webworkify = require('webworkify'),
+/*var webworkify = require('webworkify'),
 	page = require( 'page' );
 
 var worker = webworkify( require('./worker.js') );
@@ -95,7 +95,7 @@ workerFunctions = {
 		reference.verse = context.params.verse;
 		worker.postMessage( reference ); // send the worker a message
 	}
-};
+};*/
 
 module.exports = function ( context, next ) {
 	var reference = {},
