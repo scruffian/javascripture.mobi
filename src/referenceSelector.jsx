@@ -57,7 +57,7 @@ var BookControl = React.createClass( {
 	},
 	render: function() {
 		return (
-			<div onClick={ this.goToReference } onTouchEnd={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
+			<div onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
 				{ this.props.name } { this.state.chapter }
 			</div>
 		);

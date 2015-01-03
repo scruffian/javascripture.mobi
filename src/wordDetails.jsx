@@ -3,15 +3,8 @@ var React = require( 'react/addons' );
 
 // Internal
 var strongsDictionary = require( '../data/strongs-dictionary.js' ),
-	wordTracking = require( './wordTracking.js' )();
-
-var WordSearchResults = React.createClass( {
-	render: function() {
-		return (
-			<ol><li>{ this.props.lemma }</li></ol>
-		);
-	}
-} );
+	wordTracking = require( './wordTracking.js' )(),
+	WordSearchResults = require( './wordSearchResults.jsx' );
 
 var WordDetails = React.createClass( {
 	getInitialState: function() {
