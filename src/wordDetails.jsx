@@ -16,6 +16,7 @@ var WordDetails = React.createClass( {
 	componentWillMount: function() {
 		var self = this;
 		wordTracking.on( 'change', function() {
+			console.log( this.trackedWords );
 			self.setState( {
 				words: this.trackedWords
 			} );
@@ -23,8 +24,8 @@ var WordDetails = React.createClass( {
 	},
 
 	render: function() {
-
-		var words = this.state.words.map( function( lemma ) {
+		var words = this.state.words.map( function( lemmaObject ) {
+			var lemma = Object.keys( lemmaObject )[0];
 			return (
 				<div key={ lemma }>
 					<div>{ lemma } | { strongsDictionary[ lemma ].lemma } | { strongsDictionary[ lemma ].xlit } | { strongsDictionary[ lemma ].pron }</div>
@@ -32,10 +33,11 @@ var WordDetails = React.createClass( {
 					<div>Strongs Definition: { strongsDictionary[ lemma ].strongs_def }</div>
 					<div>KJV Usage: { strongsDictionary[ lemma ].kjv_def }</div>
 					<div>
-						Search results: <WordSearchResults lemma={ lemma } />
+						Search results: <WordSearchResults references={ lemmaObject[ lemma ] } />
 					</div>
 				</div>
 			);
+
 		} );
 
 		return (
