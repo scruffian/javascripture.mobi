@@ -1,3 +1,9 @@
 .reference-selector {
-
+	.book {
+		position: relative;
+	}
+	.chapter-number {
+		position: absolute;
+		right: 0;
+	}
 }

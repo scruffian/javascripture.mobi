@@ -47,9 +47,17 @@ var BookControl = React.createClass( {
 		}
 	},
 	setChapter: function( clientX ) {
-		var width = this.getDOMNode().offsetWidth,
+		var width = this.getDOMNode().offsetWidth - 40,
 			spacing =  width / this.props.chapters,
 			chapter = Math.ceil( clientX / spacing );
+
+		if ( chapter < 1 ) {
+			chapter = 1;
+		}
+
+		if ( chapter > this.props.chapters ) {
+			chapter = this.props.chapters;
+		}
 
 		this.setState( {
 			chapter: chapter
@@ -57,8 +65,8 @@ var BookControl = React.createClass( {
 	},
 	render: function() {
 		return (
-			<div onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
-				{ this.props.name } { this.state.chapter }
+			<div className="book" onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
+				{ this.props.name } <span onTouchEnd={ this.goToReference } className="chapter-number">{ this.state.chapter }</span>
 			</div>
 		);
 	}
@@ -73,7 +81,7 @@ module.exports = React.createClass( {
 
 	render: function() {
 		var books = bible.Data.books.map( function( bookArray, index ) {
-			var chapters = parseInt( bible.Data.verses[ index ].length ) - 1;
+			var chapters = parseInt( bible.Data.verses[ index ].length );
 			return (
 				<BookControl key={ index } name={ bookArray[0] } chapters={ chapters } onChangeDisplayState={ this.props.onChangeDisplayState } />
 			);
