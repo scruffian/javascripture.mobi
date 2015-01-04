@@ -34,20 +34,22 @@ var Verse = React.createClass( {
 
 var Reference = React.createClass( {
 	getChapter: function( object ) {
-		var verses = object.data.map( function( verse, index ) {
-			return (
-				<li key={ index }>
-					<Verse verse={ verse } onChangeDisplayState={ this.props.onChangeDisplayState } />
-				</li>
-			);
-		}, this );
+		if ( object && object.data ) {
+			var verses = object.data.map( function( verse, index ) {
+				return (
+					<li key={ index }>
+						<Verse verse={ verse } onChangeDisplayState={ this.props.onChangeDisplayState } />
+					</li>
+				);
+			}, this );
 
-		return (
-			<div>
-				<h1>{ object.reference.book } { object.reference.chapter }</h1>
-				<ol className="chapter">{ verses }</ol>
-			</div>
-		);
+			return (
+				<div>
+					<h1>{ object.reference.book } { object.reference.chapter }</h1>
+					<ol className="chapter">{ verses }</ol>
+				</div>
+			);
+		}
 	},
 	render: function() {
 		var data = referenceAPI.get( this.props.reference );

@@ -12,24 +12,10 @@ var BookControl = React.createClass( {
 		};
 	},
 	goToReference: function( event ) {
-		var hasScrolled = false,
-			verticalMovement;
-		console.log( this.state.clientY );
-		console.log( event );
-		if ( event.touches && this.state.clientY ) {
-
-			verticalMovement = this.state.clientY - event.touches[0].clientY;
-			alert( 'verticalMovement:  ' + verticalMovement  );
-			if ( verticalMovement > 20 || verticalMovement < -20 ) {
-				hasScrolled = true;
-			}
-
-		}
-		if ( ! hasScrolled ) {
-			// hide the trays
-			this.props.onChangeDisplayState();
-			page( '/' + this.props.name + '/' + this.state.chapter );
-		}
+		// hide the trays
+		this.props.onChangeDisplayState();
+		var url = '/' + this.props.name + '/' + this.state.chapter;
+		page( url );
 	},
 	handleMouseMove: function( event ) {
 		this.setChapter( event.clientX );
