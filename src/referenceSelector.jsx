@@ -34,13 +34,6 @@ var BookControl = React.createClass( {
 			'touchChapter': false
 		} );
 	},
-	/*touchStart: function( event ) {
-		if ( event.touches ) {
-			this.setState( {
-				clientY: event.touches[0].clientY
-			} );
-		}
-	},*/
 	setChapter: function( clientX ) {
 		var width = this.getDOMNode().offsetWidth - 40,
 			spacing =  width / this.props.chapters,

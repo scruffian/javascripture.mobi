@@ -40,7 +40,7 @@ var Home = React.createClass( {
 		var reference = this.state.reference.toString();
 
 		return (
-			<div className="home">
+			<div className="reference-input">
 				<form onSubmit={ this.goToReference }>
 					<input type="text" value={ reference } onChange={ this.handleChange } />
 				</form>

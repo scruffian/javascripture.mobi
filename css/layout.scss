@@ -11,7 +11,7 @@ body {
 	font-weight: 100;
 }
 
-button {
+button, input {
 	font-size: 100%;
 	font-weight: 100;
 }
@@ -21,15 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
 
-.home {
-	form {
-		text-align: center;
-		input {
-			border: 1px solid black;
-		}
-	}
-}
-
 @import 'reference';
+@import 'referenceInput';
 @import 'referenceSelector';
 @import 'tray';

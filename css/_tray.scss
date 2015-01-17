@@ -1,5 +1,6 @@
 .tray {
 	background: rgba( 255, 255, 255, 0.9 );
+	box-shadow: 0 0 4px 0 rgba( 0, 0, 0, 0.4 );
 	position: fixed;
 		bottom: 0;
 	width: 100%;
@@ -22,6 +23,7 @@
 .tray-targets {
 	.tray-target {
 		background: rgba( 255, 255, 255, 0.9 );
+		box-shadow: 0 0 4px 0 rgba( 0, 0, 0, 0.4 );
 		overflow: scroll;
 		position: fixed;
 			bottom: $tray-height;
@@ -30,8 +32,8 @@
 		transition-propery: left, right;
 		transition-duration: 0.2s;
 		width: 100%;
-		@media ( min-width: 400px ) {
-			max-width: 400px;
+		@media ( min-width: 320px ) {
+			max-width: 320px;
 		}
 
 		&.open {
