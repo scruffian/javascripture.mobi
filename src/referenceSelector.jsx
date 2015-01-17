@@ -14,8 +14,9 @@ var BookControl = React.createClass( {
 	goToReference: function( event ) {
 		// hide the trays
 		this.props.onChangeDisplayState();
-		var url = '/' + this.props.name + '/' + this.state.chapter;
-		page( url );
+
+		// load the reference
+		this.props.onGoToReference( bible.parseReference( this.props.name + ' ' + this.state.chapter ) );
 	},
 	handleMouseMove: function( event ) {
 		this.setChapter( event.clientX );
@@ -53,6 +54,7 @@ var BookControl = React.createClass( {
 		return (
 			<div className="book" onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
 				{ this.props.name } <span onTouchEnd={ this.goToReference } className="chapter-number">{ this.state.chapter }</span>
+				<button onClick={ this.goToReference }>Go</button>
 			</div>
 		);
 	}
@@ -69,7 +71,7 @@ module.exports = React.createClass( {
 		var books = bible.Data.books.map( function( bookArray, index ) {
 			var chapters = parseInt( bible.Data.verses[ index ].length );
 			return (
-				<BookControl key={ index } name={ bookArray[0] } chapters={ chapters } onChangeDisplayState={ this.props.onChangeDisplayState } />
+				<BookControl key={ index } name={ bookArray[0] } chapters={ chapters } onGoToReference={ this.props.onGoToReference } onChangeDisplayState={ this.props.onChangeDisplayState } />
 			);
 		}, this );
 		return (

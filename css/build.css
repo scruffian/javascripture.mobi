@@ -3,16 +3,31 @@
   margin: 0;
   padding: 0; }
 
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial;
+  font-weight: 100; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+  text-align: center; }
+
+.home form {
+  text-align: center; }
+  .home form input {
+    border: 1px solid black; }
+
 .reference {
-  margin: 0 5%; }
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 0 2em; }
   .reference .word {
     cursor: pointer; }
 
 .reference-selector .book {
   position: relative; }
-.reference-selector .chapter-number {
-  position: absolute;
-  right: 0; }
+  .reference-selector .book button {
+    position: absolute;
+    right: 0; }
 
 .tray {
   position: fixed;

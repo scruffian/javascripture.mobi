@@ -32,7 +32,7 @@ var TrayTarget = React.createClass( {
 
 var TrayTargets = React.createClass( {
 	render: function() {
-		var referenceSelector = <ReferenceSelector onChangeDisplayState={ this.props.onChangeDisplayState } />,
+		var referenceSelector = <ReferenceSelector onChangeDisplayState={ this.props.onChangeDisplayState } onGoToReference={ this.props.onGoToReference } />,
 			wordDetails = <WordDetails />,
 			search = 'search',
 			bookmarks = 'bookmarks',
@@ -54,7 +54,7 @@ module.exports = React.createClass( {
 	render: function() {
 		return (
 			<div>
-				<TrayTargets displayState={ this.props.displayState } onChangeDisplayState={ this.props.onChangeDisplayState } />
+				<TrayTargets displayState={ this.props.displayState } onGoToReference={ this.props.onGoToReference } onChangeDisplayState={ this.props.onChangeDisplayState } />
 				<div className="tray">
 					<TrayButton text="Go to" target="goto" onChangeDisplayState={ this.props.onChangeDisplayState } />
 					<TrayButton text="Details" target="details" onChangeDisplayState={ this.props.onChangeDisplayState } />

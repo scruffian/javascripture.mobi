@@ -10,23 +10,39 @@ var bible = require( './bible.js' ),
 	wordTracking = require( './wordTracking.js' )();
 
 var Home = React.createClass( {
+
+	getInitialState: function() {
+		return {
+			reference: bible.parseReference( 'Genesis 1' )
+		};
+	},
+
+	componentWillReceiveProps: function( nextProps ) {
+		if ( nextProps.reference ) {
+			this.setState( {
+				reference: nextProps.reference
+			} );
+		}
+	},
+
 	handleChange: function( event ) {
 		this.setState( {
-			'reference': event.target.value
+			'reference': bible.parseReference( event.target.value )
 		} );
 	},
 
-	goToReference: function( event ) {
+	goToReference: function( event ){
 		event.preventDefault();
-		var url = bible.parseReference( this.state.reference ).toUrl();
-		page( url );
+		this.props.onGoToReference( this.state.reference );
 	},
 
 	render: function() {
+		var reference = this.state.reference.toString();
+
 		return (
 			<div className="home">
 				<form onSubmit={ this.goToReference }>
-					<input type="text" onChange={ this.handleChange } />
+					<input type="text" value={ reference } onChange={ this.handleChange } />
 				</form>
 			</div>
 		);
@@ -58,12 +74,19 @@ var Layout = React.createClass( {
 		this.setState( state );
 	},
 
+	goToReference: function( reference ){
+		this.setState( { reference: reference }, function() {
+			var url = reference.toUrl();
+			page( url );
+		} );
+	},
+
 	render: function() {
 		return (
 			<div>
-				<Home />
+				<Home reference={ this.state.reference } onGoToReference={ this.goToReference } />
 				<Reference reference={ this.props.reference } displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
-				<Tray displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } wordTracking={ wordTracking } />
+				<Tray displayState={ this.state } onGoToReference={ this.goToReference } onChangeDisplayState={ this.changeDisplayState } wordTracking={ wordTracking } />
 			</div>
 		);
 	}
