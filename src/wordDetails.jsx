@@ -28,6 +28,7 @@ var WordDetails = React.createClass( {
 			var lemma = Object.keys( lemmaObject )[0];
 			return (
 				<div key={ lemma }>
+					<div dangerouslySetInnerHTML={{__html: '<style>.' + lemma + ' { background: red }</style>'}} />
 					<div>{ lemma } | { strongsDictionary[ lemma ].lemma } | { strongsDictionary[ lemma ].xlit } | { strongsDictionary[ lemma ].pron }</div>
 					<div>Derivation: { strongsDictionary[ lemma ].derivation }</div>
 					<div>Strongs Definition: { strongsDictionary[ lemma ].strongs_def }</div>
