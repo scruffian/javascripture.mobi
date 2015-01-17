@@ -23,16 +23,24 @@ var BookControl = React.createClass( {
 	},
 	handleTouchMove: function( event ) {
 		if ( event.touches ) {
+			this.setState( {
+				'touchChapter': true
+			} );
 			this.setChapter( event.touches[0].clientX );
 		}
 	},
-	touchStart: function( event ) {
+	handleTouchEnd: function( event ) {
+		this.setState( {
+			'touchChapter': false
+		} );
+	},
+	/*touchStart: function( event ) {
 		if ( event.touches ) {
 			this.setState( {
 				clientY: event.touches[0].clientY
 			} );
 		}
-	},
+	},*/
 	setChapter: function( clientX ) {
 		var width = this.getDOMNode().offsetWidth - 40,
 			spacing =  width / this.props.chapters,
@@ -51,10 +59,11 @@ var BookControl = React.createClass( {
 		} );
 	},
 	render: function() {
+		var buttonText = this.state.touchChapter ? this.state.chapter : 'Go';
 		return (
-			<div className="book" onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove }>
+			<div className="book" onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove } onTouchEnd={ this.handleTouchEnd }>
 				{ this.props.name } <span onTouchEnd={ this.goToReference } className="chapter-number">{ this.state.chapter }</span>
-				<button onClick={ this.goToReference }>Go</button>
+				<button onClick={ this.goToReference }>{ buttonText }</button>
 			</div>
 		);
 	}

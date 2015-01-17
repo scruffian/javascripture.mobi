@@ -1,21 +1,27 @@
-$tray-height: 40px;
-
 .tray {
+	background: rgba( 255, 255, 255, 0.9 );
 	position: fixed;
 		bottom: 0;
 	width: 100%;
 
 	button {
-		background: #aaa;
-		color: white;
+		background: transparent;
+		color: #000;
 		height: $tray-height;
 		width: 20%;
+		.text {
+			display: none;
+		}
+
+		&.open {
+			background: lightblue;
+		}
 	}
 }
 
 .tray-targets {
 	.tray-target {
-		background: grey;
+		background: rgba( 255, 255, 255, 0.9 );
 		overflow: scroll;
 		position: fixed;
 			bottom: $tray-height;

@@ -78,6 +78,7 @@ var Layout = React.createClass( {
 		this.setState( { reference: reference }, function() {
 			var url = reference.toUrl();
 			page( url );
+			window.scrollTo( 0, 0 );
 		} );
 	},
 

@@ -9,9 +9,15 @@ var TrayButton = React.createClass( {
 	handleClick: function() {
 		this.props.onChangeDisplayState( this.props.target );
 	},
+
 	render: function() {
+		console.log( this.props.open );
+		var className = this.props.open ? 'open' : '';
 		return (
-			<button onClick={ this.handleClick }>{ this.props.text }</button>
+			<button onClick={ this.handleClick } className={ className }>
+				<span className="text">{ this.props.text }</span>
+				<span className="icon"><img src={ this.props.icon } /></span>
+			</button>
 		);
 	}
 } );
@@ -56,11 +62,11 @@ module.exports = React.createClass( {
 			<div>
 				<TrayTargets displayState={ this.props.displayState } onGoToReference={ this.props.onGoToReference } onChangeDisplayState={ this.props.onChangeDisplayState } />
 				<div className="tray">
-					<TrayButton text="Go to" target="goto" onChangeDisplayState={ this.props.onChangeDisplayState } />
-					<TrayButton text="Details" target="details" onChangeDisplayState={ this.props.onChangeDisplayState } />
-					<TrayButton text="Search" target="search" onChangeDisplayState={ this.props.onChangeDisplayState } />
-					<TrayButton text="Bookmarks" target="bookmarks" onChangeDisplayState={ this.props.onChangeDisplayState } />
-					<TrayButton text="Settings" target="settings" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton icon="/assets/icons/book2.svg" open={ this.props.displayState.goto } text="Go to" target="goto" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton icon="/assets/icons/eye.svg" open={ this.props.displayState.details }text="Details" target="details" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton icon="/assets/icons/search.svg" open={ this.props.displayState.search } text="Search" target="search" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton icon="/assets/icons/bookmark.svg" open={ this.props.displayState.bookmarks } text="Bookmarks" target="bookmarks" onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<TrayButton icon="/assets/icons/cog.svg" open={ this.props.displayState.settings } text="Settings" target="settings" onChangeDisplayState={ this.props.onChangeDisplayState } />
 				</div>
 			</div>
 		);

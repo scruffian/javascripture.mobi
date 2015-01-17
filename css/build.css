@@ -7,6 +7,10 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial;
   font-weight: 100; }
 
+button {
+  font-size: 100%;
+  font-weight: 100; }
+
 h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
   text-align: center; }
@@ -19,28 +23,37 @@ h1, h2, h3, h4, h5, h6 {
 .reference {
   margin: 0 auto;
   max-width: 500px;
-  padding: 0 2em; }
+  padding: 0 2em 40px; }
   .reference .word {
     cursor: pointer; }
 
 .reference-selector .book {
-  position: relative; }
+  line-height: 1.5em;
+  position: relative;
+  text-indent: 1.5em; }
   .reference-selector .book button {
+    background: #fff;
+    border-radius: 1em;
     position: absolute;
     right: 0; }
 
 .tray {
+  background: rgba(255, 255, 255, 0.9);
   position: fixed;
   bottom: 0;
   width: 100%; }
   .tray button {
-    background: #aaa;
-    color: white;
+    background: transparent;
+    color: #000;
     height: 40px;
     width: 20%; }
+    .tray button .text {
+      display: none; }
+    .tray button.open {
+      background: lightblue; }
 
 .tray-targets .tray-target {
-  background: grey;
+  background: rgba(255, 255, 255, 0.9);
   overflow: scroll;
   position: fixed;
   bottom: 40px;
