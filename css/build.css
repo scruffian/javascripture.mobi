@@ -92,7 +92,9 @@ h1, h2, h3, h4, h5, h6 {
   .tray-targets .tray-target.right.open {
     right: 0; }
 
-.word-details .search-results {
+.word-details .word-data {
   display: none; }
+  .word-details .word-data.open {
+    display: block; }
 
 /*# sourceMappingURL=build.css.map */

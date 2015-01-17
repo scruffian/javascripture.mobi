@@ -3,25 +3,14 @@ var React = require( 'react' );
 
 // Internal
 var wordTracking = require( './wordTracking.js' )(),
-	referenceAPI = require( './referenceAPI.js' );
+	referenceAPI = require( './referenceAPI.js' ),
+	strongsColor = require( './strongsColor.js' );
 
 
 var Word = React.createClass( {
 	showWordDetails: function() {
 		this.props.onChangeDisplayState( 'details', true );
 		wordTracking.add( this.props.lemma );
-	},
-
-	getStrongsColor: function () {
-		var strongsInt = parseInt( this.props.lemma.substring( 1, this.props.lemma.length ) );
-		if ( isNaN ( strongsInt ) ) {
-			strongsInt = 0;
-		}
-		var theSizeOfAColorSegment = 360 / 8000,
-			hue = strongsInt * theSizeOfAColorSegment,
-			staturation = '50%',
-			lightness = '50%';
-		return 'hsl( ' + hue + ',' + staturation + ', ' + lightness + ' )';
 	},
 
 	isTracked: function() {
@@ -38,7 +27,7 @@ var Word = React.createClass( {
 		if ( this.isTracked() ) {
 			wordStyle = {
 	  			color: 'white',
-	  			backgroundColor: this.getStrongsColor()
+	  			backgroundColor: strongsColor.get( this.props.lemma )
 			};
 		}
 
