@@ -24,7 +24,9 @@ page( '/:book', home );
 page( '/:book/:chapter', home );
 page( '/:book/:chapter/:verse', home );
 
-start = function() {
+var startButton = document.getElementById( 'start' );
+startButton.innerHTML = 'Start';
+startButton.onclick = function() {
 	page.start( { hashbang: true } );
 };
 

@@ -12,6 +12,6 @@ module.exports = function ( self ) {
 			result = {};
 
 		result[ lemma ] = wordSearchApi.getReferences( parameters );
-    	self.postMessage( result );
+    	//self.postMessage( result );
     });
 };

@@ -11,10 +11,39 @@ var Word = React.createClass( {
 		this.props.onChangeDisplayState( 'details', true );
 		wordTracking.add( this.props.lemma );
 	},
+
+	getStrongsColor: function () {
+		var strongsInt = parseInt( this.props.lemma.substring( 1, this.props.lemma.length ) );
+		if ( isNaN ( strongsInt ) ) {
+			strongsInt = 0;
+		}
+		var theSizeOfAColorSegment = 360 / 8000,
+			hue = strongsInt * theSizeOfAColorSegment,
+			staturation = '50%',
+			lightness = '50%';
+		return 'hsl( ' + hue + ',' + staturation + ', ' + lightness + ' )';
+	},
+
+	isTracked: function() {
+		return wordTracking.trackedWords.some( function( wordObject ) {
+			return 'undefined' !== typeof wordObject[ this.props.lemma ];
+		}, this );
+	},
+
 	render: function() {
-		var className = 'word ' + this.props.lemma;
+
+		var className = 'word ' + this.props.lemma,
+			wordStyle = {};
+
+		if ( this.isTracked() ) {
+			wordStyle = {
+	  			color: 'white',
+	  			backgroundColor: this.getStrongsColor()
+			};
+		}
+
 		return (
-			<span><span className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word }</span> </span> // Leave that space
+			<span><span style={ wordStyle } className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word }</span> </span> // Leave that space
 		);
 	}
 } );

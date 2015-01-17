@@ -11,7 +11,6 @@ var TrayButton = React.createClass( {
 	},
 
 	render: function() {
-		console.log( this.props.open );
 		var className = this.props.open ? 'open' : '';
 		return (
 			<button onClick={ this.handleClick } className={ className }>

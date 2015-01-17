@@ -2,7 +2,11 @@
 	margin: 0 auto;
 	max-width: 500px;
 	padding: 0 2em $tray-height;
+	text-align: left;
 	.word {
 		cursor: pointer;
+		margin: 0 -2px;
+		padding: 0 2px;
+		white-space: nowrap;
 	}
 }
