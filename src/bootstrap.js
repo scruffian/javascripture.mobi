@@ -24,11 +24,13 @@ page( '/:book', home );
 page( '/:book/:chapter', home );
 page( '/:book/:chapter/:verse', home );
 
-var startButton = document.getElementById( 'start' );
-startButton.innerHTML = 'Start';
-startButton.onclick = function() {
+var start = function() {
 	page.start( { hashbang: true } );
 };
+
+var startButton = document.getElementById( 'start' );
+startButton.innerHTML = 'Start';
+startButton.onclick = start();
 
 if ( window.location.hash || localStorage.reference ) {
 	start();

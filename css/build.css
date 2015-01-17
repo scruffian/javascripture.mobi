@@ -37,14 +37,22 @@ h1, h2, h3, h4, h5, h6 {
       border: 1px solid rgba(0, 0, 0, 0.5); }
 
 .reference-selector .book {
-  line-height: 1.5em;
+  line-height: 2em;
   position: relative;
   text-indent: 0.5em; }
   .reference-selector .book button {
-    background: #fff;
-    border-radius: 1em;
+    display: none;
     position: absolute;
-    right: 0; }
+    right: 0;
+    top: 0;
+    bottom: 0; }
+  .reference-selector .book.active {
+    background: lightblue; }
+    .reference-selector .book.active button {
+      background: #86c5da;
+      color: #fff; }
+  .reference-selector .book.touched button {
+    display: block; }
 
 .tray {
   background: rgba(255, 255, 255, 0.9);

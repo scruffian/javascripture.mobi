@@ -1,13 +1,26 @@
 .reference-selector {
 	.book {
-		line-height: 1.5em;
+		line-height: 2em;
 		position: relative;
 		text-indent: 0.5em;
 		button {
-			background: #fff;
-			border-radius: 1em;
+			display: none;
 			position: absolute;
-			right: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+		}
+		&.active {
+			background: lightblue;
+			button {
+				background: darken( $highlight-color, 10% );
+				color: #fff;
+			}
+		}
+		&.touched {
+			button {
+				display: block;
+			}
 		}
 	}
 }
