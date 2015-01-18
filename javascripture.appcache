@@ -1,10 +1,16 @@
 CACHE MANIFEST
 
-#version: 0.1.1421539184
+#version: 0.1.1421539185
 
 index.html
 css/build.css
 build/build.js
+assets/javascripture.svg
+assets/icons/book2.svg
+assets/icons/eye.svg
+assets/icons/search.svg
+assets/icons/bookmark.svg
+assets/icons/cog.svg
 
 # network
 NETWORK:
