@@ -1,0 +1,11 @@
+.word-details {
+	header {
+		font-size: 2em;
+	}
+	.word-data {
+		display: none;
+		&.open {
+			display: block;
+		}
+	}
+}
