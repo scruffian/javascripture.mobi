@@ -9,8 +9,7 @@ var strongsDictionary = require( '../data/strongs-dictionary.js' ),
 
 var WordDetail = React.createClass( {
 	open: function() {
-		console.log( this.props.lemma );
-		this.props.onSetOpenLemma( this.props.lemma );
+		this.props.onSetOpenLemma( this.props.lemma, this.props.open );
 	},
 
 	render: function() {
@@ -25,8 +24,9 @@ var WordDetail = React.createClass( {
 		if ( strongsData ) { // Only show words we have data for?
 			return (
 				<div className="word-detail">
-					<div onClick={ this.open } style={ wordStyle }>{ lemma } | { strongsDictionary[ lemma ].lemma } | { strongsDictionary[ lemma ].xlit } | { strongsDictionary[ lemma ].pron }</div>
+					<header onClick={ this.open } style={ wordStyle }>{ lemma } { strongsDictionary[ lemma ].lemma }</header>
 					<div className={ className }>
+						<div>{ lemma } | { strongsDictionary[ lemma ].lemma } | { strongsDictionary[ lemma ].xlit } | { strongsDictionary[ lemma ].pron }</div>
 						<div>Derivation: { strongsDictionary[ lemma ].derivation }</div>
 						<div>Strongs Definition: { strongsDictionary[ lemma ].strongs_def }</div>
 						<div>KJV Usage: { strongsDictionary[ lemma ].kjv_def }</div>
@@ -53,7 +53,7 @@ var WordDetails = React.createClass( {
 		wordTracking.on( 'change', function() {
 			var lastWordObject = this.trackedWords[ this.trackedWords.length - 1 ],
 				lastWord = Object.keys( lastWordObject )[0];
-				console.log( lastWordObject );
+
 			self.setState( {
 				words: this.trackedWords,
 				open: lastWord
@@ -61,9 +61,13 @@ var WordDetails = React.createClass( {
 		} );
 	},
 
-	setOpenLemma: function( lemma ) {
+	setOpenLemma: function( lemma, open ) {
+		var openLemma = '';
+		if ( ! open ) {
+			openLemma = lemma;
+		}
 		this.setState( {
-			open: lemma
+			open: openLemma
 		} );
 	},
 
