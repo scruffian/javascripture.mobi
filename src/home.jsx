@@ -27,13 +27,14 @@ var Home = React.createClass( {
 
 	handleChange: function( event ) {
 		this.setState( {
-			'reference': bible.parseReference( event.target.value )
+			'reference': event.target.value
 		} );
 	},
 
 	goToReference: function( event ){
 		event.preventDefault();
-		this.props.onGoToReference( this.state.reference );
+		var reference = bible.parseReference( this.state.reference );
+		this.props.onGoToReference( reference );
 	},
 
 	render: function() {
