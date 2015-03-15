@@ -34,6 +34,13 @@ WordTracking.prototype.add = function( lemma ) {
 	this.search( lemma );
 };
 
+WordTracking.prototype.remove = function( lemma ) {
+	this.trackedWords = this.trackedWords.filter( function( lemmaObject ) {
+		return Object.keys( lemmaObject )[0] !== lemma;
+	} );
+	this.emit( 'change' );
+};
+
 WordTracking.prototype.search = function( lemma ) {
 	wordSearchWorker.postMessage( lemma ); // send the worker a message
 };

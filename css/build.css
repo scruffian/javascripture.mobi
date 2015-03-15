@@ -93,7 +93,13 @@ h1, h2, h3, h4, h5, h6 {
     right: 0; }
 
 .word-details header {
-  font-size: 2em; }
+  font-size: 2em;
+  position: relative; }
+  .word-details header .remove {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0; }
 .word-details .word-data {
   display: none; }
   .word-details .word-data.open {
