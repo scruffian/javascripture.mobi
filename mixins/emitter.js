@@ -1,5 +1,5 @@
 var EventEmitter = require( 'events' ).EventEmitter,
-	assign = require( 'lodash-node/modern/objects/assign' );
+	assign = require( 'lodash-node/modern/object/assign' );
 
 module.exports = function( prototype ) {
 	assign( prototype, EventEmitter.prototype );

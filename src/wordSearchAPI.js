@@ -1,14 +1,4 @@
-var kjv = require( '../data/kjv.js' );
-//var hebrew = require( '../data/hebrew.js' );
-//var greek = require( '../data/greek.js' );
-
 module.exports = {
-	language: { //helper object to access different languages
-		kjv: kjv/*,
-		web: javascripture.data.web,
-		greek: greek,
-		hebrew: hebrew*/
-	},
 	books: {
 		kjv: ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalm','Proverbs','Ecclesiastes','Song of Songs','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'],
 		web: ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalm','Proverbs','Ecclesiastes','Song of Songs','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'],
@@ -24,7 +14,10 @@ module.exports = {
 		references: [], //used to create an array of references
 		matches: {} //used to keep track of which word has been matched when searching - for when you need to match more than one word
 	},
-	getReferences: function (parameters) {
+	setLanguages: function( data ) {
+		this.language = data;
+	},
+	getReferences: function ( parameters ) {
 		var self = this;
 		self.parameters = parameters;
 		this.lookForTerm();
@@ -91,7 +84,7 @@ module.exports = {
 			parameters.language = self.inferLanguage( parameters );
 		}
 
-		var dataSource = this.language[parameters.language]; //work out what language to search in
+		var dataSource = this.language[ parameters.language ]; //work out what language to search in
 		self.results.references = [];
 		self.resetMatches();
 

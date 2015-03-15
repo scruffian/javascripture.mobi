@@ -6,7 +6,7 @@ var React = require( 'react' ),
 var bible = require( './bible.js' ),
 	reference = require( './reference.js' ),
 	Reference = require( './reference.jsx' ),
-	Tray = require( './tray.jsx' ),
+	Tray = require( './tray.jsx' );
 	wordTracking = require( './wordTracking.js' )();
 
 var Home = React.createClass( {

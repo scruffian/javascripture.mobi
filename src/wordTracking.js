@@ -1,9 +1,10 @@
 // External
 var Emitter = require( '../mixins/emitter.js' ),
-	webworkify = require('webworkify');
+	webworkify = require( 'webworkify' );
 
 // Internal
-var wordSearchWorker = webworkify( require('./wordSearchWorker.js') );
+console.log( 'ere' );
+var wordSearchWorker = webworkify( require( './wordSearchWorker.js' ) );
 
 // Singleton
 var _wordTracking;
@@ -34,11 +35,20 @@ WordTracking.prototype.add = function( lemma ) {
 	this.search( lemma );
 };
 
+WordTracking.prototype.remove = function( lemma ) {
+	this.trackedWords = this.trackedWords.filter( function( lemmaObject ) {
+		return Object.keys( lemmaObject )[0] !== lemma;
+	} );
+	this.emit( 'change' );
+};
+
 WordTracking.prototype.search = function( lemma ) {
 	wordSearchWorker.postMessage( lemma ); // send the worker a message
 };
 
 WordTracking.prototype.callback = function( results ) {
+	console.log( 'results' );
+	console.log( results );
 	var lemma = Object.keys( results )[0];
 	var newTrackedWords = this.trackedWords.map( function ( lemmaObject ) {
 		var thisLemma = Object.keys( lemmaObject )[0];

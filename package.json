@@ -11,13 +11,13 @@
   "devDependencies": {
     "browserify": "latest",
     "watchify": "latest",
-    "reactify": "latest",
+    "reactify": "0.17.0",
     "uglify-js": "latest",
     "webworkify": "latest",
     "node-sass": "latest"
   },
   "scripts": {
     "build-js": "browserify -t reactify src/bootstrap.js | uglifyjs > build/build.js && bash update-version-number.sh",
-    "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv & sass --watch css/layout.scss:css/build.css"
+    "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv & node_modules/.bin/node-sass --watch css/layout.scss css/build.css"
   }
 }

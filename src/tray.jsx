@@ -2,7 +2,7 @@
 var React = require( 'react/addons' );
 
 // Internal
-var ReferenceSelector = require( './referenceSelector.jsx' ),
+var ReferenceSelector = require( './referenceSelector.jsx' );
 	WordDetails = require( './wordDetails.jsx' );
 
 var TrayButton = React.createClass( {

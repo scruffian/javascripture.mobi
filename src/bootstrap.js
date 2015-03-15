@@ -6,16 +6,16 @@ var React = require( 'react' ),
 //React.initializeTouchEvents( true );
 
 // Internal
-var home = require( './home.jsx' ),
+var home = require( './home.jsx' );
 	reference = require( './reference.js' );
 
-	var boot = function( context, next ) {
-		if ( localStorage.reference ) {
-			page( localStorage.reference );
-		} else {
-			page( '/Genesis/1' );
-		}
-	};
+var boot = function( context, next ) {
+	if ( localStorage.reference ) {
+		page( localStorage.reference );
+	} else {
+		page( '/Genesis/1' );
+	}
+};
 
 
 // Routing

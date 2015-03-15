@@ -1,4 +1,5 @@
-var kjv = require( '../data/kjv.js' );
+/* global kjv*/
+var kjvData = window.kjv;
 
 module.exports = {
 	get: function( reference ) {
@@ -14,8 +15,8 @@ module.exports = {
 			};
 
 		return {
-			'primary': this.getChapterData( primaryReference, kjv ),
-			'secondary': this.getChapterData( secondaryReference, kjv )
+			'primary': this.getChapterData( primaryReference, kjvData ),
+			'secondary': this.getChapterData( secondaryReference, kjvData )
 		};
 	},
 	getChapterData: function( reference, version ) {

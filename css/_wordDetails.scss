@@ -1,6 +1,13 @@
 .word-details {
 	header {
 		font-size: 2em;
+		position: relative;
+		.remove {
+			color: #fff;
+			position: absolute;
+				top: 0;
+				right: 0;
+		}
 	}
 	.word-data {
 		display: none;

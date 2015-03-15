@@ -6,8 +6,8 @@ var wordTracking = require( './wordTracking.js' )(),
 	referenceAPI = require( './referenceAPI.js' ),
 	strongsColor = require( './strongsColor.js' );
 
-
 var Word = React.createClass( {
+
 	showWordDetails: function() {
 		this.props.onChangeDisplayState( 'details', true );
 		wordTracking.add( this.props.lemma );
@@ -51,6 +51,13 @@ var Verse = React.createClass( {
 } );
 
 var Reference = React.createClass( {
+	componentWillMount: function() {
+		var self = this;
+		wordTracking.on( 'change', function() {
+			self.forceUpdate();
+		} );
+	},
+
 	getChapter: function( object ) {
 		if ( object && object.data ) {
 			var verses = object.data.map( function( verse, index ) {
@@ -73,12 +80,15 @@ var Reference = React.createClass( {
 		var data = referenceAPI.get( this.props.reference );
 		return (
 			<div id="reference" className="reference">
-				{ this.getChapter( data.primary ) }
-				{ this.getChapter( data.secondary ) }
+				<div className="primary">
+					{ this.getChapter( data.primary ) }
+				</div>
+				<div className="secondary4">
+					{ this.getChapter( data.secondary ) }
+				</div>
 			</div>
 		);
 	}
 } );
-
 
 module.exports = Reference;
