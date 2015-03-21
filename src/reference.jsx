@@ -3,7 +3,7 @@ var React = require( 'react' );
 
 // Internal
 var wordTracking = require( './wordTracking.js' )(),
-	reference = require( './reference.js' )(),
+	api = require( './api.js' )(),
 	strongsColor = require( './strongsColor.js' );
 
 var Word = React.createClass( {
@@ -62,7 +62,7 @@ var ReferenceComponent = React.createClass( {
 	componentWillMount: function() {
 		var self = this;
 		console.log('componentWillMount');
-		reference.on( 'change', function() {
+		api.on( 'change', function() {
 			console.log('state change');
 			self.setState( {
 				reference: this.reference

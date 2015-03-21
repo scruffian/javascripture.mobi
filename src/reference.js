@@ -1,5 +1,6 @@
 // External
 var Emitter = require('../mixins/emitter.js');
+var api = require('./api');
 var webworkify = require('webworkify');
 
 // Internal
@@ -27,7 +28,6 @@ var Reference = function() {
 Emitter(Reference.prototype);
 
 Reference.prototype.get = function(reference) {
-    console.log(reference);
     worker.postMessage({
         task: 'reference',
         parameters: {

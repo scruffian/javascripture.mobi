@@ -4,7 +4,7 @@ var React = require( 'react' ),
 
 // Internal
 var bible = require( './bible.js' ),
-	reference = require( './reference.js' )(),
+	api = require('./api')();
 	Reference = require( './reference.jsx' ),
 	Tray = require( './tray.jsx' ),
 	wordTracking = require( './wordTracking.js' )();
@@ -80,7 +80,7 @@ var Layout = React.createClass( {
 		this.setState( { reference: referenceObject }, function() {
 			var url = referenceObject.toUrl();
 			page( url );
-			reference.get( referenceObject.toObject() );
+			api.getReference( referenceObject.toObject() );
 			window.scrollTo( 0, 0 );
 		} );
 	},
