@@ -1,21 +1,20 @@
 // External
 var React = require( 'react' ),
-    page = require( 'page' );
+	page = require( 'page' );
 
 // Enable touch events
 //React.initializeTouchEvents( true );
 
 // Internal
-var home = require( './home.jsx' ),
-	reference = require( './reference.js' );
+var home = require( './home.jsx' );
 
-	var boot = function( context, next ) {
-		if ( localStorage.reference ) {
-			page( localStorage.reference );
-		} else {
-			page( '/Genesis/1' );
-		}
-	};
+var boot = function( context, next ) {
+	if ( localStorage.reference ) {
+		page( localStorage.reference );
+	} else {
+		page( '/Genesis/1' );
+	}
+};
 
 
 // Routing
@@ -25,7 +24,9 @@ page( '/:book/:chapter', home );
 page( '/:book/:chapter/:verse', home );
 
 var start = function() {
-	page.start( { hashbang: true } );
+	page.start( {
+		hashbang: true
+	} );
 };
 
 var startButton = document.getElementById( 'start' );
@@ -37,11 +38,11 @@ if ( window.location.hash || localStorage.reference ) {
 }
 
 // Reload if appcache updates
-window.applicationCache.addEventListener('updateready', function( event ) {
+window.applicationCache.addEventListener( 'updateready', function( event ) {
 	if ( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
 		// Browser downloaded a new app cache.
 		if ( confirm( 'A new version is available. Load it?' ) ) {
 			window.location.reload();
 		}
 	}
-}, false);
+}, false );

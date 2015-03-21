@@ -1,6 +1,7 @@
 // External
 var React = require( 'react/addons' ),
-	page = require( 'page' );
+
+page = require( 'page' );
 
 // Internal
 var bible = require( './bible.js' );
@@ -28,7 +29,7 @@ var BookControl = React.createClass( {
 			this.setState( {
 				'touchChapter': true
 			} );
-			this.setChapter( event.touches[0].clientX );
+			this.setChapter( event.touches[ 0 ].clientX );
 		}
 	},
 	handleTouchStart: function() {
@@ -44,7 +45,7 @@ var BookControl = React.createClass( {
 	},
 	setChapter: function( clientX ) {
 		var width = this.getDOMNode().offsetWidth - 40,
-			spacing =  width / this.props.chapters,
+			spacing = width / this.props.chapters,
 			chapter = Math.ceil( clientX / spacing );
 
 		if ( chapter < 1 ) {
@@ -62,10 +63,10 @@ var BookControl = React.createClass( {
 	render: function() {
 		var buttonText = this.state.touchChapter ? this.state.chapter : 'Go',
 			classes = React.addons.classSet( {
-    			'book': true,
-    			'active': this.props.active,
-    			'touched': this.state.touched
-  		} );
+				'book': true,
+				'active': this.props.active,
+				'touched': this.state.touched
+			} );
 
 		return (
 			<div className={ classes } onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove } onTouchEnd={ this.handleTouchEnd }>

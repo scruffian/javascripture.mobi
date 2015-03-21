@@ -18,13 +18,13 @@ var WordDetail = React.createClass( {
 	},
 
 	render: function() {
-		var lemma = this.props.lemma;
-			className = this.props.open ? 'open word-data' : 'word-data';
-			strongsData = strongsDictionary[ lemma ];
+		var lemma = this.props.lemma,
+			className = this.props.open ? 'open word-data' : 'word-data',
+			strongsData = strongsDictionary[ lemma ],
 			wordStyle = {
-  				color: 'white',
-  				backgroundColor: strongsColor.get( lemma )
-		};
+				color: 'white',
+				backgroundColor: strongsColor.get( lemma )
+			};
 
 		if ( strongsData ) { // Only show words we have data for?
 			return (
@@ -63,7 +63,7 @@ var WordDetails = React.createClass( {
 				lastWord;
 
 			if ( lastWordObject ) {
-				lastWord = Object.keys( lastWordObject )[0];
+				lastWord = Object.keys( lastWordObject )[ 0 ];
 			}
 
 			self.setState( {
@@ -85,7 +85,7 @@ var WordDetails = React.createClass( {
 
 	render: function() {
 		var words = this.state.words.map( function( lemmaObject ) {
-			var lemma = Object.keys( lemmaObject )[0],
+			var lemma = Object.keys( lemmaObject )[ 0 ],
 				open = ( this.state.open === lemma );
 
 			return (

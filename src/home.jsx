@@ -4,7 +4,7 @@ var React = require( 'react' ),
 
 // Internal
 var bible = require( './bible.js' ),
-	api = require('./api.js')();
+	api = require( './api.js' )(),
 	Reference = require( './reference.jsx' ),
 	Tray = require( './tray.jsx' ),
 	wordTracking = require( './wordTracking.js' )();
@@ -31,7 +31,7 @@ var Home = React.createClass( {
 		} );
 	},
 
-	goToReference: function( event ){
+	goToReference: function( event ) {
 		event.preventDefault();
 		var reference = bible.parseReference( this.state.reference );
 		this.props.onGoToReference( reference );
@@ -75,9 +75,11 @@ var Layout = React.createClass( {
 		this.setState( state );
 	},
 
-	goToReference: function( referenceObject ){
+	goToReference: function( referenceObject ) {
 		console.log( referenceObject.toUrl() );
-		this.setState( { reference: referenceObject }, function() {
+		this.setState( {
+			reference: referenceObject
+		}, function() {
 			var url = referenceObject.toUrl();
 			page( url );
 			api.getReference( referenceObject.toObject() );
@@ -96,7 +98,7 @@ var Layout = React.createClass( {
 	}
 } );
 
-module.exports = function ( context, next ) {
+module.exports = function( context, next ) {
 	var reference = {},
 		referenceString = '/';
 	reference.book = context.params.book;
@@ -115,6 +117,6 @@ module.exports = function ( context, next ) {
 
 	React.render(
 		<Layout reference={ reference } />,
-		document.getElementById('javascripture')
+		document.getElementById( 'javascripture' )
 	);
 };

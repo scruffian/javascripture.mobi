@@ -25,8 +25,8 @@ var Word = React.createClass( {
 
 		if ( this.isTracked() ) {
 			wordStyle = {
-	  			color: 'white',
-	  			backgroundColor: strongsColor.get( this.props.lemma )
+				color: 'white',
+				backgroundColor: strongsColor.get( this.props.lemma )
 			};
 		}
 
@@ -50,20 +50,20 @@ var Verse = React.createClass( {
 } );
 
 var ReferenceComponent = React.createClass( {
-	getInitialState: function () {
-	    return {
-	        reference: {
-	        	primary: [],
-	        	secondary: []
-	        }
-	    };
+	getInitialState: function() {
+		return {
+			reference: {
+				primary: [],
+				secondary: []
+			}
+		};
 	},
 
 	componentWillMount: function() {
 		var self = this;
-		console.log('componentWillMount');
+		console.log( 'componentWillMount' );
 		api.on( 'change', function() {
-			console.log('state change');
+			console.log( 'state change' );
 			self.setState( {
 				reference: this.reference
 			} );
@@ -91,7 +91,7 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	render: function() {
-		console.log( 'hhh');
+		console.log( 'hhh' );
 		return (
 			<div id="reference" className="reference">
 				{ this.getChapter( this.state.reference.primary ) }

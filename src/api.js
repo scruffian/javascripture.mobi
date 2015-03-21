@@ -1,15 +1,15 @@
 // External
-var Emitter = require('../mixins/emitter.js');
-var webworkify = require('webworkify');
+var Emitter = require( '../mixins/emitter.js' );
+var webworkify = require( 'webworkify' );
 
 // Internal
-var worker = webworkify(require('./worker.js'));
+var worker = webworkify( require( './worker.js' ) );
 
 // Singleton
 var _api;
 
 var api = function() {
-    if (!_api) {
+    if ( ! _api ) {
         _api = new Api();
     }
 
@@ -17,7 +17,7 @@ var api = function() {
 };
 
 var Api = function() {
-    if (!(this instanceof Api)) {
+    if ( ! ( this instanceof Api ) ) {
         return new Api();
     }
 
@@ -25,43 +25,43 @@ var Api = function() {
     this.searchResults = null;
 };
 
-Emitter(Api.prototype);
+Emitter( Api.prototype );
 
-Api.prototype.getReference = function(reference) {
-    worker.postMessage({
+Api.prototype.getReference = function( reference ) {
+    worker.postMessage( {
         task: 'reference',
         parameters: {
             reference: reference,
             language: 'kjv',
             clusivity: 'exclusive'
         }
-    }); // send the worker a message
+    } ); // send the worker a message
 };
 
-Api.prototype.callback = function(event) {
-    if (event.data.task === 'reference') {
+Api.prototype.callback = function( event ) {
+    if ( event.data.task === 'reference' ) {
         this.reference = event.data.result;
     }
-    if (event.data.task === 'search') {
+    if ( event.data.task === 'search' ) {
         this.searchResults = event;
     }
-    this.emit('change');
+    this.emit( 'change' );
 };
 
 
-Api.prototype.search = function(lemma) {
-    worker.postMessage({
+Api.prototype.search = function( lemma ) {
+    worker.postMessage( {
         task: 'search',
         parameters: {
             lemma: lemma,
             language: 'kjv',
             clusivity: 'exclusive'
         }
-    }); // send the worker a message
+    } ); // send the worker a message
 };
 
-worker.addEventListener('message', function(event) {
-    api().callback(event);
-});
+worker.addEventListener( 'message', function( event ) {
+    api().callback( event );
+} );
 
 module.exports = api;

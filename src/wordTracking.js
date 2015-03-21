@@ -1,12 +1,12 @@
 // External
-var Emitter = require('../mixins/emitter.js');
-var api = require('./api.js')();
+var Emitter = require( '../mixins/emitter.js' );
+var api = require( './api.js' )();
 
 // Singleton
 var _wordTracking;
 
 var wordTracking = function() {
-    if (!_wordTracking) {
+    if ( ! _wordTracking ) {
         _wordTracking = new WordTracking();
     }
 
@@ -14,50 +14,50 @@ var wordTracking = function() {
 };
 
 var WordTracking = function() {
-    if (!(this instanceof WordTracking)) {
+    if ( ! ( this instanceof WordTracking ) ) {
         return new WordTracking();
     }
 
     var self = this;
-    api.on('change', function() {
-        if (this.searchResults) {
-            self.callback(this.searchResults);
+    api.on( 'change', function() {
+        if ( this.searchResults ) {
+            self.callback( this.searchResults );
         }
-    });
+    } );
 
     this.trackedWords = [];
 };
 
-Emitter(WordTracking.prototype);
+Emitter( WordTracking.prototype );
 
-WordTracking.prototype.add = function(lemma) {
+WordTracking.prototype.add = function( lemma ) {
     var lemmaObject = {};
-    lemmaObject[lemma] = [];
-    this.trackedWords.push(lemmaObject);
-    this.emit('change');
-    api.search(lemma);
+    lemmaObject[ lemma ] = [];
+    this.trackedWords.push( lemmaObject );
+    this.emit( 'change' );
+    api.search( lemma );
 };
 
-WordTracking.prototype.remove = function(lemma) {
-    this.trackedWords = this.trackedWords.filter(function(lemmaObject) {
-        return Object.keys(lemmaObject)[0] !== lemma;
-    });
-    this.emit('change');
+WordTracking.prototype.remove = function( lemma ) {
+    this.trackedWords = this.trackedWords.filter( function( lemmaObject ) {
+        return Object.keys( lemmaObject )[ 0 ] !== lemma;
+    } );
+    this.emit( 'change' );
 };
 
-WordTracking.prototype.callback = function(event) {
+WordTracking.prototype.callback = function( event ) {
     var lemma = event.data.parameters.lemma;
-    var newTrackedWords = this.trackedWords.map(function(lemmaObject) {
-        var thisLemma = Object.keys(lemmaObject)[0];
-        if (thisLemma === lemma) {
+    var newTrackedWords = this.trackedWords.map( function( lemmaObject ) {
+        var thisLemma = Object.keys( lemmaObject )[ 0 ];
+        if ( thisLemma === lemma ) {
             var resultObject = {};
-            resultObject[lemma] = event.data.result;
+            resultObject[ lemma ] = event.data.result;
             return resultObject;
         }
         return lemmaObject;
-    });
+    } );
     this.trackedWords = newTrackedWords;
-    this.emit('change');
+    this.emit( 'change' );
 };
 
 module.exports = wordTracking;
