@@ -61,9 +61,7 @@ var ReferenceComponent = React.createClass( {
 
 	componentWillMount: function() {
 		var self = this;
-		console.log( 'componentWillMount' );
 		api.on( 'change', function() {
-			console.log( 'state change' );
 			self.setState( {
 				reference: this.reference
 			} );
@@ -72,7 +70,6 @@ var ReferenceComponent = React.createClass( {
 
 	getChapter: function( object ) {
 		if ( object && object.data ) {
-			console.log( object.data );
 			var verses = object.data.map( function( verse, index ) {
 				return (
 					<li key={ index }>
@@ -91,7 +88,6 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	render: function() {
-		console.log( 'hhh' );
 		return (
 			<div id="reference" className="reference">
 				{ this.getChapter( this.state.reference.primary ) }

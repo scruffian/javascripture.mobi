@@ -2,7 +2,6 @@ var kjv = require( '../data/kjv.js' );
 
 module.exports = {
 	get: function( reference ) {
-		console.log( reference );
 		primaryReference = {
 			book: reference.book,
 			chapter: parseInt( reference.chapter ),

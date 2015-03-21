@@ -76,13 +76,12 @@ var Layout = React.createClass( {
 	},
 
 	goToReference: function( referenceObject ) {
-		console.log( referenceObject.toUrl() );
 		this.setState( {
 			reference: referenceObject
 		}, function() {
 			var url = referenceObject.toUrl();
 			page( url );
-			api.getReference( referenceObject.toObject() );
+			//api.getReference( referenceObject.toObject() );
 			window.scrollTo( 0, 0 );
 		} );
 	},
@@ -98,7 +97,7 @@ var Layout = React.createClass( {
 	}
 } );
 
-module.exports = function( context, next ) {
+module.exports = function( context ) {
 	var reference = {},
 		referenceString = '/';
 	reference.book = context.params.book;
@@ -114,6 +113,8 @@ module.exports = function( context, next ) {
 	}
 	localStorage.reference = referenceString;
 
+	// Fire off a request to get the reference data
+	api.getReference( context.params );
 
 	React.render(
 		<Layout reference={ reference } />,

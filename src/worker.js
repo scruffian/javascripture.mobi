@@ -4,7 +4,6 @@ var referenceApi = require( './referenceAPI.js' );
 module.exports = function( self ) {
 	self.addEventListener( 'message', function( e ) {
 		var result;
-		console.log( e.data.task );
 
 		if ( e.data.task === 'search' ) {
 			result = wordSearchApi.getReferences( e.data.parameters );
