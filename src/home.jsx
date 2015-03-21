@@ -4,7 +4,7 @@ var React = require( 'react' ),
 
 // Internal
 var bible = require( './bible.js' ),
-	api = require('./api')();
+	api = require('./api.js')();
 	Reference = require( './reference.jsx' ),
 	Tray = require( './tray.jsx' ),
 	wordTracking = require( './wordTracking.js' )();
@@ -95,34 +95,6 @@ var Layout = React.createClass( {
 		);
 	}
 } );
-
-
-// External
-/*var webworkify = require('webworkify'),
-	page = require( 'page' );
-
-var worker = webworkify( require('./worker.js') );
-
-		worker.addEventListener( 'message', function ( event ) {
-			Reference.setState( event.data, function() { console.log( 'state set' ); } );
-		});
-
-
-workerFunctions = {
-	boot: function( context ) {
-		if ( localStorage.reference ) {
-			page( localStorage.reference );
-		}
-	},
-
-	worker: function( context ) {
-		var reference = {};
-		reference.book = context.params.book;
-		reference.chapter = context.params.chapter;
-		reference.verse = context.params.verse;
-		worker.postMessage( reference ); // send the worker a message
-	}
-};*/
 
 module.exports = function ( context, next ) {
 	var reference = {},

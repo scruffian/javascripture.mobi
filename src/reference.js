@@ -1,5 +1,5 @@
 // External
-var Emitter = require('../mixins/emitter.js');
+/*var Emitter = require('../mixins/emitter.js');
 var api = require('./api');
 var webworkify = require('webworkify');
 
@@ -48,3 +48,4 @@ worker.addEventListener('message', function(event) {
 });
 
 module.exports = reference;
+*/
