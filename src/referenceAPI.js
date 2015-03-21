@@ -1,4 +1,5 @@
-var kjv = require( '../data/kjv.js' );
+var kjv = require( '../data/kjv.js' ),
+	hebrew = require( '../data/hebrew.js' );
 
 module.exports = {
 	get: function( reference ) {
@@ -15,7 +16,7 @@ module.exports = {
 
 		return {
 			'primary': this.getChapterData( primaryReference, kjv ),
-			'secondary': this.getChapterData( secondaryReference, kjv )
+			'secondary': this.getChapterData( secondaryReference, hebrew )
 		};
 	},
 	getChapterData: function( reference, version ) {
