@@ -22,6 +22,7 @@ var Api = function() {
     }
 
     this.reference = [];
+    this.searchResults = null;
 };
 
 Emitter(Api.prototype);
@@ -38,8 +39,25 @@ Api.prototype.getReference = function(reference) {
 };
 
 Api.prototype.callback = function(event) {
-    this.reference = event.data.result;
+    if (event.data.task === 'reference') {
+        this.reference = event.data.result;
+    }
+    if (event.data.task === 'search') {
+        this.searchResults = event;
+    }
     this.emit('change');
+};
+
+
+Api.prototype.search = function(lemma) {
+    worker.postMessage({
+        task: 'search',
+        parameters: {
+            lemma: lemma,
+            language: 'kjv',
+            clusivity: 'exclusive'
+        }
+    }); // send the worker a message
 };
 
 worker.addEventListener('message', function(event) {

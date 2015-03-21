@@ -1,9 +1,6 @@
 // External
 var Emitter = require('../mixins/emitter.js');
-var webworkify = require('webworkify');
-
-// Internal
-var worker = webworkify(require('./worker.js'));
+var api = require('./api.js')();
 
 // Singleton
 var _wordTracking;
@@ -21,6 +18,13 @@ var WordTracking = function() {
         return new WordTracking();
     }
 
+    var self = this;
+    api.on('change', function() {
+        if (this.searchResults) {
+            self.callback(this.searchResults);
+        }
+    });
+
     this.trackedWords = [];
 };
 
@@ -31,7 +35,7 @@ WordTracking.prototype.add = function(lemma) {
     lemmaObject[lemma] = [];
     this.trackedWords.push(lemmaObject);
     this.emit('change');
-    this.search(lemma);
+    api.search(lemma);
 };
 
 WordTracking.prototype.remove = function(lemma) {
@@ -39,17 +43,6 @@ WordTracking.prototype.remove = function(lemma) {
         return Object.keys(lemmaObject)[0] !== lemma;
     });
     this.emit('change');
-};
-
-WordTracking.prototype.search = function(lemma) {
-    worker.postMessage({
-        task: 'search',
-        parameters: {
-            lemma: lemma,
-            language: 'kjv',
-            clusivity: 'exclusive'
-        }
-    }); // send the worker a message
 };
 
 WordTracking.prototype.callback = function(event) {
@@ -66,9 +59,5 @@ WordTracking.prototype.callback = function(event) {
     this.trackedWords = newTrackedWords;
     this.emit('change');
 };
-
-worker.addEventListener('message', function(event) {
-    wordTracking().callback(event);
-});
 
 module.exports = wordTracking;
