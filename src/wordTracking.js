@@ -18,12 +18,11 @@ var WordTracking = function() {
         return new WordTracking();
     }
 
-    var self = this;
     api.on( 'change', function() {
-        if ( this.searchResults ) {
-            self.callback( this.searchResults );
+        if ( api.searchResults ) {
+            this.callback( api.searchResults );
         }
-    } );
+    }.bind( this ) );
 
     this.trackedWords = [];
 };
