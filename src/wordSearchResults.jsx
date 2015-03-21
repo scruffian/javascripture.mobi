@@ -4,9 +4,10 @@ var React = require( 'react' );
 var WordSearchResults = React.createClass( {
 	render: function() {
 		var referenceMarkup = this.props.references.map( function( reference ) {
-			var url = reference.book + '/' + reference.chapter + '/' + reference.verse;
+			var url = reference.book + '/' + reference.chapter + '/' + reference.verse,
+				key = url + '/' + reference.positionInVerse;
 			return (
-				<li key={ url }><a href={ url }>{ reference.book } { reference.chapter } { reference.verse }</a></li>
+				<li key={ key }><a href={ url }>{ reference.book } { reference.chapter } { reference.verse }</a></li>
 			);
 		} );
 

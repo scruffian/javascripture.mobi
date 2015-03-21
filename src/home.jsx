@@ -81,7 +81,6 @@ var Layout = React.createClass( {
 		}, function() {
 			var url = referenceObject.toUrl();
 			page( url );
-			//api.getReference( referenceObject.toObject() );
 			window.scrollTo( 0, 0 );
 		} );
 	},

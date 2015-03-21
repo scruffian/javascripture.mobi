@@ -77,11 +77,12 @@ module.exports = {
 	resetMatches: function() {
 		this.results.matches = {};
 	},
-	addReference: function( bookName, chapterNumber, verseNumber ) {
+	addReference: function( bookName, chapterNumber, verseNumber, positionInVerse ) {
 		this.results.references.push( {
 			book: bookName,
 			chapter: chapterNumber + 1,
-			verse: verseNumber + 1
+			verse: verseNumber + 1,
+			positionInVerse: positionInVerse
 		} );
 	},
 	lookForTerm: function() {
@@ -129,7 +130,7 @@ module.exports = {
 					self.resetMatches();
 				}
 
-				verse.forEach( function( word ) {
+				verse.forEach( function( word, positionInVerse ) {
 					if ( parameters.range === 'word' && parameters.clusivity === 'exclusive' ) { //only need to do this for exclusive searches
 						self.resetMatches();
 					}
@@ -151,7 +152,7 @@ module.exports = {
 											if ( parameters.clusivity === 'exclusive' ) {
 												self.results.matches[ term ] = true;
 											} else {
-												self.addReference( bookName, chapterNumber, verseNumber );
+												self.addReference( bookName, chapterNumber, verseNumber, positionInVerse );
 											}
 										}
 									} );
@@ -169,7 +170,7 @@ module.exports = {
 						matchesLength = Object.keys( self.results.matches ).length;
 
 						if ( matchesLength > 0 && matchesLength >= termsLength ) {
-							self.addReference( bookName, chapterNumber, verseNumber );
+							self.addReference( bookName, chapterNumber, verseNumber, positionInVerse );
 							self.resetMatches(); //not sure if resetting is the right thing to do here - need to work out how to count matches in the same verse mulipule times
 						}
 					}

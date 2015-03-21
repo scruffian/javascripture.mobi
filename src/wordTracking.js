@@ -34,7 +34,9 @@ WordTracking.prototype.add = function( lemma ) {
     var lemmaObject = {};
     lemmaObject[ lemma ] = [];
     this.trackedWords.push( lemmaObject );
+    // update the page
     this.emit( 'change' );
+    // do the search
     api.search( lemma );
 };
 
