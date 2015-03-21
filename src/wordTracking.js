@@ -1,66 +1,74 @@
 // External
-var Emitter = require( '../mixins/emitter.js' ),
-	webworkify = require('webworkify');
+var Emitter = require('../mixins/emitter.js');
+var webworkify = require('webworkify');
 
 // Internal
-var wordSearchWorker = webworkify( require('./wordSearchWorker.js') );
+var worker = webworkify(require('./worker.js'));
 
 // Singleton
 var _wordTracking;
 
 var wordTracking = function() {
-	if ( ! _wordTracking ) {
-		_wordTracking = new WordTracking();
-	}
+    if (!_wordTracking) {
+        _wordTracking = new WordTracking();
+    }
 
-	return _wordTracking;
+    return _wordTracking;
 };
 
 var WordTracking = function() {
-	if ( ! ( this instanceof WordTracking ) ) {
-		return new WordTracking();
-	}
+    if (!(this instanceof WordTracking)) {
+        return new WordTracking();
+    }
 
-	this.trackedWords = [];
+    this.trackedWords = [];
 };
 
-Emitter( WordTracking.prototype );
+Emitter(WordTracking.prototype);
 
-WordTracking.prototype.add = function( lemma ) {
-	var lemmaObject = {};
-	lemmaObject[ lemma ] = [];
-	this.trackedWords.push( lemmaObject );
-	this.emit( 'change' );
-	this.search( lemma );
+WordTracking.prototype.add = function(lemma) {
+    var lemmaObject = {};
+    lemmaObject[lemma] = [];
+    this.trackedWords.push(lemmaObject);
+    this.emit('change');
+    this.search(lemma);
 };
 
-WordTracking.prototype.remove = function( lemma ) {
-	this.trackedWords = this.trackedWords.filter( function( lemmaObject ) {
-		return Object.keys( lemmaObject )[0] !== lemma;
-	} );
-	this.emit( 'change' );
+WordTracking.prototype.remove = function(lemma) {
+    this.trackedWords = this.trackedWords.filter(function(lemmaObject) {
+        return Object.keys(lemmaObject)[0] !== lemma;
+    });
+    this.emit('change');
 };
 
-WordTracking.prototype.search = function( lemma ) {
-	wordSearchWorker.postMessage( lemma ); // send the worker a message
+WordTracking.prototype.search = function(lemma) {
+    worker.postMessage({
+        task: 'search',
+        parameters: {
+            lemma: lemma,
+            language: 'kjv',
+            clusivity: 'exclusive'
+        }
+    }); // send the worker a message
 };
 
-WordTracking.prototype.callback = function( results ) {
-	var lemma = Object.keys( results )[0];
-	var newTrackedWords = this.trackedWords.map( function ( lemmaObject ) {
-		var thisLemma = Object.keys( lemmaObject )[0];
-		if ( thisLemma === lemma ) {
-			return results;
-		}
-		return lemmaObject;
-	} );
-	this.trackedWords = newTrackedWords;
-	this.emit( 'change' );
-
+WordTracking.prototype.callback = function(event) {
+    var lemma = event.data.parameters.lemma;
+    var newTrackedWords = this.trackedWords.map(function(lemmaObject) {
+        var thisLemma = Object.keys(lemmaObject)[0];
+        if (thisLemma === lemma) {
+            var resultObject = {};
+            resultObject[lemma] = event.data.result;
+            return resultObject;
+        }
+        return lemmaObject;
+    });
+    this.trackedWords = newTrackedWords;
+    this.emit('change');
 };
 
-wordSearchWorker.addEventListener( 'message', function ( event ) {
-	wordTracking().callback( event.data );
+worker.addEventListener('message', function(event) {
+    wordTracking().callback(event);
 });
 
 module.exports = wordTracking;

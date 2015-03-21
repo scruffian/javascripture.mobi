@@ -3,9 +3,8 @@ var React = require( 'react' );
 
 // Internal
 var wordTracking = require( './wordTracking.js' )(),
-	referenceAPI = require( './referenceAPI.js' ),
+	reference = require( './reference.js' )(),
 	strongsColor = require( './strongsColor.js' );
-
 
 var Word = React.createClass( {
 	showWordDetails: function() {
@@ -50,9 +49,30 @@ var Verse = React.createClass( {
 	}
 } );
 
-var Reference = React.createClass( {
+var ReferenceComponent = React.createClass( {
+	getInitialState: function () {
+	    return {
+	        reference: {
+	        	primary: [],
+	        	secondary: []
+	        }
+	    };
+	},
+
+	componentWillMount: function() {
+		var self = this;
+		console.log('componentWillMount');
+		reference.on( 'change', function() {
+			console.log('state change');
+			self.setState( {
+				reference: this.reference
+			} );
+		} );
+	},
+
 	getChapter: function( object ) {
 		if ( object && object.data ) {
+			console.log( object.data );
 			var verses = object.data.map( function( verse, index ) {
 				return (
 					<li key={ index }>
@@ -69,16 +89,17 @@ var Reference = React.createClass( {
 			);
 		}
 	},
+
 	render: function() {
-		var data = referenceAPI.get( this.props.reference );
+		console.log( 'hhh');
 		return (
 			<div id="reference" className="reference">
-				{ this.getChapter( data.primary ) }
-				{ this.getChapter( data.secondary ) }
+				{ this.getChapter( this.state.reference.primary ) }
+				{ this.getChapter( this.state.reference.secondary ) }
 			</div>
 		);
 	}
 } );
 
 
-module.exports = Reference;
+module.exports = ReferenceComponent;

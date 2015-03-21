@@ -16,7 +16,8 @@ var BookControl = React.createClass( {
 		this.props.onChangeDisplayState();
 
 		// load the reference
-		this.props.onGoToReference( bible.parseReference( this.props.name + ' ' + this.state.chapter ) );
+		var referenceObject = bible.parseReference( this.props.name + ' ' + this.state.chapter );
+		this.props.onGoToReference( referenceObject );
 	},
 	handleMouseMove: function( event ) {
 		this.setChapter( event.clientX );

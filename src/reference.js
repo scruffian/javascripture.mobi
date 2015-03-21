@@ -1,26 +1,50 @@
 // External
-var webworkify = require('webworkify'),
-	page = require( 'page' );
+var Emitter = require('../mixins/emitter.js');
+var webworkify = require('webworkify');
 
-var referenceTemplate = require( './reference.jsx' );
-var worker = webworkify( require('./worker.js') );
+// Internal
+var worker = webworkify(require('./worker.js'));
 
-worker.addEventListener( 'message', function ( event ) {
-	referenceTemplate( event.data );
+// Singleton
+var _reference;
+
+var reference = function() {
+    if (!_reference) {
+        _reference = new Reference();
+    }
+
+    return _reference;
+};
+
+var Reference = function() {
+    if (!(this instanceof Reference)) {
+        return new Reference();
+    }
+
+    this.reference = [];
+};
+
+Emitter(Reference.prototype);
+
+Reference.prototype.get = function(reference) {
+    console.log(reference);
+    worker.postMessage({
+        task: 'reference',
+        parameters: {
+            reference: reference,
+            language: 'kjv',
+            clusivity: 'exclusive'
+        }
+    }); // send the worker a message
+};
+
+Reference.prototype.callback = function(event) {
+    this.reference = event.data.result;
+    this.emit('change');
+};
+
+worker.addEventListener('message', function(event) {
+    reference().callback(event);
 });
 
-module.exports = {
-	boot: function( context ) {
-		if ( localStorage.reference ) {
-			page( localStorage.reference );
-		}
-	},
-
-	worker: function( context ) {
-		var reference = {};
-		reference.book = context.params.book;
-		reference.chapter = context.params.chapter;
-		reference.verse = context.params.verse;
-		worker.postMessage( reference ); // send the worker a message
-	}
-};
+module.exports = reference;

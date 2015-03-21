@@ -4,7 +4,7 @@ var React = require( 'react' ),
 
 // Internal
 var bible = require( './bible.js' ),
-	reference = require( './reference.js' ),
+	reference = require( './reference.js' )(),
 	Reference = require( './reference.jsx' ),
 	Tray = require( './tray.jsx' ),
 	wordTracking = require( './wordTracking.js' )();
@@ -75,10 +75,12 @@ var Layout = React.createClass( {
 		this.setState( state );
 	},
 
-	goToReference: function( reference ){
-		this.setState( { reference: reference }, function() {
-			var url = reference.toUrl();
+	goToReference: function( referenceObject ){
+		console.log( referenceObject.toUrl() );
+		this.setState( { reference: referenceObject }, function() {
+			var url = referenceObject.toUrl();
 			page( url );
+			reference.get( referenceObject.toObject() );
 			window.scrollTo( 0, 0 );
 		} );
 	},
