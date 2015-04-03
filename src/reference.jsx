@@ -9,6 +9,7 @@ var wordTracking = require( './wordTracking.js' )(),
 var Word = React.createClass( {
 	showWordDetails: function() {
 		this.props.onChangeDisplayState( 'details', true );
+		console.log( this.props.lemma );
 		wordTracking.add( this.props.lemma );
 	},
 
@@ -31,16 +32,62 @@ var Word = React.createClass( {
 		}
 
 		return (
-			<span><span style={ wordStyle } className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word }</span> </span> // Leave that space
+			<span style={ wordStyle } className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word }</span>
 		);
 	}
+} );
+
+var WordString = React.createClass( {
+	render: function() {
+		var wordString = this.props.word.split( '/' ).map( function( word, index ) {
+			var lemma,
+				morph;
+
+			lemma = this.props.lemma.split( '/' )[ index ];
+
+			if ( this.props.morph ) {
+				morph = this.props.morph.split( '/' )[ index ];
+			}
+
+			return (
+				<Word word={ word } lemma={ lemma } morph={ morph } key={ this.props.key } onChangeDisplayState={ this.props.onChangeDisplayState } />
+			);
+		}, this );
+
+		return (
+			<span>{ wordString } </span> // Leave that space
+		);
+		/*return (
+			<Word word={ this.props.word } lemma={ this.props.lemma } morph={ this.props.morph } key={ this.props.key } onChangeDisplayState={ this.props.onChangeDisplayState } />
+		);
+		/*var string = this.props.word.split( '/' ).map( function( word, index ) {
+			console.log( word );
+			var lemma,
+				morph;
+
+			lemma = this.props.lemma.split( ' ' )[ index ];
+			console.log( lemma );
+
+			if ( this.props.morph ) {
+				morph = this.props.morph.split( ' ' )[ index ];
+			}
+			console.log( this.props.morph );
+
+			return (
+				<Word word={ word } lemma={ lemma } morph={ morph } key={ this.props.key } onChangeDisplayState={ this.props.onChangeDisplayState } />
+			);
+		}, this );
+		console.log( string );
+		return string;*/
+	}
+
 } );
 
 var Verse = React.createClass( {
 	render: function() {
 		var verse = this.props.verse.map( function( word, index ) {
 			return (
-				<Word word={ word[ 	0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } onChangeDisplayState={ this.props.onChangeDisplayState } />
+				<WordString word={ word[ 0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } onChangeDisplayState={ this.props.onChangeDisplayState } />
 			);
 		}, this );
 		return (
