@@ -57,41 +57,28 @@ var WordString = React.createClass( {
 		return (
 			<span>{ wordString } </span> // Leave that space
 		);
-		/*return (
-			<Word word={ this.props.word } lemma={ this.props.lemma } morph={ this.props.morph } key={ this.props.key } onChangeDisplayState={ this.props.onChangeDisplayState } />
-		);
-		/*var string = this.props.word.split( '/' ).map( function( word, index ) {
-			console.log( word );
-			var lemma,
-				morph;
-
-			lemma = this.props.lemma.split( ' ' )[ index ];
-			console.log( lemma );
-
-			if ( this.props.morph ) {
-				morph = this.props.morph.split( ' ' )[ index ];
-			}
-			console.log( this.props.morph );
-
-			return (
-				<Word word={ word } lemma={ lemma } morph={ morph } key={ this.props.key } onChangeDisplayState={ this.props.onChangeDisplayState } />
-			);
-		}, this );
-		console.log( string );
-		return string;*/
 	}
 
 } );
 
 var Verse = React.createClass( {
 	render: function() {
-		var verse = this.props.verse.map( function( word, index ) {
+		var className = "verse",
+			verse;
+
+		if ( this.props.columns ) {
+			className += " columns";
+		}
+
+		verse = this.props.verse.map( function( word, index ) {
 			return (
 				<WordString word={ word[ 0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } onChangeDisplayState={ this.props.onChangeDisplayState } />
 			);
 		}, this );
 		return (
-			<div>{ verse }</div>
+			<div className={ className }>
+				{ this.props.number }. { verse }
+			</div>
 		);
 	}
 } );
@@ -99,6 +86,7 @@ var Verse = React.createClass( {
 var ReferenceComponent = React.createClass( {
 	getInitialState: function() {
 		return {
+			sync: true,
 			reference: {
 				primary: [],
 				secondary: []
@@ -120,28 +108,68 @@ var ReferenceComponent = React.createClass( {
 			var verses = object.data.map( function( verse, index ) {
 				return (
 					<li key={ index }>
-						<Verse verse={ verse } onChangeDisplayState={ this.props.onChangeDisplayState } />
+						<Verse verse={ verse } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
 					</li>
 				);
 			}, this );
 
 			return (
-				<div>
+				<div className="chapter columns">
 					<h1>{ object.reference.book } { object.reference.chapter }</h1>
-					<ol className="chapter">{ verses }</ol>
+					<ol>{ verses }</ol>
 				</div>
 			);
 		}
 	},
 
+	getChapterSynced: function() {
+		if ( this.state.reference.primary && this.state.reference.primary.data ) {
+			var verses = this.state.reference.primary.data.map( function( verse, index ) {
+				var number = index + 1;
+				return (
+					<li key={ index }>
+						<Verse verse={ verse } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />
+						<Verse verse={ this.state.reference.secondary.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />
+						<Verse verse={ this.state.reference.primary.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />
+					</li>
+				);
+			}, this );
+
+			return (
+				<div className="chapter">
+					<h1>{ this.state.reference.primary.reference.book } { this.state.reference.primary.reference.chapter }</h1>
+					<ol>{ verses }</ol>
+				</div>
+			);
+		}
+	},
+
+	toggleSync: function() {
+		console.log( this.state.sync );
+		this.setState( {
+			sync: ! this.state.sync
+		} );
+	},
+
 	render: function() {
+		var chapters;
+		if ( this.state.sync ) {
+			chapters = this.getChapterSynced();
+		} else {
+			chapters = [];
+			chapters.push( this.getChapter( this.state.reference.primary ) );
+			chapters.push( this.getChapter( this.state.reference.secondary ) );
+			chapters.push( this.getChapter( this.state.reference.primary ) );
+		}
 		return (
 			<div id="reference" className="reference">
-				{ this.getChapter( this.state.reference.primary ) }
-				{ this.getChapter( this.state.reference.secondary ) }
+				<input type="checkbox" name="sync" checked={ this.state.sync } onClick={ this.toggleSync } onChange={ this.toggleSync } />
+				{ chapters }
 			</div>
 		);
 	}
+
+
 } );
 
 

@@ -10,7 +10,7 @@ module.exports = {
 		};
 		secondaryReference = {
 			book: reference.book,
-			chapter: parseInt( reference.chapter ) + 1,
+			chapter: parseInt( reference.chapter ),
 			verse: reference.verse
 		};
 

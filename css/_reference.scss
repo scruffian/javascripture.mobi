@@ -1,8 +1,22 @@
 .reference {
+	display: table;
 	margin: 0 auto;
-	max-width: 500px;
-	padding: 0 2em $tray-height;
+	//max-width: 700px;
+	padding: 0 0 $tray-height;
 	text-align: left;
+
+	.chapter {
+		ol {
+			list-style: none;
+			padding-left: 40px;
+		}
+	}
+
+	.columns {
+		display: table-cell;
+		width: 240px;
+	}
+
 	.word {
 		cursor: pointer;
 		margin: 0 -2px;
