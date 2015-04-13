@@ -4,7 +4,8 @@ var React = require( 'react' );
 // Internal
 var wordTracking = require( './wordTracking.js' )(),
 	api = require( './api.js' )(),
-	strongsColor = require( './strongsColor.js' );
+	strongsColor = require( './strongsColor.js' ),
+	settings = require( './settings' )();
 
 var Word = React.createClass( {
 	showWordDetails: function() {
@@ -101,6 +102,13 @@ var ReferenceComponent = React.createClass( {
 				reference: this.reference
 			} );
 		} );
+
+		settings.on( 'change', function() {
+			self.setState( {
+				sync: settings.sync
+			} );
+		} );
+
 	},
 
 	getChapter: function( object ) {
@@ -163,7 +171,6 @@ var ReferenceComponent = React.createClass( {
 		}
 		return (
 			<div id="reference" className="reference">
-				<input type="checkbox" name="sync" checked={ this.state.sync } onClick={ this.toggleSync } onChange={ this.toggleSync } />
 				{ chapters }
 			</div>
 		);

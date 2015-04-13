@@ -3,7 +3,8 @@ var React = require( 'react/addons' );
 
 // Internal
 var ReferenceSelector = require( './referenceSelector.jsx' ),
-	WordDetails = require( './wordDetails.jsx' );
+	WordDetails = require( './wordDetails.jsx' ),
+	settings = require( './settings.js' )();
 
 var TrayButton = React.createClass( {
 	handleClick: function() {
@@ -35,13 +36,40 @@ var TrayTarget = React.createClass( {
 	}
 } );
 
+var Settings = React.createClass( {
+
+	getInitialState: function() {
+		return {
+			sync: settings.sync
+		};
+	},
+
+	toggleSync: function() {
+		settings.set( 'sync', ! settings.sync );
+		this.setState( {
+			sync: settings.sync
+		} );
+	},
+
+	render: function() {
+		return (
+			<div>
+				<h2>Settings</h2>
+				<input type="checkbox" name="sync" checked={ this.state.sync } onClick={ this.toggleSync } /> Sync references
+			</div>
+		);
+	}
+} );
+
+
+
 var TrayTargets = React.createClass( {
 	render: function() {
 		var referenceSelector = <ReferenceSelector onChangeDisplayState={ this.props.onChangeDisplayState } onGoToReference={ this.props.onGoToReference } />,
 			wordDetails = <WordDetails />,
 			search = 'search',
 			bookmarks = 'bookmarks',
-			settings = 'settings';
+			settings = <Settings />;
 
 		return (
 			<div className="tray-targets">
