@@ -32,7 +32,7 @@ var Word = React.createClass( {
 		}
 
 		return (
-			<span style={ wordStyle } className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word }</span>
+			<span style={ wordStyle } className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word } </span>
 		);
 	}
 } );
@@ -106,46 +106,39 @@ var ReferenceComponent = React.createClass( {
 		} );
 	},
 
-	getVerse: function( index ) {
-		return this.state.references.map( function( reference, counter ) {
-			if ( counter > 0 ) {
-				return <Verse verse={ reference.data[ index ] } columns={ true } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
-			}
-		}, this );
-	},
-
-	getVersesSynced: function() {
-		return this.state.references[0].data.map( function( verse, index ) {
-			return (
-				<li key={ index }>
-					<Verse verse={ verse } columns={ true } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
-					{ this.getVerse( index ) }
-				</li>
-			);
-		}, this );
+	getSyncedVerses: function( index ) {
+		if ( this.state.sync ) {
+			return this.state.references.map( function( reference, counter ) {
+				if ( counter > 0 ) {
+					return <Verse verse={ reference.data[ index ] } columns={ this.state.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+				}
+			}, this );
+		}
 	},
 
 	getVerses: function( object ) {
-		if ( this.state.sync ) {
-			return this.getVersesSynced();
-		}
-
 		return object.data.map( function( verse, index ) {
 			return (
 				<li key={ index }>
-					<Verse verse={ verse } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+					<Verse verse={ verse } columns={ this.state.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+					{ this.getSyncedVerses( index ) }
 				</li>
 			);
 		}, this );
 	},
 
-	getChapter: function( object ) {
-		if ( object && object.data ) {
+	getChapter: function( reference ) {
+		if ( reference && reference.data ) {
+			var classNames = 'chapter';
+			if ( ! this.state.sync ) {
+				classNames += ' columns';
+			}
+
 			return (
-				<div className="chapter columns">
-					<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
-					<h1>{ object.reference.book } { object.reference.chapter }</h1>
-					<ol>{ this.getVerses( object ) }</ol>
+				<div className={ classNames }>
+					<ReferenceInput reference={ reference.reference } onGoToReference={ this.props.onGoToReference } />
+					<h1>{ reference.reference.book } { reference.reference.chapter }</h1>
+					<ol>{ this.getVerses( reference ) }</ol>
 				</div>
 			);
 		}
