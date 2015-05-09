@@ -100,75 +100,72 @@ var ReferenceComponent = React.createClass( {
 		} );
 	},
 
-	getChapter: function( object ) {
-		if ( object && object.data ) {
-			var verses = object.data.map( function( verse, index ) {
-				return (
-					<li key={ index }>
-						<Verse verse={ verse } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
-					</li>
-				);
-			}, this );
-
-			return (
-				<div className="chapter columns">
-					<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
-					<h1>{ object.reference.book } { object.reference.chapter }</h1>
-					<ol>{ verses }</ol>
-				</div>
-			);
-		}
-	},
-
-	getVerse: function( number, index ) {
-		return this.state.references.map( function( reference, counter ) {
-			if ( counter > 0 ) {
-				return <Verse verse={ reference.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />;
-			}
-		}, this );
-	},
-
-	getChapterSynced: function() {
-		if ( this.state.references[0] && this.state.references[0] ) {
-			var verses = this.state.references[0].data.map( function( verse, index ) {
-				var number = index + 1;
-				return (
-					<li key={ index }>
-						<Verse verse={ verse } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />
-						{ this.getVerse( number, index ) }
-					</li>
-				);
-			}, this );
-
-			return (
-				<div className="chapter">
-					<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
-					<h1>{ this.state.references[0].reference.book } { this.state.references[0].reference.chapter }</h1>
-					<ol>{ verses }</ol>
-				</div>
-			);
-		}
-	},
-
 	toggleSync: function() {
 		this.setState( {
 			sync: ! this.state.sync
 		} );
 	},
 
-	render: function() {
-		var chapters;
+	getVerse: function( index ) {
+		return this.state.references.map( function( reference, counter ) {
+			if ( counter > 0 ) {
+				return <Verse verse={ reference.data[ index ] } columns={ true } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+			}
+		}, this );
+	},
+
+	getVersesSynced: function() {
+		return this.state.references[0].data.map( function( verse, index ) {
+			return (
+				<li key={ index }>
+					<Verse verse={ verse } columns={ true } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+					{ this.getVerse( index ) }
+				</li>
+			);
+		}, this );
+	},
+
+	getVerses: function( object ) {
 		if ( this.state.sync ) {
-			chapters = this.getChapterSynced();
-		} else {
-			chapters = this.state.references.map( function( reference ) {
-				return this.getChapter( reference );
-			}, this  );
+			return this.getVersesSynced();
 		}
+
+		return object.data.map( function( verse, index ) {
+			return (
+				<li key={ index }>
+					<Verse verse={ verse } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+				</li>
+			);
+		}, this );
+	},
+
+	getChapter: function( object ) {
+		if ( object && object.data ) {
+			return (
+				<div className="chapter columns">
+					<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
+					<h1>{ object.reference.book } { object.reference.chapter }</h1>
+					<ol>{ this.getVerses( object ) }</ol>
+				</div>
+			);
+		}
+	},
+
+	getChapters: function() {
+		if ( this.state.sync ) {
+			return this.getChapter( this.state.references[0] );
+		}
+
+		return this.state.references.map( function( reference ) {
+			return this.getChapter( reference );
+		}, this );
+	},
+
+	render: function() {
 		return (
 			<div id="reference" className="reference">
 				<input type="checkbox" name="sync" checked={ this.state.sync } onClick={ this.toggleSync } /> Sync
-				{ chapters }
+				{ this.getChapters() }
 			</div>
 		);
 	}
