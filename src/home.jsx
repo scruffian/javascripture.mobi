@@ -1,54 +1,13 @@
 // External
 var React = require( 'react' ),
-	page = require( 'page' );
+	page = require( 'page' ),
+	clone = require( 'lodash-node/modern/lang/clone' );
 
 // Internal
-var bible = require( './bible.js' ),
-	api = require( './api.js' )(),
+var api = require( './api.js' )(),
 	Reference = require( './reference.jsx' ),
 	Tray = require( './tray.jsx' ),
 	wordTracking = require( './wordTracking.js' )();
-
-var Home = React.createClass( {
-
-	getInitialState: function() {
-		return {
-			reference: bible.parseReference( 'Genesis 1' )
-		};
-	},
-
-	componentWillReceiveProps: function( nextProps ) {
-		if ( nextProps.reference ) {
-			this.setState( {
-				reference: nextProps.reference
-			} );
-		}
-	},
-
-	handleChange: function( event ) {
-		this.setState( {
-			'reference': event.target.value
-		} );
-	},
-
-	goToReference: function( event ) {
-		event.preventDefault();
-		var reference = bible.parseReference( this.state.reference );
-		this.props.onGoToReference( reference );
-	},
-
-	render: function() {
-		var reference = this.state.reference.toString();
-
-		return (
-			<div className="reference-input">
-				<form onSubmit={ this.goToReference }>
-					<input type="text" value={ reference } onChange={ this.handleChange } />
-				</form>
-			</div>
-		);
-	}
-} );
 
 var Layout = React.createClass( {
 	getInitialState: function() {
@@ -88,8 +47,7 @@ var Layout = React.createClass( {
 	render: function() {
 		return (
 			<div>
-				<Home reference={ this.state.reference } onGoToReference={ this.goToReference } />
-				<Reference reference={ this.props.reference } displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
+				<Reference reference={ this.props.reference } onGoToReference={ this.goToReference } displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
 				<Tray displayState={ this.state } onGoToReference={ this.goToReference } onChangeDisplayState={ this.changeDisplayState } wordTracking={ wordTracking } />
 			</div>
 		);
@@ -114,7 +72,21 @@ module.exports = function( context ) {
 	localStorage.reference = referenceString;
 
 	// Fire off a request to get the reference data
-	api.getReference( context.params );
+	var referenceArray = [
+
+	];
+	var primaryReference = clone( context.params );
+	primaryReference.version = 'kjv';
+	referenceArray.push( primaryReference );
+	var secondaryReference = clone( context.params );
+	secondaryReference.chapter = secondaryReference.chapter;
+	secondaryReference.version = 'original';
+	referenceArray.push( secondaryReference );
+
+	api.getReference( [
+		primaryReference,
+		secondaryReference
+	] );
 
 	React.render(
 		<Layout reference={ reference } />,

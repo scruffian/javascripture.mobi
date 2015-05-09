@@ -9,7 +9,7 @@ module.exports = function( self ) {
 			result = wordSearchApi.getReferences( e.data.parameters );
 		}
 		if ( e.data.task === 'reference' ) {
-			result = referenceApi.get( e.data.parameters.reference );
+			result = referenceApi.get( e.data.parameters.references );
 		}
 
 		if ( result ) {

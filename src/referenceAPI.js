@@ -1,25 +1,23 @@
-var kjv = require( '../data/kjv.js' ),
-	hebrew = require( '../data/hebrew.js' );
+var bible = require( './bible' );
+	kjv = require( '../data/kjv.js' ),
+	hebrew = require( '../data/hebrew.js' ),
+	greek = require( '../data/greek.js' );
 
 module.exports = {
-	get: function( reference ) {
-		primaryReference = {
-			book: reference.book,
-			chapter: parseInt( reference.chapter ),
-			verse: reference.verse
-		};
-		secondaryReference = {
-			book: reference.book,
-			chapter: parseInt( reference.chapter ),
-			verse: reference.verse
-		};
-
-		return {
-			'primary': this.getChapterData( primaryReference, kjv ),
-			'secondary': this.getChapterData( secondaryReference, hebrew )
-		};
+	get: function( references ) {
+		return references.map( function( reference ) {
+			return this.getChapterData( reference );
+		}.bind( this ) );
 	},
-	getChapterData: function( reference, version ) {
+	getChapterData: function( reference ) {
+		var version = kjv;
+		if ( 'original' === reference.version ) {
+			var version = hebrew;
+			if( bible.Data.ntBooks.indexOf( reference.book ) > -1 ) {
+				version = greek;
+			}
+		}
+
 		return {
 			reference: reference,
 			data: version[ reference.book ][ reference.chapter - 1 ]

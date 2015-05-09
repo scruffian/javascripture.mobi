@@ -5,12 +5,11 @@ var React = require( 'react' );
 var wordTracking = require( './wordTracking.js' )(),
 	api = require( './api.js' )(),
 	strongsColor = require( './strongsColor.js' ),
-	settings = require( './settings' )();
+	ReferenceInput = require( './reference-input.jsx' );
 
 var Word = React.createClass( {
 	showWordDetails: function() {
 		this.props.onChangeDisplayState( 'details', true );
-		console.log( this.props.lemma );
 		wordTracking.add( this.props.lemma );
 	},
 
@@ -87,28 +86,19 @@ var Verse = React.createClass( {
 var ReferenceComponent = React.createClass( {
 	getInitialState: function() {
 		return {
-			sync: true,
-			reference: {
-				primary: [],
-				secondary: []
-			}
+			sync: false,
+			references: []
 		};
 	},
 
 	componentWillMount: function() {
 		var self = this;
 		api.on( 'change', function() {
+			console.log( this );
 			self.setState( {
-				reference: this.reference
+				references: this.references
 			} );
 		} );
-
-		settings.on( 'change', function() {
-			self.setState( {
-				sync: settings.sync
-			} );
-		} );
-
 	},
 
 	getChapter: function( object ) {
@@ -123,6 +113,7 @@ var ReferenceComponent = React.createClass( {
 
 			return (
 				<div className="chapter columns">
+					<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
 					<h1>{ object.reference.book } { object.reference.chapter }</h1>
 					<ol>{ verses }</ol>
 				</div>
@@ -130,22 +121,28 @@ var ReferenceComponent = React.createClass( {
 		}
 	},
 
+	getVerse: function( number, index ) {
+		return this.state.references.map( function( reference ) {
+			return <Verse verse={ reference.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+		}, this );
+	},
+
 	getChapterSynced: function() {
-		if ( this.state.reference.primary && this.state.reference.primary.data ) {
-			var verses = this.state.reference.primary.data.map( function( verse, index ) {
+		if ( this.state.references[0] && this.state.references[0] ) {
+			var verses = this.state.references[0].data.map( function( verse, index ) {
 				var number = index + 1;
 				return (
 					<li key={ index }>
 						<Verse verse={ verse } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />
-						<Verse verse={ this.state.reference.secondary.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />
-						<Verse verse={ this.state.reference.primary.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />
+						{ this.getVerse( number, index ) }
 					</li>
 				);
 			}, this );
 
 			return (
 				<div className="chapter">
-					<h1>{ this.state.reference.primary.reference.book } { this.state.reference.primary.reference.chapter }</h1>
+					<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
+					<h1>{ this.state.references[0].reference.book } { this.state.references[0].reference.chapter }</h1>
 					<ol>{ verses }</ol>
 				</div>
 			);
@@ -153,7 +150,6 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	toggleSync: function() {
-		console.log( this.state.sync );
 		this.setState( {
 			sync: ! this.state.sync
 		} );
@@ -165,12 +161,13 @@ var ReferenceComponent = React.createClass( {
 			chapters = this.getChapterSynced();
 		} else {
 			chapters = [];
-			chapters.push( this.getChapter( this.state.reference.primary ) );
-			chapters.push( this.getChapter( this.state.reference.secondary ) );
-			chapters.push( this.getChapter( this.state.reference.primary ) );
+			this.state.references.forEach( function( reference ) {
+				chapters.push( this.getChapter( reference ) );
+			}.bind( this ) );
 		}
 		return (
 			<div id="reference" className="reference">
+				<input type="checkbox" name="sync" checked={ this.state.sync } onClick={ this.toggleSync } /> Sync
 				{ chapters }
 			</div>
 		);
@@ -178,6 +175,5 @@ var ReferenceComponent = React.createClass( {
 
 
 } );
-
 
 module.exports = ReferenceComponent;

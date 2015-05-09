@@ -40,22 +40,13 @@ var Settings = React.createClass( {
 
 	getInitialState: function() {
 		return {
-			sync: settings.sync
 		};
-	},
-
-	toggleSync: function() {
-		settings.set( 'sync', ! settings.sync );
-		this.setState( {
-			sync: settings.sync
-		} );
 	},
 
 	render: function() {
 		return (
 			<div>
 				<h2>Settings</h2>
-				<input type="checkbox" name="sync" checked={ this.state.sync } onClick={ this.toggleSync } /> Sync references
 			</div>
 		);
 	}

@@ -27,20 +27,18 @@ var Api = function() {
 
 Emitter( Api.prototype );
 
-Api.prototype.getReference = function( reference ) {
+Api.prototype.getReference = function( references ) {
     worker.postMessage( {
         task: 'reference',
         parameters: {
-            reference: reference,
-            language: 'kjv',
-            clusivity: 'exclusive'
+            references: references
         }
     } ); // send the worker a message
 };
 
 Api.prototype.callback = function( event ) {
     if ( event.data.task === 'reference' ) {
-        this.reference = event.data.result;
+        this.references = event.data.result;
     }
     if ( event.data.task === 'search' ) {
         this.searchResults = event;
