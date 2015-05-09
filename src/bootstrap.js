@@ -3,10 +3,10 @@ var React = require( 'react' ),
 	page = require( 'page' );
 
 // Enable touch events
-//React.initializeTouchEvents( true );
+React.initializeTouchEvents( true );
 
 // Internal
-var home = require( './home.jsx' );
+var layout = require( './layout.jsx' );
 
 var boot = function( context, next ) {
 	if ( localStorage.reference ) {
@@ -19,9 +19,9 @@ var boot = function( context, next ) {
 
 // Routing
 page( '/', boot );
-page( '/:book', home );
-page( '/:book/:chapter', home );
-page( '/:book/:chapter/:verse', home );
+page( '/:book', layout );
+page( '/:book/:chapter', layout );
+page( '/:book/:chapter/:verse', layout );
 
 var start = function() {
 	page.start( {

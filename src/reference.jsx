@@ -94,7 +94,6 @@ var ReferenceComponent = React.createClass( {
 	componentWillMount: function() {
 		var self = this;
 		api.on( 'change', function() {
-			console.log( this );
 			self.setState( {
 				references: this.references
 			} );
@@ -122,8 +121,10 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	getVerse: function( number, index ) {
-		return this.state.references.map( function( reference ) {
-			return <Verse verse={ reference.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+		return this.state.references.map( function( reference, counter ) {
+			if ( counter > 0 ) {
+				return <Verse verse={ reference.data[ index ] } columns={ true } number={ number } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+			}
 		}, this );
 	},
 
@@ -160,10 +161,9 @@ var ReferenceComponent = React.createClass( {
 		if ( this.state.sync ) {
 			chapters = this.getChapterSynced();
 		} else {
-			chapters = [];
-			this.state.references.forEach( function( reference ) {
-				chapters.push( this.getChapter( reference ) );
-			}.bind( this ) );
+			chapters = this.state.references.map( function( reference ) {
+				return this.getChapter( reference );
+			}, this  );
 		}
 		return (
 			<div id="reference" className="reference">
