@@ -1,5 +1,6 @@
 // External
-var React = require( 'react' );
+var React = require( 'react' ),
+	clone = require( 'lodash-node/modern/lang/clone' );
 
 // Internal
 var wordTracking = require( './wordTracking.js' )(),
@@ -93,11 +94,50 @@ var ReferenceComponent = React.createClass( {
 
 	componentWillMount: function() {
 		var self = this;
+		this.callApi( this.props.context );
 		api.on( 'change', function() {
 			self.setState( {
 				references: this.references
 			} );
 		} );
+	},
+
+	componentWillReceiveProps: function ( nextProps ) {
+		this.callApi( nextProps.context );
+	},
+
+	callApi: function( context) {
+		var reference = {},
+			referenceString = '/';
+		reference.book = context.params.book;
+		reference.chapter = context.params.chapter;
+		reference.verse = context.params.verse;
+
+		referenceString += reference.book;
+		if ( reference.chapter ) {
+			referenceString += '/' + reference.chapter;
+		}
+		if ( reference.verse ) {
+			referenceString += '/' + reference.verse;
+		}
+		localStorage.reference = referenceString;
+
+		// Fire off a request to get the reference data
+		var referenceArray = [
+
+		];
+		var primaryReference = clone( context.params );
+		primaryReference.version = 'kjv';
+		referenceArray.push( primaryReference );
+		var secondaryReference = clone( context.params );
+		secondaryReference.chapter = secondaryReference.chapter;
+		secondaryReference.version = 'original';
+		referenceArray.push( secondaryReference );
+
+		api.getReference( [
+			primaryReference,
+			secondaryReference
+		] );
 	},
 
 	toggleSync: function() {
