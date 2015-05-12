@@ -106,7 +106,7 @@ var ReferenceComponent = React.createClass( {
 		this.callApi( nextProps.context );
 	},
 
-	callApi: function( context) {
+	callApi: function( context ) {
 		var reference = {},
 			referenceString = '/';
 		reference.book = context.params.book;
