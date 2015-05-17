@@ -1,7 +1,7 @@
 var bible = require( './bible' );
-	kjv = require( '../data/kjv.js' ),
-	hebrew = require( '../data/hebrew.js' ),
-	greek = require( '../data/greek.js' );
+kjv = require( '../data/kjv.js' ),
+hebrew = require( '../data/hebrew.js' ),
+greek = require( '../data/greek.js' );
 
 module.exports = {
 	get: function( references ) {
@@ -13,15 +13,17 @@ module.exports = {
 		var version = kjv;
 		if ( 'original' === reference.version ) {
 			var version = hebrew;
-			if( bible.Data.ntBooks.indexOf( reference.book ) > -1 ) {
+			if ( bible.Data.ntBooks.indexOf( reference.book ) > -1 ) {
 				version = greek;
 			}
 		}
 
-		return {
+		reference.data = version[ reference.book ][ reference.chapter - 1 ];
+		return reference;
+		/*return {
 			reference: reference,
 			data: version[ reference.book ][ reference.chapter - 1 ]
-		};
+		};*/
 	},
 	getThreeChapters: function( reference ) {
 		var testament = this.getTestament( reference.book );

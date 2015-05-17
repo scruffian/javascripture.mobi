@@ -1,6 +1,7 @@
 // External
 var React = require( 'react' ),
-	clone = require( 'lodash-node/modern/lang/clone' );
+	clone = require( 'lodash-node/modern/lang/clone' ),
+	assign = require( 'lodash-node/modern/object/assign' );
 
 // Internal
 var wordTracking = require( './wordTracking.js' )(),
@@ -88,11 +89,24 @@ var ReferenceComponent = React.createClass( {
 	getInitialState: function() {
 		return {
 			sync: false,
-			references: []
+			references: [
+				{
+					book: 'Genesis',
+					chapter: 1,
+					verse: 1,
+					version: 'kjv'
+				},
+				{
+					book: 'Genesis',
+					chapter: 2,
+					verse: 1,
+					version: 'original'
+				}
+			]
 		};
 	},
 
-	componentWillMount: function() {
+	componentDidMount: function() {
 		var self = this;
 		this.callApi( this.props.context );
 		api.on( 'change', function() {
@@ -102,7 +116,7 @@ var ReferenceComponent = React.createClass( {
 		} );
 	},
 
-	componentWillReceiveProps: function ( nextProps ) {
+	componentWillReceiveProps: function( nextProps ) {
 		this.callApi( nextProps.context );
 	},
 
@@ -123,9 +137,7 @@ var ReferenceComponent = React.createClass( {
 		localStorage.reference = referenceString;
 
 		// Fire off a request to get the reference data
-		var referenceArray = [
-
-		];
+		var referenceArray = [];
 		var primaryReference = clone( context.params );
 		primaryReference.version = 'kjv';
 		referenceArray.push( primaryReference );
@@ -134,10 +146,22 @@ var ReferenceComponent = React.createClass( {
 		secondaryReference.version = 'original';
 		referenceArray.push( secondaryReference );
 
-		api.getReference( [
-			primaryReference,
-			secondaryReference
-		] );
+		var firstReference = assign( clone( this.state.references[ 0 ] ), context.params );
+		var references = clone( this.state.references );
+		references[ 0 ] = firstReference;
+
+		var secondReference = assign( clone( this.state.references[ 1 ] ), context.params );
+		if ( this.state.sync ) {
+			references[ 1 ] = secondReference;
+		}
+		console.log( references );
+
+		this.setState( {
+			references: references
+		}, function() {
+			console.log( this.state.references );
+			api.getReference( this.state.references );
+		} );
 	},
 
 	toggleSync: function() {
@@ -176,8 +200,8 @@ var ReferenceComponent = React.createClass( {
 
 			return (
 				<div className={ classNames }>
-					<ReferenceInput reference={ reference.reference } onGoToReference={ this.props.onGoToReference } />
-					<h1>{ reference.reference.book } { reference.reference.chapter }</h1>
+					<ReferenceInput reference={ reference } onGoToReference={ this.props.onGoToReference } />
+					<h1>{ reference.book } { reference.chapter }</h1>
 					<ol>{ this.getVerses( reference ) }</ol>
 				</div>
 			);
@@ -186,7 +210,7 @@ var ReferenceComponent = React.createClass( {
 
 	getChapters: function() {
 		if ( this.state.sync ) {
-			return this.getChapter( this.state.references[0] );
+			return this.getChapter( this.state.references[ 0 ] );
 		}
 
 		return this.state.references.map( function( reference ) {
