@@ -32,8 +32,7 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-		var reference = this.state.reference.toString();
-
+		var reference = this.props.reference.book + ' ' + this.props.reference.chapter + ':' + this.props.reference.verse;
 		return (
 			<div className="reference-input">
 				<form onSubmit={ this.goToReference }>
