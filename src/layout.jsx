@@ -33,16 +33,18 @@ var Layout = React.createClass( {
 	},
 
 	goToReference: function( referenceObject ) {
+		var url = referenceObject.toUrl();
+		page( url );
+		window.scrollTo( 0, 0 );
+	},
 
-			var url = referenceObject.toUrl();
-			page( url );
-			window.scrollTo( 0, 0 );
-
+	handleKeyDown: function() {
+		console.log( 'gg' );
 	},
 
 	render: function() {
 		return (
-			<div>
+			<div onKeyDown={ this.handleKeyDown }>
 				<Reference context={ this.props.context } onGoToReference={ this.goToReference } displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
 				<Tray displayState={ this.state } onGoToReference={ this.goToReference } onChangeDisplayState={ this.changeDisplayState } wordTracking={ wordTracking } />
 			</div>

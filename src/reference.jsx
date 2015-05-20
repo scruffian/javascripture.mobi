@@ -88,7 +88,7 @@ var Verse = React.createClass( {
 var ReferenceComponent = React.createClass( {
 	getInitialState: function() {
 		return {
-			sync: false,
+			sync: true,
 			references: [
 				{
 					book: 'Genesis',
@@ -154,12 +154,10 @@ var ReferenceComponent = React.createClass( {
 		if ( this.state.sync ) {
 			references[ 1 ] = secondReference;
 		}
-		console.log( references );
 
 		this.setState( {
 			references: references
 		}, function() {
-			console.log( this.state.references );
 			api.getReference( this.state.references );
 		} );
 	},
@@ -221,7 +219,7 @@ var ReferenceComponent = React.createClass( {
 	render: function() {
 		return (
 			<div id="reference" className="reference">
-				<input type="checkbox" name="sync" checked={ this.state.sync } onClick={ this.toggleSync } /> Sync
+				<input type="checkbox" name="sync" checked={ this.state.sync } onChange={ this.toggleSync } /> Sync
 				{ this.getChapters() }
 			</div>
 		);

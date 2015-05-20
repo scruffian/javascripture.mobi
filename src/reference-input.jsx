@@ -8,35 +8,50 @@ module.exports = React.createClass( {
 
 	getInitialState: function() {
 		return {
-			reference: bible.parseReference( 'Genesis 1' )
+			reference: 'Genesis 1:1'
 		};
 	},
 
+	componentWillMount: function() {
+		this.setStateFromProps( this.props.reference );
+	},
+
 	componentWillReceiveProps: function( nextProps ) {
-		if ( nextProps.reference ) {
-			this.setState( {
-				reference: bible.parseReference( nextProps.reference.book + ' ' + nextProps.reference.chapter + ' ' + nextProps.reference.verse )
-			} );
-		}
+		this.setStateFromProps( nextProps.reference );
+	},
+
+	setStateFromProps: function( reference ) {
+		this.setState( {
+			reference: reference.book + ' ' + reference.chapter + ':' + reference.verse
+		} );
 	},
 
 	handleChange: function( event ) {
 		this.setState( {
-			'reference': event.target.value
+			reference: event.target.value
+		} );
+	},
+
+	handleFocus: function() {
+		this.setState( {
+			reference: ''
 		} );
 	},
 
 	goToReference: function( event ) {
 		event.preventDefault();
-		this.props.onGoToReference( this.state.reference );
+		this.props.onGoToReference( bible.parseReference( this.state.reference ) );
 	},
 
 	render: function() {
-		var reference = this.props.reference.book + ' ' + this.props.reference.chapter + ':' + this.props.reference.verse;
 		return (
 			<div className="reference-input">
 				<form onSubmit={ this.goToReference }>
-					<input type="text" value={ reference } onChange={ this.handleChange } />
+					<input
+						type="text"
+						value={ this.state.reference }
+						onChange={ this.handleChange }
+						onFocus={ this.handleFocus } />
 				</form>
 			</div>
 		);
