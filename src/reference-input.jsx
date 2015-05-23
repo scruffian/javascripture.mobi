@@ -8,12 +8,24 @@ module.exports = React.createClass( {
 
 	getInitialState: function() {
 		return {
-			reference: 'Genesis 1:1'
+			focussed: false,
+			reference: 'Genesis 1'
 		};
 	},
 
 	componentWillMount: function() {
 		this.setStateFromProps( this.props.reference );
+	    window.addEventListener( 'keydown', this.boundKeyHandler, false );
+	},
+
+	boundKeyHandler: function() {
+		if ( ! this.state.focussed ) {
+			this.refs.referenceInput.getDOMNode().focus();
+			this.setState( {
+				focussed: true,
+				reference: ''
+			} );
+		}
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
@@ -22,7 +34,7 @@ module.exports = React.createClass( {
 
 	setStateFromProps: function( reference ) {
 		this.setState( {
-			reference: reference.book + ' ' + reference.chapter + ':' + reference.verse
+			reference: reference.book + ' ' + reference.chapter
 		} );
 	},
 
@@ -32,15 +44,13 @@ module.exports = React.createClass( {
 		} );
 	},
 
-	handleFocus: function() {
-		this.setState( {
-			reference: ''
-		} );
-	},
-
 	goToReference: function( event ) {
 		event.preventDefault();
 		this.props.onGoToReference( bible.parseReference( this.state.reference ) );
+		this.refs.referenceInput.getDOMNode().blur();
+		this.setState( {
+			focussed: false
+		} );
 	},
 
 	render: function() {
@@ -49,6 +59,7 @@ module.exports = React.createClass( {
 				<form onSubmit={ this.goToReference }>
 					<input
 						type="text"
+						ref="referenceInput"
 						value={ this.state.reference }
 						onChange={ this.handleChange }
 						onFocus={ this.handleFocus } />

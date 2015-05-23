@@ -38,13 +38,9 @@ var Layout = React.createClass( {
 		window.scrollTo( 0, 0 );
 	},
 
-	handleKeyDown: function() {
-		console.log( 'gg' );
-	},
-
 	render: function() {
 		return (
-			<div onKeyDown={ this.handleKeyDown }>
+			<div>
 				<Reference context={ this.props.context } onGoToReference={ this.goToReference } displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
 				<Tray displayState={ this.state } onGoToReference={ this.goToReference } onChangeDisplayState={ this.changeDisplayState } wordTracking={ wordTracking } />
 			</div>
