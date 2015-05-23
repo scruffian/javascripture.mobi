@@ -1,7 +1,8 @@
 // External
 var React = require( 'react' ),
+	assign = require( 'lodash-node/modern/object/assign' ),
 	clone = require( 'lodash-node/modern/lang/clone' ),
-	assign = require( 'lodash-node/modern/object/assign' );
+	debounce = require( 'lodash-node/modern/function/debounce' );
 
 // Internal
 var wordTracking = require( './wordTracking.js' )(),
@@ -106,6 +107,11 @@ var ReferenceComponent = React.createClass( {
 		};
 	},
 
+	componentWillMount: function () {
+		var _debouncedScroll = debounce( this.handleScroll, 100 );
+		window.addEventListener( 'scroll', _debouncedScroll, false );
+	},
+
 	componentDidMount: function() {
 		var self = this;
 		this.callApi( this.props.context );
@@ -118,6 +124,39 @@ var ReferenceComponent = React.createClass( {
 
 	componentWillReceiveProps: function( nextProps ) {
 		this.callApi( nextProps.context );
+	},
+
+	handleScroll: function( event ) {
+		var references = null;
+
+		if ( 0 >= event.pageY ) {
+			//references = this.getReferenceOffset( -1 );
+		}
+
+		if( event.pageY >= document.body.clientHeight - window.innerHeight ) {
+			references = this.getReferenceOffset( 1 );
+		}
+
+		if ( references ) {
+			this.loadReferences( references );
+		}
+	},
+
+	loadReferences: function( references ) {
+		this.setState( {
+			references: references
+		}, function() {
+			api.getReference( this.state.references );
+		} );
+	},
+
+	getReferenceOffset: function( offset ) {
+		return this.state.references.map( function( reference ) {
+			var newReference = clone( reference );
+			newReference.data = null;
+			newReference.chapter = parseInt( reference.chapter ) + offset;
+			return newReference;
+		} );
 	},
 
 	callApi: function( context ) {
@@ -155,11 +194,7 @@ var ReferenceComponent = React.createClass( {
 			references[ 1 ] = secondReference;
 		}
 
-		this.setState( {
-			references: references
-		}, function() {
-			api.getReference( this.state.references );
-		} );
+		this.loadReferences( references );
 	},
 
 	toggleSync: function() {

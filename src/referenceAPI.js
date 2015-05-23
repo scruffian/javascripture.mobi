@@ -1,7 +1,7 @@
-var bible = require( './bible' );
-kjv = require( '../data/kjv.js' ),
-hebrew = require( '../data/hebrew.js' ),
-greek = require( '../data/greek.js' );
+var bible = require( './bible' ),
+	kjv = require( '../data/kjv.js' ),
+	hebrew = require( '../data/hebrew.js' ),
+	greek = require( '../data/greek.js' );
 
 module.exports = {
 	get: function( references ) {
