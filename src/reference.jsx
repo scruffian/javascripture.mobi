@@ -86,10 +86,51 @@ var Verse = React.createClass( {
 	}
 } );
 
+var Chapter = React.createClass( {
+	getSyncedVerses: function( index ) {
+		if ( this.props.sync ) {
+			return this.props.references.map( function( reference, counter ) {
+				if ( counter > 0 ) {
+					return <Verse verse={ reference.data[ index ] } columns={ this.props.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+				}
+			}, this );
+		}
+	},
+
+	getVerses: function() {
+		if ( this.props.reference.data ) {
+			return this.props.reference.data.map( function( verse, index ) {
+				return (
+					<li key={ index }>
+						<Verse verse={ verse } columns={ this.props.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+						{ this.getSyncedVerses( index ) }
+					</li>
+				);
+			}, this );
+		}
+	},
+
+	render: function() {
+		var classNames = 'chapter';
+		if ( ! this.props.sync ) {
+			classNames += ' columns';
+		}
+
+		return (
+			<div className={ classNames }>
+				<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
+				<h1>{ this.props.reference.book } { this.props.reference.chapter }</h1>
+				<ol>{ this.getVerses() }</ol>
+			</div>
+		);
+	}
+} );
+
 var ReferenceComponent = React.createClass( {
 	getInitialState: function() {
 		return {
 			sync: true,
+			range: [ 0, 1 ],
 			references: [
 				{
 					book: 'Genesis',
@@ -120,6 +161,16 @@ var ReferenceComponent = React.createClass( {
 				references: this.references
 			} );
 		} );
+
+		api.on( 'append', function() {
+			var references = this.references.map( function( reference, index ) {
+				return [ self.state.references[ index ], reference ];
+			} );
+			self.setState( {
+				references: references
+			} );
+		} );
+
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
@@ -138,7 +189,7 @@ var ReferenceComponent = React.createClass( {
 		}
 
 		if ( references ) {
-			this.loadReferences( references );
+			//this.appendReferences( references );
 		}
 	},
 
@@ -150,10 +201,19 @@ var ReferenceComponent = React.createClass( {
 		} );
 	},
 
+	appendReferences: function( references ) {
+		this.setState( {
+			references: references
+		}, function() {
+			api.appendReference( this.state.references );
+		} );
+	},
+
+
 	getReferenceOffset: function( offset ) {
 		return this.state.references.map( function( reference ) {
 			var newReference = clone( reference );
-			newReference.data = null;
+			//newReference.data = null;
 			newReference.chapter = parseInt( reference.chapter ) + offset;
 			return newReference;
 		} );
@@ -176,14 +236,14 @@ var ReferenceComponent = React.createClass( {
 		localStorage.reference = referenceString;
 
 		// Fire off a request to get the reference data
-		var referenceArray = [];
+/*		var referenceArray = [];
 		var primaryReference = clone( context.params );
 		primaryReference.version = 'kjv';
 		referenceArray.push( primaryReference );
 		var secondaryReference = clone( context.params );
 		secondaryReference.chapter = secondaryReference.chapter;
 		secondaryReference.version = 'original';
-		referenceArray.push( secondaryReference );
+		referenceArray.push( secondaryReference );*/
 
 		var firstReference = assign( clone( this.state.references[ 0 ] ), context.params );
 		var references = clone( this.state.references );
@@ -203,59 +263,35 @@ var ReferenceComponent = React.createClass( {
 		} );
 	},
 
-	getSyncedVerses: function( index ) {
+	chapters: function() {
 		if ( this.state.sync ) {
-			return this.state.references.map( function( reference, counter ) {
-				if ( counter > 0 ) {
-					return <Verse verse={ reference.data[ index ] } columns={ this.state.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
-				}
-			}, this );
-		}
-	},
-
-	getVerses: function( object ) {
-		return object.data.map( function( verse, index ) {
-			return (
-				<li key={ index }>
-					<Verse verse={ verse } columns={ this.state.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
-					{ this.getSyncedVerses( index ) }
-				</li>
-			);
-		}, this );
-	},
-
-	getChapter: function( reference ) {
-		if ( reference && reference.data ) {
-			var classNames = 'chapter';
-			if ( ! this.state.sync ) {
-				classNames += ' columns';
-			}
-
-			return (
-				<div className={ classNames }>
-					<ReferenceInput reference={ reference } onGoToReference={ this.props.onGoToReference } />
-					<h1>{ reference.book } { reference.chapter }</h1>
-					<ol>{ this.getVerses( reference ) }</ol>
-				</div>
-			);
-		}
-	},
-
-	getChapters: function() {
-		if ( this.state.sync ) {
-			return this.getChapter( this.state.references[ 0 ] );
+			return <Chapter
+				references={ this.state.references }
+				reference={ this.state.references[ 0 ] }
+				sync={ this.state.sync }
+				onGoToReference={ this.props.onGoToReference }
+				onChangeDisplayState={ this.state.onChangeDisplayState } />;
 		}
 
 		return this.state.references.map( function( reference ) {
-			return this.getChapter( reference );
+			return <Chapter
+				references={ this.state.references }
+				reference={ reference }
+				sync={ this.state.sync }
+				onGoToReference={ this.props.onGoToReference }
+				onChangeDisplayState={ this.props.onChangeDisplayState } />;
 		}, this );
+	},
+
+	range: function() {
+		return this.chapters();
 	},
 
 	render: function() {
 		return (
 			<div id="reference" className="reference">
 				<input type="checkbox" name="sync" checked={ this.state.sync } onChange={ this.toggleSync } /> Sync
-				{ this.getChapters() }
+				{ this.range() }
 			</div>
 		);
 	}

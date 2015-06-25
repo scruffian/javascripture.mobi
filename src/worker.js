@@ -15,6 +15,7 @@ module.exports = function( self ) {
 		if ( result ) {
 			self.postMessage( {
 				task: e.data.task,
+				type: e.data.type,
 				parameters: e.data.parameters,
 				result: result
 			} );

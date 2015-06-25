@@ -30,11 +30,23 @@ Emitter( Api.prototype );
 Api.prototype.getReference = function( references ) {
     worker.postMessage( {
         task: 'reference',
+        type: 'change',
         parameters: {
             references: references
         }
     } ); // send the worker a message
 };
+
+Api.prototype.appendReference = function( references ) {
+    worker.postMessage( {
+        task: 'reference',
+        type: 'append',
+        parameters: {
+            references: references
+        }
+    } ); // send the worker a message
+};
+
 
 Api.prototype.callback = function( event ) {
     if ( event.data.task === 'reference' ) {
@@ -43,13 +55,19 @@ Api.prototype.callback = function( event ) {
     if ( event.data.task === 'search' ) {
         this.searchResults = event;
     }
-    this.emit( 'change' );
+
+    if ( event.data.type === 'append' ) {
+        this.emit( 'append' );
+    } else {
+        this.emit( 'change' );
+    }
 };
 
 
 Api.prototype.search = function( lemma ) {
     worker.postMessage( {
         task: 'search',
+        type: 'change',
         parameters: {
             lemma: lemma,
             language: 'kjv',
