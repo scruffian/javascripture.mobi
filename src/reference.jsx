@@ -5,7 +5,8 @@ var React = require( 'react' ),
 	debounce = require( 'lodash-node/modern/function/debounce' );
 
 // Internal
-var wordTracking = require( './wordTracking.js' )(),
+var bible = require( './bible' ),
+	wordTracking = require( './wordTracking.js' )(),
 	api = require( './api.js' )(),
 	strongsColor = require( './strongsColor.js' ),
 	ReferenceInput = require( './reference-input.jsx' );
@@ -13,7 +14,9 @@ var wordTracking = require( './wordTracking.js' )(),
 var Word = React.createClass( {
 	showWordDetails: function() {
 		this.props.onChangeDisplayState( 'details', true );
-		wordTracking.add( this.props.lemma );
+		if ( this.props.lemma ) {
+			wordTracking.add( this.props.lemma );
+		}
 	},
 
 	isTracked: function() {
@@ -23,20 +26,26 @@ var Word = React.createClass( {
 	},
 
 	render: function() {
-
-		var className = 'word ' + this.props.lemma,
+		var className = 'word ',
 			wordStyle = {};
 
-		if ( this.isTracked() ) {
+		if ( this.props.lemma ) {
+			className += ' ' + this.props.lemma;
+		}
+
+		if ( this.isTracked() && this.props.lemma ) {
 			wordStyle = {
 				color: 'white',
 				backgroundColor: strongsColor.get( this.props.lemma )
 			};
 		}
 
-		return (
-			<span style={ wordStyle } className={ className } onClick={ this.showWordDetails } key={ this.props.key }>{ this.props.word } </span>
-		);
+		return <span
+			style={ wordStyle }
+			className={ className }
+			onClick={ this.showWordDetails }
+			key={ this.props.key }
+			dangerouslySetInnerHTML={{ __html: this.props.word + ' ' }}></span>; // Leave that space
 	}
 } );
 
@@ -46,7 +55,10 @@ var WordString = React.createClass( {
 			var lemma,
 				morph;
 
-			lemma = this.props.lemma.split( '/' )[ index ];
+			if ( this.props.lemma ) {
+				lemma = this.props.lemma.split( '/' )[ index ];
+			}
+
 
 			if ( this.props.morph ) {
 				morph = this.props.morph.split( '/' )[ index ];
@@ -203,14 +215,6 @@ var ReferenceComponent = React.createClass( {
 			}, this );
 			self.setState( { references: references } );
 		} );
-
-		api.on( 'append', function() {
-			var references = this.references.map( function( reference, index ) {
-				return [ self.state.references[ index ], reference ];
-			} );
-			self.setState( { references: references } );
-		} );
-
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
@@ -218,33 +222,63 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	handleScroll: function( event ) {
-		var references = null;
-
+		var newReferences = [];
 		if ( 0 >= event.pageY ) {
-			//references = this.getReferenceOffset( -1 );
+			newReferences = this.state.references.map( function( reference ) {
+				return bible.parseReference( reference.book + ' ' + reference.chapter ).prevChapter().toObject();
+			} );
 		}
 
 		if ( event.pageY >= document.body.clientHeight - window.innerHeight ) {
-			references = this.getReferenceOffset( 1 );
+			newReferences = this.state.references.map( function( reference ) {
+				return bible.parseReference( reference.book + ' ' + reference.chapter ).nextChapter().toObject();
+			} );
 		}
 
-		if ( references ) {
-			//this.appendReferences( references );
+		if ( newReferences && newReferences.length > 0 ) {
+			this.loadReferences( newReferences );
 		}
+	},
+
+	placeholderVerses: function( reference ) {
+		var verses = [],
+			i = 0;
+		while ( i < bible.Data.verses[ reference.bookID ][ reference.chapter ] ) {
+			verses.push( [ [ '&nbsp;' ] ] );
+			i++;
+		}
+		return verses;
+	},
+
+	getReferenceDataWithVerses: function( reference ) {
+		var referenceObject = reference.toObject();
+		referenceObject.verses = this.placeholderVerses( reference );
+		return referenceObject;
+	},
+
+	getReferenceData: function( reference ) {
+		var parsedReference = bible.parseReference( reference.book + ' ' + reference.chapter ),
+			previousChapter = parsedReference.prevChapter(),
+			nextChapter = parsedReference.nextChapter();
+
+		reference.data = [
+			this.getReferenceDataWithVerses( previousChapter ),
+			this.getReferenceDataWithVerses( parsedReference ),
+			this.getReferenceDataWithVerses( nextChapter )
+		];
+
+		return reference;
 	},
 
 	loadReferences: function( references ) {
-		this.setState( { references: references }, function() {
+		var newReferences = references.map( function( reference ) {
+			return this.getReferenceData( reference );
+		}, this );
+
+		this.setState( { references: newReferences }, function() {
 			api.getReference( this.state.references );
 		} );
 	},
-
-	appendReferences: function( references ) {
-		this.setState( { references: references }, function() {
-			api.appendReference( this.state.references );
-		} );
-	},
-
 
 	getReferenceOffset: function( offset ) {
 		return this.state.references.map( function( reference ) {

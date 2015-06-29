@@ -37,17 +37,6 @@ Api.prototype.getReference = function( references ) {
     } ); // send the worker a message
 };
 
-Api.prototype.appendReference = function( references ) {
-    worker.postMessage( {
-        task: 'reference',
-        type: 'append',
-        parameters: {
-            references: references
-        }
-    } ); // send the worker a message
-};
-
-
 Api.prototype.callback = function( event ) {
     if ( event.data.task === 'reference' ) {
         this.references = event.data.result;
@@ -56,11 +45,7 @@ Api.prototype.callback = function( event ) {
         this.searchResults = event;
     }
 
-    if ( event.data.type === 'append' ) {
-        this.emit( 'append' );
-    } else {
-        this.emit( 'change' );
-    }
+    this.emit( 'change' );
 };
 
 
