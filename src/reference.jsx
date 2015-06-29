@@ -87,40 +87,47 @@ var Verse = React.createClass( {
 } );
 
 var Chapter = React.createClass( {
-	getSyncedVerses: function( index ) {
+	getSyncedVerses: function( chapter, chapterIndex, verseIndex ) {
 		if ( this.props.sync ) {
 			return this.props.references.map( function( reference, counter ) {
 				if ( counter > 0 ) {
-					return <Verse verse={ reference.data[ index ] } columns={ this.props.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+					return <Verse verse={ reference.data[ chapterIndex ].verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
 				}
 			}, this );
 		}
 	},
 
-	getVerses: function() {
-		if ( this.props.reference.data ) {
-			return this.props.reference.data.map( function( verse, index ) {
-				return (
-					<li key={ index }>
-						<Verse verse={ verse } columns={ this.props.sync } number={ index + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
-						{ this.getSyncedVerses( index ) }
-					</li>
-				);
-			}, this );
-		}
+	getVerses: function( chapter, chapterIndex ) {
+		return chapter.verses.map( function( verse, verseIndex ) {
+			return (
+				<li key={ verseIndex }>
+					<Verse verse={ verse } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+					{ this.getSyncedVerses( chapter, chapterIndex, verseIndex ) }
+				</li>
+			);
+		}, this );
 	},
 
 	render: function() {
-		var classNames = 'chapter';
+		var classNames = 'chapter',
+			chapters;
 		if ( ! this.props.sync ) {
 			classNames += ' columns';
+		}
+
+		if ( this.props.reference.data ) {
+			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
+				return <div>
+					<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
+					<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
+				</div>;
+			}, this );
 		}
 
 		return (
 			<div className={ classNames }>
 				<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
-				<h1>{ this.props.reference.book } { this.props.reference.chapter }</h1>
-				<ol>{ this.getVerses() }</ol>
+				{ chapters }
 			</div>
 		);
 	}
@@ -130,25 +137,58 @@ var ReferenceComponent = React.createClass( {
 	getInitialState: function() {
 		return {
 			sync: true,
-			range: [ 0, 1 ],
 			references: [
 				{
 					book: 'Genesis',
-					chapter: 1,
+					chapter: 2,
 					verse: 1,
-					version: 'kjv'
+					version: 'kjv',
+					data: [
+						{
+							book: 'Genesis',
+							chapter: 1,
+							verses: []
+						},
+						{
+							book: 'Genesis',
+							chapter: 2,
+							verses: []
+						},
+						{
+							book: 'Genesis',
+							chapter: 3,
+							verses: []
+						}
+					]
 				},
 				{
 					book: 'Genesis',
 					chapter: 2,
 					verse: 1,
-					version: 'original'
+					version: 'original',
+					data: [
+						{
+							book: 'Genesis',
+							chapter: 1,
+							verses: []
+						},
+						{
+							book: 'Genesis',
+							chapter: 2,
+							verses: []
+						},
+						{
+							book: 'Genesis',
+							chapter: 3,
+							verses: []
+						}
+					]
 				}
 			]
 		};
 	},
 
-	componentWillMount: function () {
+	componentWillMount: function() {
 		var _debouncedScroll = debounce( this.handleScroll, 100 );
 		window.addEventListener( 'scroll', _debouncedScroll, false );
 	},
@@ -157,18 +197,18 @@ var ReferenceComponent = React.createClass( {
 		var self = this;
 		this.callApi( this.props.context );
 		api.on( 'change', function() {
-			self.setState( {
-				references: this.references
-			} );
+			var references = self.state.references.map( function( reference, index ) {
+				reference.data = this.references[ index ];
+				return reference;
+			}, this );
+			self.setState( { references: references } );
 		} );
 
 		api.on( 'append', function() {
 			var references = this.references.map( function( reference, index ) {
 				return [ self.state.references[ index ], reference ];
 			} );
-			self.setState( {
-				references: references
-			} );
+			self.setState( { references: references } );
 		} );
 
 	},
@@ -184,7 +224,7 @@ var ReferenceComponent = React.createClass( {
 			//references = this.getReferenceOffset( -1 );
 		}
 
-		if( event.pageY >= document.body.clientHeight - window.innerHeight ) {
+		if ( event.pageY >= document.body.clientHeight - window.innerHeight ) {
 			references = this.getReferenceOffset( 1 );
 		}
 
@@ -194,17 +234,13 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	loadReferences: function( references ) {
-		this.setState( {
-			references: references
-		}, function() {
+		this.setState( { references: references }, function() {
 			api.getReference( this.state.references );
 		} );
 	},
 
 	appendReferences: function( references ) {
-		this.setState( {
-			references: references
-		}, function() {
+		this.setState( { references: references }, function() {
 			api.appendReference( this.state.references );
 		} );
 	},
@@ -236,14 +272,14 @@ var ReferenceComponent = React.createClass( {
 		localStorage.reference = referenceString;
 
 		// Fire off a request to get the reference data
-/*		var referenceArray = [];
-		var primaryReference = clone( context.params );
-		primaryReference.version = 'kjv';
-		referenceArray.push( primaryReference );
-		var secondaryReference = clone( context.params );
-		secondaryReference.chapter = secondaryReference.chapter;
-		secondaryReference.version = 'original';
-		referenceArray.push( secondaryReference );*/
+		/*		var referenceArray = [];
+				var primaryReference = clone( context.params );
+				primaryReference.version = 'kjv';
+				referenceArray.push( primaryReference );
+				var secondaryReference = clone( context.params );
+				secondaryReference.chapter = secondaryReference.chapter;
+				secondaryReference.version = 'original';
+				referenceArray.push( secondaryReference );*/
 
 		var firstReference = assign( clone( this.state.references[ 0 ] ), context.params );
 		var references = clone( this.state.references );
@@ -258,9 +294,7 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	toggleSync: function() {
-		this.setState( {
-			sync: ! this.state.sync
-		} );
+		this.setState( { sync: ! this.state.sync } );
 	},
 
 	chapters: function() {

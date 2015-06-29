@@ -308,11 +308,11 @@ bible.Reference = function() {
 			this.verse1 = 1;
 			this.chapter2 = -1;
 			this.verse2 = -1;
-			if ( this.chapter1 == 1 && this.bookID > 1 ) {
+			if ( this.chapter == 1 && this.bookID > 1 ) {
 				this.bookID--;
-				this.chapter1 = bible.Data.verses[ this.bookID - 1 ].length;
+				this.chapter = bible.Data.verses[ this.bookID - 1 ].length;
 			} else {
-				this.chapter1--;
+				this.chapter--;
 			}
 			return this;
 		},
@@ -320,11 +320,11 @@ bible.Reference = function() {
 			this.verse1 = 1;
 			this.chapter2 = -1;
 			this.verse2 = -1;
-			if ( this.chapter1 < bible.Data.verses[ this.bookID - 1 ].length ) {
-				this.chapter1++;
+			if ( this.chapter < bible.Data.verses[ this.bookID - 1 ].length ) {
+				this.chapter++;
 			} else if ( this.bookID < bible.Data.books.length ) {
 				this.bookID++;
-				this.chapter1 = 1;
+				this.chapter = 1;
 			}
 
 			return this;
