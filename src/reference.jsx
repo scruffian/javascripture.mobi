@@ -237,7 +237,9 @@ var ReferenceComponent = React.createClass( {
 
 		if ( event.pageY >= document.body.clientHeight - window.innerHeight ) {
 			newReferences = this.state.references.map( function( reference ) {
-				return bible.parseReference( reference.book + ' ' + reference.chapter ).nextChapter().toObject();
+				var newReference = bible.parseReference( reference.book + ' ' + reference.chapter ).nextChapter().toObject();
+				newReference.version = reference.version;
+				return newReference;
 			} );
 		}
 
@@ -278,6 +280,10 @@ var ReferenceComponent = React.createClass( {
 
 	loadReferences: function( references ) {
 		var newReferences = references.map( function( reference ) {
+			if ( reference.data ) {
+				return reference;
+			}
+
 			return this.getReferenceData( reference );
 		}, this );
 
@@ -335,7 +341,7 @@ var ReferenceComponent = React.createClass( {
 				reference={ this.state.references[ 0 ] }
 				sync={ this.state.sync }
 				onGoToReference={ this.props.onGoToReference }
-				onChangeDisplayState={ this.state.onChangeDisplayState } />;
+				onChangeDisplayState={ this.props.onChangeDisplayState } />;
 		}
 
 		return this.state.references.map( function( reference ) {
