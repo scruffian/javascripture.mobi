@@ -34,7 +34,7 @@ var Layout = React.createClass( {
 
 	goToReference: function( referenceObject ) {
 		var url = referenceObject.toUrl();
-		page( url );
+page( url );
 		window.scrollTo( 0, 0 );
 	},
 

@@ -109,10 +109,14 @@ var Chapter = React.createClass( {
 		}
 	},
 
+	ref: function() {
+		return this.props.reference.book + ':' + this.props.reference.chapter;
+	},
+
 	getVerses: function( chapter, chapterIndex ) {
 		return chapter.verses.map( function( verse, verseIndex ) {
 			return (
-				<li key={ verseIndex }>
+				<li key={ verseIndex } ref={ this.ref() }>
 					<Verse verse={ verse } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
 					{ this.getSyncedVerses( chapter, chapterIndex, verseIndex ) }
 				</li>
@@ -225,7 +229,9 @@ var ReferenceComponent = React.createClass( {
 		var newReferences = [];
 		if ( 0 >= event.pageY ) {
 			newReferences = this.state.references.map( function( reference ) {
-				return bible.parseReference( reference.book + ' ' + reference.chapter ).prevChapter().toObject();
+				var newReference = bible.parseReference( reference.book + ' ' + reference.chapter ).prevChapter().toObject();
+				newReference.version = reference.version;
+				return newReference;
 			} );
 		}
 
@@ -277,15 +283,6 @@ var ReferenceComponent = React.createClass( {
 
 		this.setState( { references: newReferences }, function() {
 			api.getReference( this.state.references );
-		} );
-	},
-
-	getReferenceOffset: function( offset ) {
-		return this.state.references.map( function( reference ) {
-			var newReference = clone( reference );
-			//newReference.data = null;
-			newReference.chapter = parseInt( reference.chapter ) + offset;
-			return newReference;
 		} );
 	},
 
