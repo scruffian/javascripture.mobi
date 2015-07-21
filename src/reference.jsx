@@ -6,104 +6,16 @@ var React = require( 'react' ),
 
 // Internal
 var bible = require( './bible' ),
-	wordTracking = require( './wordTracking.js' )(),
 	api = require( './api.js' )(),
-	strongsColor = require( './strongsColor.js' ),
-	ReferenceInput = require( './reference-input.jsx' );
-
-var Word = React.createClass( {
-	showWordDetails: function() {
-		this.props.onChangeDisplayState( 'details', true );
-		if ( this.props.lemma ) {
-			wordTracking.add( this.props.lemma );
-		}
-	},
-
-	isTracked: function() {
-		return wordTracking.trackedWords.some( function( wordObject ) {
-			return 'undefined' !== typeof wordObject[ this.props.lemma ];
-		}, this );
-	},
-
-	render: function() {
-		var className = 'word ',
-			wordStyle = {};
-
-		if ( this.props.lemma ) {
-			className += ' ' + this.props.lemma;
-		}
-
-		if ( this.isTracked() && this.props.lemma ) {
-			wordStyle = {
-				color: 'white',
-				backgroundColor: strongsColor.get( this.props.lemma )
-			};
-		}
-
-		return <span
-			style={ wordStyle }
-			className={ className }
-			onClick={ this.showWordDetails }
-			key={ this.props.key }
-			dangerouslySetInnerHTML={{ __html: this.props.word + ' ' }}></span>; // Leave that space
-	}
-} );
-
-var WordString = React.createClass( {
-	render: function() {
-		var wordString = this.props.word.split( '/' ).map( function( word, index ) {
-			var lemma,
-				morph;
-
-			if ( this.props.lemma ) {
-				lemma = this.props.lemma.split( '/' )[ index ];
-			}
-
-
-			if ( this.props.morph ) {
-				morph = this.props.morph.split( '/' )[ index ];
-			}
-
-			return (
-				<Word word={ word } lemma={ lemma } morph={ morph } key={ this.props.key } onChangeDisplayState={ this.props.onChangeDisplayState } />
-			);
-		}, this );
-
-		return (
-			<span>{ wordString } </span> // Leave that space
-		);
-	}
-
-} );
-
-var Verse = React.createClass( {
-	render: function() {
-		var className = "verse",
-			verse;
-
-		if ( this.props.columns ) {
-			className += " columns";
-		}
-
-		verse = this.props.verse.map( function( word, index ) {
-			return (
-				<WordString word={ word[ 0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } onChangeDisplayState={ this.props.onChangeDisplayState } />
-			);
-		}, this );
-		return (
-			<div className={ className }>
-				{ this.props.number }. { verse }
-			</div>
-		);
-	}
-} );
+	ReferenceInput = require( './reference-input.jsx' ),
+	Verse = require( './verse.jsx' );
 
 var Chapter = React.createClass( {
 	getSyncedVerses: function( chapter, chapterIndex, verseIndex ) {
 		if ( this.props.sync ) {
 			return this.props.references.map( function( reference, counter ) {
 				if ( counter > 0 ) {
-					return <Verse verse={ reference.data[ chapterIndex ].verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+					return <Verse key={ counter } verse={ reference.data[ chapterIndex ].verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
 				}
 			}, this );
 		}
@@ -133,7 +45,7 @@ var Chapter = React.createClass( {
 
 		if ( this.props.reference.data ) {
 			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
-				return <div>
+				return <div key={ chapterIndex }>
 					<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
 					<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
 				</div>;
