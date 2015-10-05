@@ -15,9 +15,11 @@ module.exports = React.createClass( {
 
 		if ( this.props.verse ) {
 			verse = this.props.verse.map( function( word, index ) {
-				return (
-					<WordString word={ word[ 0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } onChangeDisplayState={ this.props.onChangeDisplayState } />
-				);
+				if ( word ) {
+					return (
+						<WordString word={ word[ 0 ] } lemma={ word[ 1 ] } morph={ word[ 2 ] } key={ index } onChangeDisplayState={ this.props.onChangeDisplayState } />
+					);
+				}
 			}, this );
 		}
 
