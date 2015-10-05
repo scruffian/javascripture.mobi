@@ -1,6 +1,6 @@
 var bible = require( './bible' ),
 	kjv = require( '../data/kjv.js' ),
-	hebrew = {}, //require( '../data/hebrew.js' ),
+	hebrew = require( '../data/hebrew.js' ),
 	greek = require( '../data/greek.js' );
 
 var clone = require( 'lodash-node/modern/lang/clone' );

@@ -140,7 +140,19 @@ var ReferenceComponent = React.createClass( {
 	handleScroll: function( event ) {
 		var newReferences = [];
 		if ( 0 >= event.pageY ) {
-			newReferences = this.state.references.map( function( reference ) {
+			// take off the last reference
+			var newReferences = clone( this.state.references );
+			newReferences.pop();
+			// newReferences now had the last reference removed
+
+			// add a new reference at the front
+			var firstReference = bible.parseReference( newReferences[ 0 ].book + ' ' newReferences[ 0 ].chapter ).prevChapter.toObject();
+			firstReference.version = newReferences[ 0 ].version;
+
+			//newReferences
+
+
+			this.state.references.map( function( reference ) {
 				var newReference = bible.parseReference( reference.book + ' ' + reference.chapter ).prevChapter().toObject();
 				newReference.version = reference.version;
 				return newReference;
@@ -148,6 +160,9 @@ var ReferenceComponent = React.createClass( {
 		}
 
 		if ( event.pageY >= document.body.clientHeight - window.innerHeight ) {
+
+			// use shift
+
 			newReferences = this.state.references.map( function( reference ) {
 				var newReference = bible.parseReference( reference.book + ' ' + reference.chapter ).nextChapter().toObject();
 				newReference.version = reference.version;
