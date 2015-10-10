@@ -1,5 +1,5 @@
 var kjv = require( '../data/kjv.js' );
-var hebrew = require( '../data/hebrew.js' );
+var hebrew = {}; //require( '../data/hebrew.js' );
 var greek = require( '../data/greek.js' );
 
 module.exports = {

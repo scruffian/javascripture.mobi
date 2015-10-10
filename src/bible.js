@@ -227,7 +227,6 @@ bible.parseReference = function( textReference ) {
 		verse1 = bible.Data.verses[ bookID - 1 ][ chapter1 - 1 ];
 	}
 
-
 	// finalize
 
 	return new bible.Reference( bookID, chapter1, verse1, chapter2, verse2 );

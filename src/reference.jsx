@@ -15,7 +15,7 @@ var Chapter = React.createClass( {
 		if ( this.props.sync ) {
 			return this.props.references.map( function( reference, counter ) {
 				if ( counter > 0 ) {
-					return <Verse key={ counter } verse={ reference.data[ chapterIndex ].verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+					return <Verse key={ counter } verse={ reference.data.verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
 				}
 			}, this );
 		}
@@ -26,14 +26,16 @@ var Chapter = React.createClass( {
 	},
 
 	getVerses: function( chapter, chapterIndex ) {
-		return chapter.verses.map( function( verse, verseIndex ) {
-			return (
-				<li key={ verseIndex } ref={ this.ref() }>
-					<Verse verse={ verse } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
-					{ this.getSyncedVerses( chapter, chapterIndex, verseIndex ) }
-				</li>
-			);
-		}, this );
+		if ( chapter.verses ) {
+			return chapter.verses.map( function( verse, verseIndex ) {
+				return (
+					<li key={ verseIndex } ref={ this.ref() }>
+						<Verse verse={ verse } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+						{ this.getSyncedVerses( chapter, chapterIndex, verseIndex ) }
+					</li>
+				);
+			}, this );
+		}
 	},
 
 	render: function() {
@@ -44,12 +46,20 @@ var Chapter = React.createClass( {
 		}
 
 		if ( this.props.reference.data ) {
-			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
+			console.log( this.props.reference.data );
+			return (
+				<div key={ this.props.reference.data.chapter }>
+					<h1>{ this.props.reference.data.book } { parseInt( this.props.reference.data.chapter ) }</h1>
+					<ol>{ this.getVerses( this.props.reference.data, this.props.reference.data.chapter ) }</ol>
+				</div>
+			);
+
+/*			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
 				return <div key={ chapterIndex }>
 					<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
 					<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
 				</div>;
-			}, this );
+			}, this );*/
 		}
 
 		return (
@@ -71,46 +81,22 @@ var ReferenceComponent = React.createClass( {
 					chapter: 2,
 					verse: 1,
 					version: 'kjv',
-					data: [
-						{
-							book: 'Genesis',
-							chapter: 1,
-							verses: []
-						},
-						{
-							book: 'Genesis',
-							chapter: 2,
-							verses: []
-						},
-						{
-							book: 'Genesis',
-							chapter: 3,
-							verses: []
-						}
-					]
+					data: {
+						book: 'Genesis',
+						chapter: 1,
+						verses: []
+					}
 				},
 				{
 					book: 'Genesis',
 					chapter: 2,
 					verse: 1,
 					version: 'original',
-					data: [
-						{
-							book: 'Genesis',
-							chapter: 1,
-							verses: []
-						},
-						{
-							book: 'Genesis',
-							chapter: 2,
-							verses: []
-						},
-						{
-							book: 'Genesis',
-							chapter: 3,
-							verses: []
-						}
-					]
+					data: {
+						book: 'Genesis',
+						chapter: 1,
+						verses: []
+					}
 				}
 			]
 		};
@@ -125,7 +111,10 @@ var ReferenceComponent = React.createClass( {
 		var self = this;
 		this.callApi( this.props.context );
 		api.on( 'change', function() {
+			console.log( 'api on change' );
+			console.log( self.state.references );
 			var references = self.state.references.map( function( reference, index ) {
+				console.log( reference );
 				reference.data = this.references[ index ];
 				return reference;
 			}, this );
@@ -141,18 +130,18 @@ var ReferenceComponent = React.createClass( {
 		var newReferences = [];
 		if ( 0 >= event.pageY ) {
 			// take off the last reference
-			var newReferences = clone( this.state.references );
+			/*var newReferences = clone( this.state.references );
 			newReferences.pop();
 			// newReferences now had the last reference removed
 
 			// add a new reference at the front
-			var firstReference = bible.parseReference( newReferences[ 0 ].book + ' ' newReferences[ 0 ].chapter ).prevChapter.toObject();
+			var firstReference = bible.parseReference( newReferences[ 0 ].book + ' ' + newReferences[ 0 ].chapter ).prevChapter().toObject();
 			firstReference.version = newReferences[ 0 ].version;
 
-			//newReferences
+			//newReferences*/
 
 
-			this.state.references.map( function( reference ) {
+			newReferences = this.state.references.map( function( reference ) {
 				var newReference = bible.parseReference( reference.book + ' ' + reference.chapter ).prevChapter().toObject();
 				newReference.version = reference.version;
 				return newReference;
@@ -196,11 +185,13 @@ var ReferenceComponent = React.createClass( {
 			previousChapter = parsedReference.prevChapter(),
 			nextChapter = parsedReference.nextChapter();
 
-		reference.data = [
+		/*reference.data = [
 			this.getReferenceDataWithVerses( previousChapter ),
 			this.getReferenceDataWithVerses( parsedReference ),
 			this.getReferenceDataWithVerses( nextChapter )
-		];
+		];*/
+
+		reference.data = this.getReferenceDataWithVerses( parsedReference );
 
 		return reference;
 	},
@@ -220,6 +211,7 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	callApi: function( context ) {
+		console.log( 'callApi' );
 		var reference = {},
 			referenceString = '/';
 		reference.book = context.params.book;

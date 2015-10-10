@@ -1,12 +1,18 @@
 var bible = require( './bible' ),
 	kjv = require( '../data/kjv.js' ),
-	hebrew = require( '../data/hebrew.js' ),
+	hebrew = {}, //require( '../data/hebrew.js' ),
 	greek = require( '../data/greek.js' );
 
 var clone = require( 'lodash-node/modern/lang/clone' );
 
 module.exports = {
 	get: function( references ) {
+		return references.map( function( reference ) {
+			return this.getChapter( reference );
+		}.bind( this ) );
+	},
+
+	getThree: function( references ) {
 		return references.map( function( reference ) {
 			return this.getThreeChapters( reference );
 		}.bind( this ) );
@@ -23,6 +29,13 @@ module.exports = {
 		nextChapter.verses = this.getChapterData( nextChapter, reference.version );
 
 		return [ previousChapter, currentChapter, nextChapter ];
+	},
+
+	getChapter: function( reference ) {
+		var referenceString = reference.book + ' ' + reference.chapter;
+		var currentChapter = bible.parseReference( referenceString ).toObject();
+		currentChapter.verses = this.getChapterData( currentChapter, reference.version );
+		return currentChapter;
 	},
 
 	getChapterData: function( reference, version ) {
