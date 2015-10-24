@@ -104,9 +104,9 @@ module.exports = React.createClass( {
 	getPreviousChapter: function() {
 		return this.state.references.map( function( reference, index ) {
 			var firstReference = reference.data[ 0 ];
-			var nextReference = bible.parseReference( firstReference.book + ' ' + firstReference.chapter ).prevChapter().toObject();
-			nextReference.version = reference.version;
-			reference.data.unshift( nextReference );
+			var previousReference = bible.parseReference( firstReference.book + ' ' + firstReference.chapter ).prevChapter().toObject();
+			previousReference.version = reference.version;
+			reference.data.unshift( previousReference );
 			return reference;
 		} );
 
@@ -136,17 +136,6 @@ module.exports = React.createClass( {
 		if ( references && references.length > 0 ) {
 			this.loadReferences( references );
 		}
-
-	},
-
-	getReferenceData: function( reference ) {
-		var parsedReference = bible.parseReference( reference.book + ' ' + reference.chapter ),
-			previousChapter = parsedReference.prevChapter(),
-			nextChapter = parsedReference.nextChapter();
-
-		reference.data.push( parsedReference );
-
-		return reference;
 	},
 
 	loadReferences: function( references ) {

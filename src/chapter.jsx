@@ -43,10 +43,12 @@ module.exports = React.createClass( {
 		if ( this.props.reference.data ) {
 			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
 				if ( chapter.verses ) {
-					return ( <div key={ chapterIndex }>
-						<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
-						<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
-					</div> );
+					return (
+						<div key={ chapterIndex }>
+							<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
+							<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
+						</div>
+					);
 				}
 			}, this );
 		}
