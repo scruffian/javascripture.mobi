@@ -93,10 +93,10 @@ var ReferenceComponent = React.createClass( {
 		window.addEventListener( 'scroll', _debouncedScroll, false );
 	},
 
-	documentHeight: function() {
-		var body = document.body,
-			html = document.documentElement;
-		return Math.max( body.scrollHeight, body.offsetHeight );//, html.clientHeight, html.scrollHeight, html.offsetHeight );
+	componentWillReceiveProps: function( nextProps ) {
+		if ( nextProps.context !== this.props.context ) {
+			this.callApi( nextProps.context );
+		}
 	},
 
 	componentDidMount: function() {
@@ -138,10 +138,9 @@ var ReferenceComponent = React.createClass( {
 		} );
 	},
 
-	componentWillReceiveProps: function( nextProps ) {
-		if ( nextProps.context !== this.props.context ) {
-			this.callApi( nextProps.context );
-		}
+	documentHeight: function() {
+		var body = document.body;
+		return Math.max( body.scrollHeight, body.offsetHeight );
 	},
 
 	getPreviousChapter: function() {
@@ -180,22 +179,6 @@ var ReferenceComponent = React.createClass( {
 			this.loadReferences( references );
 		}
 
-	},
-
-	placeholderVerses: function( reference ) {
-		var verses = [],
-			i = 0;
-		while ( i < bible.Data.verses[ reference.bookID ][ reference.chapter ] ) {
-			verses.push( [ [ '&nbsp;' ] ] );
-			i++;
-		}
-		return verses;
-	},
-
-	getReferenceDataWithVerses: function( reference ) {
-		var referenceObject = reference.toObject();
-		referenceObject.verses = this.placeholderVerses( reference );
-		return referenceObject;
 	},
 
 	getReferenceData: function( reference ) {
