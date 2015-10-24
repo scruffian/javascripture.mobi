@@ -112,13 +112,16 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	handleApiChange: function( apiResult ) {
-		var onlyOneReference = false;
+		var oldHeight = this.documentHeight(),
+			onlyOneReference = false,
+			insertedAtTheBeginning = false,
+			references = [];
+
 		if ( this.state.references && this.state.references[0].data.length === 1) {
 			onlyOneReference = true;
 		}
 
-		var insertedAtTheBeginning = false;
-		var references = this.state.references.map( function( reference ) {
+		references = this.state.references.map( function( reference ) {
 			reference.data.map( function( referenceData, index ) {
 				if ( this.referencesAreTheSame( referenceData, apiResult.references ) ) {
 					referenceData.verses = apiResult.references.verses;
@@ -131,11 +134,9 @@ var ReferenceComponent = React.createClass( {
 			return reference;
 		}, this );
 
-		var oldHeight = this.documentHeight();
 		this.setState( { references: references }, function() {
 			if( insertedAtTheBeginning && ! onlyOneReference ) {
-				var newHeight = this.documentHeight();
-				window.scrollBy( 0, newHeight - oldHeight );
+				this.maintainScrollPosition( oldHeight );
 			}
 		} );
 	},
@@ -149,6 +150,11 @@ var ReferenceComponent = React.createClass( {
 	documentHeight: function() {
 		var body = document.body;
 		return Math.max( body.scrollHeight, body.offsetHeight );
+	},
+
+	maintainScrollPosition: function( oldHeight ) {
+		var newHeight = this.documentHeight();
+		window.scrollBy( 0, newHeight - oldHeight );
 	},
 
 	getPreviousChapter: function() {
