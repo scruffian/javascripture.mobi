@@ -107,35 +107,43 @@ var ReferenceComponent = React.createClass( {
 		this.loadReferences( this.getNextChapter() );
 
 		api.on( 'change', function() {
-			var onlyOneReference = false;
-			if ( self.state.references && self.state.references[0].data.length === 1) {
-				onlyOneReference = true;
-			}
-
-			var insertedAtTheBeginning = false;
-			var references = self.state.references.map( function( reference ) {
-				reference.data.map( function( referenceData, index ) {
-					if ( referenceData.version === this.references.version &&
-						referenceData.book === this.references.book &&
-						referenceData.chapter == this.references.chapter ) {
-						referenceData.verses = this.references.verses;
-						if( index === 0 ) {
-							insertedAtTheBeginning = true;
-						}
-					}
-					return referenceData;
-				}, this );
-				return reference;
-			}, this );
-
-			var oldHeight = self.documentHeight();
-			self.setState( { references: references }, function() {
-				if( insertedAtTheBeginning && ! onlyOneReference ) {
-					var newHeight = self.documentHeight();
-					window.scrollBy( 0, newHeight - oldHeight );
-				}
-			} );
+			self.handleApiChange( this );
 		} );
+	},
+
+	handleApiChange: function( apiResult ) {
+		var onlyOneReference = false;
+		if ( this.state.references && this.state.references[0].data.length === 1) {
+			onlyOneReference = true;
+		}
+
+		var insertedAtTheBeginning = false;
+		var references = this.state.references.map( function( reference ) {
+			reference.data.map( function( referenceData, index ) {
+				if ( this.referencesAreTheSame( referenceData, apiResult.references ) ) {
+					referenceData.verses = apiResult.references.verses;
+					if( index === 0 ) {
+						insertedAtTheBeginning = true;
+					}
+				}
+				return referenceData;
+			}, this );
+			return reference;
+		}, this );
+
+		var oldHeight = this.documentHeight();
+		this.setState( { references: references }, function() {
+			if( insertedAtTheBeginning && ! onlyOneReference ) {
+				var newHeight = this.documentHeight();
+				window.scrollBy( 0, newHeight - oldHeight );
+			}
+		} );
+	},
+
+	referencesAreTheSame: function( firstReference, secondReference ) {
+		return firstReference.version === secondReference.version &&
+			firstReference.book === secondReference.book &&
+			firstReference.chapter == secondReference.chapter;
 	},
 
 	documentHeight: function() {
