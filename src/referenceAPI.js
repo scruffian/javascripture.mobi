@@ -6,10 +6,11 @@ var bible = require( './bible' ),
 var clone = require( 'lodash-node/modern/lang/clone' );
 
 module.exports = {
-	get: function( references ) {
-		return references.map( function( reference ) {
+	get: function( reference ) {
+		return this.getChapter( reference );
+		/*return references.map( function( reference ) {
 			return this.getChapter( reference );
-		}.bind( this ) );
+		}.bind( this ) );*/
 	},
 
 	getThree: function( references ) {
@@ -34,6 +35,7 @@ module.exports = {
 	getChapter: function( reference ) {
 		var referenceString = reference.book + ' ' + reference.chapter;
 		var currentChapter = bible.parseReference( referenceString ).toObject();
+		currentChapter.version = reference.version;
 		currentChapter.verses = this.getChapterData( currentChapter, reference.version );
 		return currentChapter;
 	},

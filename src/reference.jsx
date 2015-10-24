@@ -14,8 +14,8 @@ var Chapter = React.createClass( {
 	getSyncedVerses: function( chapter, chapterIndex, verseIndex ) {
 		if ( this.props.sync ) {
 			return this.props.references.map( function( reference, counter ) {
-				if ( counter > 0 ) {
-					return <Verse key={ counter } verse={ reference.data.verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+				if ( counter > 0 && typeof reference.data[ chapterIndex ].verses !== 'undefined' ) {
+					return <Verse key={ counter } verse={ reference.data[ chapterIndex ].verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
 				}
 			}, this );
 		}
@@ -46,20 +46,14 @@ var Chapter = React.createClass( {
 		}
 
 		if ( this.props.reference.data ) {
-			console.log( this.props.reference.data );
-			return (
-				<div key={ this.props.reference.data.chapter }>
-					<h1>{ this.props.reference.data.book } { parseInt( this.props.reference.data.chapter ) }</h1>
-					<ol>{ this.getVerses( this.props.reference.data, this.props.reference.data.chapter ) }</ol>
-				</div>
-			);
-
-/*			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
-				return <div key={ chapterIndex }>
-					<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
-					<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
-				</div>;
-			}, this );*/
+			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
+				if ( chapter.verses ) {
+					return ( <div key={ chapterIndex }>
+						<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
+						<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
+					</div> );
+				}
+			}, this );
 		}
 
 		return (
@@ -81,22 +75,14 @@ var ReferenceComponent = React.createClass( {
 					chapter: 2,
 					verse: 1,
 					version: 'kjv',
-					data: {
-						book: 'Genesis',
-						chapter: 1,
-						verses: []
-					}
+					data: []
 				},
 				{
 					book: 'Genesis',
 					chapter: 2,
 					verse: 1,
 					version: 'original',
-					data: {
-						book: 'Genesis',
-						chapter: 1,
-						verses: []
-					}
+					data: []
 				}
 			]
 		};
@@ -107,18 +93,48 @@ var ReferenceComponent = React.createClass( {
 		window.addEventListener( 'scroll', _debouncedScroll, false );
 	},
 
+	documentHeight: function() {
+		var body = document.body,
+			html = document.documentElement;
+		return Math.max( body.scrollHeight, body.offsetHeight );//, html.clientHeight, html.scrollHeight, html.offsetHeight );
+	},
+
 	componentDidMount: function() {
 		var self = this;
 		this.callApi( this.props.context );
+
+		this.loadReferences( this.getPreviousChapter() );
+		this.loadReferences( this.getNextChapter() );
+
 		api.on( 'change', function() {
-			console.log( 'api on change' );
-			console.log( self.state.references );
-			var references = self.state.references.map( function( reference, index ) {
-				console.log( reference );
-				reference.data = this.references[ index ];
+			var onlyOneReference = false;
+			if ( self.state.references && self.state.references[0].data.length === 1) {
+				onlyOneReference = true;
+			}
+
+			var insertedAtTheBeginning = false;
+			var references = self.state.references.map( function( reference ) {
+				reference.data.map( function( referenceData, index ) {
+					if ( referenceData.version === this.references.version &&
+						referenceData.book === this.references.book &&
+						referenceData.chapter == this.references.chapter ) {
+						referenceData.verses = this.references.verses;
+						if( index === 0 ) {
+							insertedAtTheBeginning = true;
+						}
+					}
+					return referenceData;
+				}, this );
 				return reference;
 			}, this );
-			self.setState( { references: references } );
+
+			var oldHeight = self.documentHeight();
+			self.setState( { references: references }, function() {
+				if( insertedAtTheBeginning && ! onlyOneReference ) {
+					var newHeight = self.documentHeight();
+					window.scrollBy( 0, newHeight - oldHeight );
+				}
+			} );
 		} );
 	},
 
@@ -126,42 +142,42 @@ var ReferenceComponent = React.createClass( {
 		this.callApi( nextProps.context );
 	},
 
+	getPreviousChapter: function() {
+		return this.state.references.map( function( reference, index ) {
+			var firstReference = reference.data[ 0 ];
+			var nextReference = bible.parseReference( firstReference.book + ' ' + firstReference.chapter ).prevChapter().toObject();
+			nextReference.version = reference.version;
+			reference.data.unshift( nextReference );
+			return reference;
+		} );
+
+	},
+
+	getNextChapter: function() {
+		return this.state.references.map( function( reference, index ) {
+			var lastReference = reference.data[ reference.data.length - 1 ];
+			var nextReference = bible.parseReference( lastReference.book + ' ' + lastReference.chapter ).nextChapter().toObject();
+			nextReference.version = reference.version;
+			reference.data.push( nextReference );
+			return reference;
+		} );
+	},
+
 	handleScroll: function( event ) {
-		var newReferences = [];
-		if ( 0 >= event.pageY ) {
-			// take off the last reference
-			/*var newReferences = clone( this.state.references );
-			newReferences.pop();
-			// newReferences now had the last reference removed
-
-			// add a new reference at the front
-			var firstReference = bible.parseReference( newReferences[ 0 ].book + ' ' + newReferences[ 0 ].chapter ).prevChapter().toObject();
-			firstReference.version = newReferences[ 0 ].version;
-
-			//newReferences*/
-
-
-			newReferences = this.state.references.map( function( reference ) {
-				var newReference = bible.parseReference( reference.book + ' ' + reference.chapter ).prevChapter().toObject();
-				newReference.version = reference.version;
-				return newReference;
-			} );
+		var scrollTolerance = 500,
+			references = [];
+		if ( scrollTolerance >= event.pageY ) {
+			references = this.getPreviousChapter();
 		}
 
-		if ( event.pageY >= document.body.clientHeight - window.innerHeight ) {
-
-			// use shift
-
-			newReferences = this.state.references.map( function( reference ) {
-				var newReference = bible.parseReference( reference.book + ' ' + reference.chapter ).nextChapter().toObject();
-				newReference.version = reference.version;
-				return newReference;
-			} );
+		if ( event.pageY >= document.body.clientHeight - window.innerHeight - scrollTolerance ) {
+			references = this.getNextChapter();
 		}
 
-		if ( newReferences && newReferences.length > 0 ) {
-			this.loadReferences( newReferences );
+		if ( references && references.length > 0 ) {
+			this.loadReferences( references );
 		}
+
 	},
 
 	placeholderVerses: function( reference ) {
@@ -185,33 +201,26 @@ var ReferenceComponent = React.createClass( {
 			previousChapter = parsedReference.prevChapter(),
 			nextChapter = parsedReference.nextChapter();
 
-		/*reference.data = [
-			this.getReferenceDataWithVerses( previousChapter ),
-			this.getReferenceDataWithVerses( parsedReference ),
-			this.getReferenceDataWithVerses( nextChapter )
-		];*/
-
-		reference.data = this.getReferenceDataWithVerses( parsedReference );
+		reference.data.push( parsedReference );
 
 		return reference;
 	},
 
 	loadReferences: function( references ) {
-		var newReferences = references.map( function( reference ) {
-			if ( reference.data ) {
-				return reference;
-			}
+		this.setState( { references: references }, function() {
+			this.state.references.forEach( function( reference ) {
+				reference.data.forEach( function( referenceData ) {
+					if ( ! referenceData.verses ) {
+						referenceData.version = reference.version;
+						api.getReference( referenceData );
+					}
+				} );
+			} );
 
-			return this.getReferenceData( reference );
-		}, this );
-
-		this.setState( { references: newReferences }, function() {
-			api.getReference( this.state.references );
 		} );
 	},
 
 	callApi: function( context ) {
-		console.log( 'callApi' );
 		var reference = {},
 			referenceString = '/';
 		reference.book = context.params.book;
@@ -227,21 +236,19 @@ var ReferenceComponent = React.createClass( {
 		}
 		localStorage.reference = referenceString;
 
-		// Fire off a request to get the reference data
-		/*		var referenceArray = [];
-				var primaryReference = clone( context.params );
-				primaryReference.version = 'kjv';
-				referenceArray.push( primaryReference );
-				var secondaryReference = clone( context.params );
-				secondaryReference.chapter = secondaryReference.chapter;
-				secondaryReference.version = 'original';
-				referenceArray.push( secondaryReference );*/
-
 		var firstReference = assign( clone( this.state.references[ 0 ] ), context.params );
 		var references = clone( this.state.references );
+		firstReference.data.push( {
+			book: firstReference.book,
+			chapter: firstReference.chapter
+		} );
 		references[ 0 ] = firstReference;
 
 		var secondReference = assign( clone( this.state.references[ 1 ] ), context.params );
+		secondReference.data.push( {
+			book: secondReference.book,
+			chapter: secondReference.chapter
+		} );
 		if ( this.state.sync ) {
 			references[ 1 ] = secondReference;
 		}
