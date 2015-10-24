@@ -139,7 +139,9 @@ var ReferenceComponent = React.createClass( {
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
-		this.callApi( nextProps.context );
+		if ( nextProps.context !== this.props.context ) {
+			this.callApi( nextProps.context );
+		}
 	},
 
 	getPreviousChapter: function() {

@@ -41,7 +41,7 @@ var Layout = React.createClass( {
 	render: function() {
 		return (
 			<div>
-				<Reference context={ this.props.context } onGoToReference={ this.goToReference } displayState={ this.state } onChangeDisplayState={ this.changeDisplayState } />
+				<Reference context={ this.props.context } onGoToReference={ this.goToReference } onChangeDisplayState={ this.changeDisplayState } />
 				<Tray displayState={ this.state } onGoToReference={ this.goToReference } onChangeDisplayState={ this.changeDisplayState } wordTracking={ wordTracking } />
 			</div>
 		);
