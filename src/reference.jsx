@@ -236,15 +236,15 @@ var ReferenceComponent = React.createClass( {
 		}
 		localStorage.reference = referenceString;
 
-		var firstReference = assign( clone( this.state.references[ 0 ] ), context.params );
-		var references = clone( this.state.references );
+		var firstReference = assign( clone( this.getInitialState().references[ 0 ] ), context.params );
+		var references = clone( this.getInitialState().references );
 		firstReference.data.push( {
 			book: firstReference.book,
 			chapter: firstReference.chapter
 		} );
 		references[ 0 ] = firstReference;
 
-		var secondReference = assign( clone( this.state.references[ 1 ] ), context.params );
+		var secondReference = assign( clone( this.getInitialState().references[ 1 ] ), context.params );
 		secondReference.data.push( {
 			book: secondReference.book,
 			chapter: secondReference.chapter
