@@ -1,6 +1,6 @@
 var bible = require( './bible' ),
 	kjv = require( '../data/kjv.js' ),
-	hebrew = {}, //require( '../data/hebrew.js' ),
+	hebrew = require( '../data/hebrew.js' ),
 	greek = require( '../data/greek.js' );
 
 var clone = require( 'lodash-node/modern/lang/clone' );
@@ -8,9 +8,6 @@ var clone = require( 'lodash-node/modern/lang/clone' );
 module.exports = {
 	get: function( reference ) {
 		return this.getChapter( reference );
-		/*return references.map( function( reference ) {
-			return this.getChapter( reference );
-		}.bind( this ) );*/
 	},
 
 	getThree: function( references ) {
