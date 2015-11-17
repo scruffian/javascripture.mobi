@@ -6,7 +6,7 @@ var WordString = require( './word-string.jsx' );
 
 module.exports = React.createClass( {
 	render: function() {
-		var className = "verse",
+		var className = "verse " + this.props.version + " ",
 			verse;
 
 		if ( this.props.columns ) {
@@ -25,7 +25,7 @@ module.exports = React.createClass( {
 
 		return (
 			<div className={ className }>
-				{ this.props.number }. { verse }
+				<span className="verse__number">{ this.props.number }.</span> { verse }
 			</div>
 		);
 	}

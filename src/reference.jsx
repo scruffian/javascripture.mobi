@@ -217,9 +217,12 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
+		var className = "reference columns-" + this.state.references.length
 		return (
-			<div id="reference" className="reference">
-				<input type="checkbox" name="sync" checked={ this.state.sync } onChange={ this.toggleSync } /> Sync
+			<div id="reference" className={ className }>
+				<span className="sync-checkbox">
+					<input type="checkbox" name="sync" checked={ this.state.sync } onChange={ this.toggleSync } /> Sync
+				</span>
 				{ this.range() }
 			</div>
 		);

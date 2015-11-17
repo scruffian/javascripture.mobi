@@ -1,20 +1,32 @@
 .reference {
-	display: table;
+	line-height: 1.4em;
 	margin: 0 auto;
 	//max-width: 700px;
 	padding: 0 0 $tray-height;
 	text-align: left;
 
+	h1 {
+		line-height: 2em;
+	}
+
 	.chapter {
+		max-width: 960px;
 		ol {
 			list-style: none;
-			padding-left: 40px;
+			li {
+				display: flex;
+			}
 		}
 	}
 
 	.columns {
-		display: table-cell;
+		padding: 0 1em;
 		width: 240px;
+	}
+
+	&.columns-2 .columns {
+		padding: 0 2%;
+		width: 45%;
 	}
 
 	.word {
@@ -24,4 +36,24 @@
 		white-space: nowrap;
 	}
 
+	.sync-checkbox {
+		position: fixed;
+			left: 0;
+	}
+
+	.verse__number {
+		color: #999;
+	}
+
+	.hebrew {
+		direction: rtl;
+		font-family: 'Times New Roman', Times serif;
+		font-size: 140%;
+		line-height: 1em;
+		text-align: right;
+
+		.verse__number {
+			font-size: 80%;
+		}
+	}
 }

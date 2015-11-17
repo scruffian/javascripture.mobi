@@ -2,15 +2,34 @@
 var React = require( 'react' );
 
 // Internal
-var ReferenceInput = require( './reference-input.jsx' ),
+var bible = require( './bible' ),
+	ReferenceInput = require( './reference-input.jsx' ),
 	Verse = require( './verse.jsx' );
 
 module.exports = React.createClass( {
+	getVersion: function( version, bookName ) {
+		if ( version !== 'original' ) {
+			return version;
+		}
+
+		if( bible.Data.otBooks.indexOf( bookName ) > -1 ) {
+			return 'hebrew';
+		}
+
+		return 'greek';
+	},
+
 	getSyncedVerses: function( chapter, chapterIndex, verseIndex ) {
 		if ( this.props.sync ) {
 			return this.props.references.map( function( reference, counter ) {
 				if ( counter > 0 && typeof reference.data[ chapterIndex ].verses !== 'undefined' ) {
-					return <Verse key={ counter } verse={ reference.data[ chapterIndex ].verses[ verseIndex ] } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />;
+					return <Verse
+						key={ counter }
+						verse={ reference.data[ chapterIndex ].verses[ verseIndex ] }
+						columns={ this.props.sync }
+						number={ verseIndex + 1 }
+						version={ this.getVersion( reference.version, reference.book ) }
+						onChangeDisplayState={ this.props.onChangeDisplayState } />;
 				}
 			}, this );
 		}
@@ -25,7 +44,12 @@ module.exports = React.createClass( {
 			return chapter.verses.map( function( verse, verseIndex ) {
 				return (
 					<li key={ verseIndex } ref={ this.ref() }>
-						<Verse verse={ verse } columns={ this.props.sync } number={ verseIndex + 1 } onChangeDisplayState={ this.props.onChangeDisplayState } />
+						<Verse
+							verse={ verse }
+							columns={ this.props.sync }
+							number={ verseIndex + 1 }
+							version={ this.getVersion( this.props.reference.version, chapter.book ) }
+							onChangeDisplayState={ this.props.onChangeDisplayState } />
 						{ this.getSyncedVerses( chapter, chapterIndex, verseIndex ) }
 					</li>
 				);
