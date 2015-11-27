@@ -45,6 +45,8 @@ var WordDetail = React.createClass( {
 				</div>
 			);
 		}
+
+		return null;
 	}
 } );
 

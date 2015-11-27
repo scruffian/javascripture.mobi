@@ -1,1 +1,140 @@
-*{border:none;margin:0;padding:0}body{font-family:'Helvetica Neue', Helvetica, Arial}button,input{font-size:100%;font-weight:100}h1,h2,h3,h4,h5,h6{font-weight:100;text-align:center}.splash{text-align:center}.reference{line-height:1.4em;margin:0 auto;padding:0 0 40px;text-align:left}.reference h1{line-height:2em}.reference .chapter{max-width:960px}.reference .chapter ol{list-style:none}.reference .chapter ol li{display:flex}.reference .columns{padding:0 1em;width:240px}.reference.columns-2 .columns{padding:0 2%;width:45%}.reference .word{cursor:pointer;margin:0 -2px;padding:0 2px;white-space:nowrap}.reference .sync-checkbox{position:fixed;left:0}.reference .verse__number{color:#999}.reference .hebrew{direction:rtl;font-family:'Times New Roman', Times serif;font-size:140%;line-height:1em;text-align:right}.reference .hebrew .verse__number{font-size:80%}.reference-input{position:fixed}.reference-input form{text-align:center}.reference-input form input{border:1px solid rgba(0,0,0,0.5)}.reference-selector .book{line-height:2em;position:relative;text-indent:0.5em}.reference-selector .book button{display:none;position:absolute;right:0;top:0;bottom:0}.reference-selector .book.active{background:lightblue}.reference-selector .book.active button{background:#86c5da;color:#fff}.reference-selector .book.touched button{display:block}.tray{background:rgba(255,255,255,0.9);box-shadow:0 0 4px 0 rgba(0,0,0,0.4);position:fixed;bottom:0;width:100%}.tray button{background:transparent;color:#000;height:40px;width:20%}.tray button .text{display:none}.tray button.open{background:lightblue}.tray-targets .tray-target{background:rgba(255,255,255,0.9);box-shadow:0 0 4px 0 rgba(0,0,0,0.4);overflow:scroll;position:fixed;bottom:40px;left:-400px;top:0;transition-propery:left, right;transition-duration:0.2s;width:100%}@media (min-width: 320px){.tray-targets .tray-target{max-width:320px;}}.tray-targets .tray-target.open{left:0}.tray-targets .tray-target.right{left:auto;right:-400px}.tray-targets .tray-target.right.open{right:0}.word-details header{font-size:2em;position:relative}.word-details header .remove{color:#fff;position:absolute;top:0;right:0}.word-details .word-data{display:none}.word-details .word-data.open{display:block}
+* {
+  border: none;
+  margin: 0;
+  padding: 0; }
+
+body, input {
+  font-family: 'Helvetica Neue', Helvetica, Arial; }
+
+button, input {
+  font-size: 100%;
+  font-weight: 100; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 100;
+  text-align: center; }
+
+.splash {
+  text-align: center; }
+
+.reference {
+  line-height: 1.4em;
+  margin: 0 auto;
+  padding: 0 0 40px;
+  text-align: left; }
+  .reference h1 {
+    line-height: 2em; }
+  .reference .chapter ol {
+    list-style: none; }
+    .reference .chapter ol li {
+      display: flex;
+      margin: 0 auto;
+      max-width: 960px; }
+  .reference .columns {
+    padding: 0 1em;
+    width: 240px; }
+  .reference.columns-2 .columns {
+    padding: 0 2%;
+    width: 45%; }
+  .reference .word {
+    cursor: pointer;
+    margin: 0 -2px;
+    padding: 0 2px;
+    white-space: nowrap; }
+  .reference .sync-checkbox {
+    position: fixed;
+    left: 0; }
+  .reference .verse__number {
+    color: #999; }
+  .reference .hebrew {
+    direction: rtl;
+    font-family: 'Times New Roman', Times serif;
+    font-size: 140%;
+    line-height: 1em;
+    text-align: right; }
+    .reference .hebrew .verse__number {
+      font-size: 80%; }
+
+.reference-input {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 1em; }
+  .reference-input form {
+    text-align: center; }
+    .reference-input form input {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      font-size: 2em;
+      padding: 3px;
+      text-align: center; }
+
+.reference-selector .book {
+  line-height: 2em;
+  position: relative;
+  text-indent: 0.5em; }
+  .reference-selector .book button {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0; }
+  .reference-selector .book.active {
+    background: lightblue; }
+    .reference-selector .book.active button {
+      background: #86c5da;
+      color: #fff; }
+  .reference-selector .book.touched button {
+    display: block; }
+
+.tray {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  position: fixed;
+  bottom: 0;
+  width: 100%; }
+  .tray button {
+    background: transparent;
+    color: #000;
+    height: 40px;
+    width: 20%; }
+    .tray button .text {
+      display: none; }
+    .tray button.open {
+      background: lightblue; }
+
+.tray-targets .tray-target {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+  overflow: scroll;
+  position: fixed;
+  bottom: 40px;
+  left: -400px;
+  top: 0;
+  transition-propery: left, right;
+  transition-duration: 0.2s;
+  width: 100%; }
+  @media (min-width: 320px) {
+    .tray-targets .tray-target {
+      max-width: 320px; } }
+  .tray-targets .tray-target.open {
+    left: 0; }
+  .tray-targets .tray-target.right {
+    left: auto;
+    right: -400px; }
+  .tray-targets .tray-target.right.open {
+    right: 0; }
+
+.word-details header {
+  font-size: 2em;
+  position: relative; }
+  .word-details header .remove {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0; }
+.word-details .word-data {
+  display: none; }
+  .word-details .word-data.open {
+    display: block; }
+
+/*# sourceMappingURL=layout.css.map */

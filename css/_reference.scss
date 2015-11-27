@@ -10,11 +10,12 @@
 	}
 
 	.chapter {
-		max-width: 960px;
 		ol {
 			list-style: none;
 			li {
 				display: flex;
+				margin: 0 auto;
+				max-width: 960px;
 			}
 		}
 	}

@@ -34,11 +34,13 @@ module.exports = React.createClass( {
 			};
 		}
 
-		return <span
-			style={ wordStyle }
-			className={ className }
-			onClick={ this.showWordDetails }
-			key={ this.props.key }
-			dangerouslySetInnerHTML={{ __html: this.props.word + ' ' }}></span>; // Leave that space
+		return (
+			<span
+				style={ wordStyle }
+				className={ className }
+				onClick={ this.showWordDetails }
+				key={ this.props.key }
+				dangerouslySetInnerHTML={{ __html: this.props.word.replace( /[dvnNm]/g, '').replace( /[!dvnNm]/g ,'' ) }} />
+		);
 	}
 } );
