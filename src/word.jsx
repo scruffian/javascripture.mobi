@@ -9,13 +9,27 @@ module.exports = React.createClass( {
 	showWordDetails: function() {
 		this.props.onChangeDisplayState( 'details', true );
 		if ( this.props.lemma ) {
-			wordTracking.add( this.props.lemma );
+			this.getLemma().forEach( lemma => {
+				wordTracking.add( lemma );
+			} );
+		}
+	},
+
+	getLemma: function() {
+		if ( this.props.lemma ) {
+			return this.props.lemma.split( ' ' ).filter( lemma => {
+				return lemma != 'G3588';
+			} );
 		}
 	},
 
 	isTracked: function() {
 		return wordTracking.trackedWords.some( function( wordObject ) {
-			return 'undefined' !== typeof wordObject[ this.props.lemma ];
+			return this.getLemma().some( lemma => {
+				if ( 'undefined' !== typeof wordObject[ lemma ] ) {
+					return true;
+				}
+			} );
 		}, this );
 	},
 
@@ -30,12 +44,13 @@ module.exports = React.createClass( {
 		if ( this.isTracked() && this.props.lemma ) {
 			wordStyle = {
 				color: 'white',
-				backgroundColor: strongsColor.get( this.props.lemma )
+				backgroundColor: strongsColor.get( this.getLemma()[ 0 ] )
 			};
 		}
 
 		return (
 			<span
+				title={ this.props.lemma ? this.props.lemma : null }
 				style={ wordStyle }
 				className={ className }
 				onClick={ this.showWordDetails }

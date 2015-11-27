@@ -20,10 +20,10 @@ var WordDetail = React.createClass( {
 	render: function() {
 		var lemma = this.props.lemma,
 			className = this.props.open ? 'open word-data' : 'word-data',
-			strongsData = strongsDictionary[ lemma ],
+			strongsData = lemma ? strongsDictionary[ lemma ] : null,
 			wordStyle = {
 				color: 'white',
-				backgroundColor: strongsColor.get( lemma )
+				backgroundColor: lemma ? strongsColor.get( lemma ) : null
 			};
 
 		if ( strongsData ) { // Only show words we have data for?
