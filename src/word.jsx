@@ -40,7 +40,7 @@ module.exports = React.createClass( {
 				className={ className }
 				onClick={ this.showWordDetails }
 				key={ this.props.key }
-				dangerouslySetInnerHTML={{ __html: this.props.word.replace( /[dvnNm]/g, '').replace( /[!dvnNm]/g ,'' ) }} />
+				dangerouslySetInnerHTML={{ __html: this.props.word.replace( /<dvnNm>/g, '').replace( /<!dvnNm>/g ,'' ) }} />
 		);
 	}
 } );
