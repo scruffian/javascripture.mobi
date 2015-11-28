@@ -21,6 +21,8 @@ module.exports = React.createClass( {
 				return lemma != 'G3588';
 			} );
 		}
+
+		return [];
 	},
 
 	isTracked: function() {
