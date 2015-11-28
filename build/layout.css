@@ -133,8 +133,9 @@ h1, h2, h3, h4, h5, h6 {
     top: 0;
     right: 0; }
 .word-details .word-data {
-  display: none; }
+  display: none;
+  padding: .5em; }
   .word-details .word-data.open {
     display: block; }
 
-/*# sourceMappingURL=layout.css.map */
+/*# sourceMappingURL=css.css.map */
