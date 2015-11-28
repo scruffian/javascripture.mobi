@@ -12,6 +12,7 @@
 	.word-data {
 		display: none;
 		padding: .5em;
+
 		&.open {
 			display: block;
 		}

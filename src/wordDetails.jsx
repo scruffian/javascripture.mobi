@@ -35,11 +35,14 @@ var WordDetail = React.createClass( {
 					</header>
 					<div className={ className }>
 						<div>{ lemma } | { strongsDictionary[ lemma ].lemma } | { strongsDictionary[ lemma ].xlit } | { strongsDictionary[ lemma ].pron }</div>
-						<div>Derivation: { strongsDictionary[ lemma ].derivation }</div>
-						<div>Strongs Definition: { strongsDictionary[ lemma ].strongs_def }</div>
-						<div>KJV Usage: { strongsDictionary[ lemma ].kjv_def }</div>
 						<div>
-							Search results: <WordSearchResults references={ this.props.lemmaObject[ lemma ] } />
+							<strong>Derivation:</strong> { strongsDictionary[ lemma ].derivation }</div>
+						<div>
+							<strong>Strongs Definition:</strong> { strongsDictionary[ lemma ].strongs_def }</div>
+						<div>
+							<strong>KJV Usage:</strong> { strongsDictionary[ lemma ].kjv_def }</div>
+						<div>
+							<strong>Search results:</strong> <WordSearchResults references={ this.props.lemmaObject[ lemma ] } />
 						</div>
 					</div>
 				</div>
