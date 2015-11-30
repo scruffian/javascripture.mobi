@@ -16,5 +16,9 @@
 		&.open {
 			display: block;
 		}
+
+		ol {
+			list-style-position: inside;
+		}
 	}
 }

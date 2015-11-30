@@ -19,7 +19,7 @@ module.exports = React.createClass( {
 			}
 
 			return (
-				<Word word={ word } lemma={ lemma } morph={ morph } key={ this.props.key } onChangeDisplayState={ this.props.onChangeDisplayState } />
+				<Word word={ word } lemma={ lemma } morph={ morph } key={ this.props.key + '_' + index } onChangeDisplayState={ this.props.onChangeDisplayState } />
 			);
 		}, this );
 

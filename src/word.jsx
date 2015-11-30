@@ -37,7 +37,10 @@ module.exports = React.createClass( {
 
 	render: function() {
 		var className = 'word ',
-			wordStyle = {};
+			wordStyle = {},
+			output,
+			wordArray,
+			wordArrayEnd;
 
 		if ( this.props.lemma ) {
 			className += ' ' + this.props.lemma;
@@ -50,14 +53,47 @@ module.exports = React.createClass( {
 			};
 		}
 
+		wordArrayEnd = this.props.word.split( '<!dvnNm>' );
+		if ( wordArrayEnd.length > 1 ) {
+			wordArray = wordArrayEnd[0].split( '<dvnNm>' );
+			if ( wordArrayEnd[ 1 ] ) {
+				wordArray.push( wordArrayEnd[ 1 ] );
+			}
+
+			output = wordArray.map( ( word, index ) => {
+				if ( index === 1 ) {
+					className += ' dvnNm';
+				}
+				return (
+					<span
+						title={ this.props.lemma ? this.props.lemma : null }
+						style={ wordStyle }
+						className={ className }
+						onClick={ this.showWordDetails }
+						key={ this.props.key + '_' + index }>
+						{ word }
+					</span>
+				);
+			}, this );
+
+		} else {
+			return (
+				<span
+					title={ this.props.lemma ? this.props.lemma : null }
+					style={ wordStyle }
+					className={ className }
+					onClick={ this.showWordDetails }
+					key={ this.props.key + '_' + 0 }>
+					{ this.props.word }
+				</span>
+			);
+		}
+
+
 		return (
-			<span
-				title={ this.props.lemma ? this.props.lemma : null }
-				style={ wordStyle }
-				className={ className }
-				onClick={ this.showWordDetails }
-				key={ this.props.key }
-				dangerouslySetInnerHTML={{ __html: this.props.word.replace( /<dvnNm>/g, '').replace( /<!dvnNm>/g ,'' ) }} />
+			<span>
+				{ output }
+			</span>
 		);
 	}
 } );
