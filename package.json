@@ -6,7 +6,8 @@
   "dependencies": {
     "react": "latest",
     "page": "latest",
-    "lodash-node": "latest"
+    "lodash-node": "latest",
+    "classnames": "latest"
   },
   "devDependencies": {
     "browserify": "latest",

@@ -3,7 +3,7 @@ var React = require( 'react' ),
 	page = require( 'page' );
 
 // Enable touch events
-React.initializeTouchEvents( true );
+//React.initializeTouchEvents( true );
 
 // Internal
 var layout = require( './layout.jsx' );

@@ -103,7 +103,10 @@ module.exports = React.createClass( {
 
 	getPreviousChapter: function() {
 		return this.state.references.map( function( reference, index ) {
-			var firstReference = reference.data[ 0 ];
+			var firstReference = reference;
+			if ( reference.data.length ) {
+				firstReference = reference.data[ 0 ];
+			}
 			var previousReference = bible.parseReference( firstReference.book + ' ' + firstReference.chapter ).prevChapter().toObject();
 			previousReference.version = reference.version;
 			reference.data.unshift( previousReference );
@@ -114,7 +117,10 @@ module.exports = React.createClass( {
 
 	getNextChapter: function() {
 		return this.state.references.map( function( reference, index ) {
-			var lastReference = reference.data[ reference.data.length - 1 ];
+			var lastReference = reference;
+			if ( reference.data.length ) {
+				lastReference = reference.data[ reference.data.length - 1 ];
+			}
 			var nextReference = bible.parseReference( lastReference.book + ' ' + lastReference.chapter ).nextChapter().toObject();
 			nextReference.version = reference.version;
 			reference.data.push( nextReference );

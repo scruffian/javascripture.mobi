@@ -3,6 +3,7 @@ var React = require( 'react/addons' );
 
 // Internal
 var ReferenceSelector = require( './referenceSelector.jsx' ),
+	classnames = require( 'classnames' ),
 	WordDetails = require( './wordDetails.jsx' ),
 	settings = require( './settings.js' )();
 
@@ -24,7 +25,7 @@ var TrayButton = React.createClass( {
 
 var TrayTarget = React.createClass( {
 	render: function() {
-		var classes = React.addons.classSet( {
+		var classes = classnames( {
 			'tray-target': true,
 			'open': this.props.open,
 			'right': this.props.right

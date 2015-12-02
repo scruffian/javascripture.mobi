@@ -1,7 +1,7 @@
 // External
-var React = require( 'react/addons' ),
-
-page = require( 'page' );
+var React = require( 'react' ),
+	classnames = require( 'classnames' ),
+	page = require( 'page' );
 
 // Internal
 var bible = require( './bible.js' );
@@ -62,7 +62,7 @@ var BookControl = React.createClass( {
 	},
 	render: function() {
 		var buttonText = this.state.touchChapter ? this.state.chapter : 'Go',
-			classes = React.addons.classSet( {
+			classes = classnames( {
 				'book': true,
 				'active': this.props.active,
 				'touched': this.state.touched
