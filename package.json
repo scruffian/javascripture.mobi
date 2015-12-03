@@ -14,11 +14,10 @@
     "watchify": "latest",
     "reactify": "latest",
     "uglify-js": "latest",
-    "webworkify": "latest",
     "node-sass": "latest"
   },
   "scripts": {
-    "build-js": "browserify -t reactify -x ./src/api.js src/bootstrap.js | uglifyjs > build/build.js && bash update-version-number.sh && node_modules/.bin/node-sass --output build --output-style compressed css/layout.scss",
-    "watch-js": "watchify -t reactify -x ./src/api.js src/bootstrap.js -o build/build.js -dv & node_modules/.bin/node-sass --watch -r --output build --source-map true css"
+    "build-js": "browserify -t reactify src/bootstrap.js | uglifyjs > build/build.js && bash update-version-number.sh && node_modules/.bin/node-sass --output build --output-style compressed css/layout.scss",
+    "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv & node_modules/.bin/node-sass --watch -r --output build --source-map true css"
   }
 }

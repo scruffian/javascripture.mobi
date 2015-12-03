@@ -1,9 +1,5 @@
 // External
 var Emitter = require( '../mixins/emitter.js' );
-var webworkify = require( 'webworkify' );
-
-// Internal
-var worker = webworkify( require( './worker.js' ) );
 
 // Singleton
 var _api;

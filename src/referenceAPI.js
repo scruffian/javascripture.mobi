@@ -1,11 +1,4 @@
-var bible = require( './bible' ),
-	kjv = require( '../data/kjv.js' ),
-	hebrew = require( '../data/hebrew.js' ),
-	greek = require( '../data/greek.js' );
-
-var clone = require( 'lodash-node/modern/lang/clone' );
-
-module.exports = {
+javascripture.src.referenceApi = {
 	get: function( reference ) {
 		return this.getChapter( reference );
 	},
@@ -38,11 +31,11 @@ module.exports = {
 	},
 
 	getChapterData: function( reference, version ) {
-		var sourceData = kjv;
+		var sourceData = javascripture.data.kjv;
 		if ( 'original' === version ) {
-			sourceData = hebrew;
+			sourceData = javascripture.data.hebrew;
 			if ( bible.Data.ntBooks.indexOf( reference.book ) > -1 ) {
-				sourceData = greek;
+				sourceData = javascripture.data.greek;
 			}
 		}
 

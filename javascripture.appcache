@@ -4,6 +4,14 @@ CACHE MANIFEST
 
 index.html
 css/build.css
+data/kjv.js
+data/hebrew.js
+data/greek.js
+src/bible.js');
+src/wordSearchAPI.js
+src/referenceAPI.js
+src/worker.js
+
 build/build.js
 assets/javascripture.svg
 assets/icons/book2.svg

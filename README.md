@@ -25,8 +25,3 @@ The browserify builds are split into two files:
 ```
 browserify -t reactify -x ./src/api.js src/bootstrap.js | uglifyjs > build/build.js
 ```
-
-`api.js` needs to be built manually, like this:
-```
-browserify -t reactify -r ./src/api.js | uglifyjs > build/api.js
-```

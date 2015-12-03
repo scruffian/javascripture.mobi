@@ -4,7 +4,7 @@ var React = require( 'react' ),
 	page = require( 'page' );
 
 // Internal
-var bible = require( './bible.js' );
+var bible = javascripture.src.bible;
 
 var BookControl = React.createClass( {
 	getInitialState: function() {

@@ -2,7 +2,7 @@
 var React = require( 'react' );
 
 // Internal
-var bible = require( './bible.js' );
+var bible = javascripture.src.bible;
 
 module.exports = React.createClass( {
 

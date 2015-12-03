@@ -2,7 +2,7 @@
 var React = require( 'react' );
 
 // Internal
-var bible = require( './bible' ),
+var bible = javascripture.src.bible,
 	ReferenceInput = require( './reference-input.jsx' ),
 	Verse = require( './verse.jsx' );
 

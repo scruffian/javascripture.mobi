@@ -60,7 +60,11 @@
     			<button id="start">Downloading</button>
             </div>
 		</div>
-        <script src="build/api.js"></script>
+        <script type="text/javascript">
+            var javascripture = { data: {}, src: {} };
+            var worker = new Worker( 'src/worker.js' );
+        </script>
+        <script src="src/bible.js"></script>
 		<script src="build/build.js"></script>
 	</body>
 </html>

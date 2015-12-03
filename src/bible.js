@@ -371,4 +371,5 @@ bible.getBookId = function( textReference ) {
 	}
 	return bookID;
 };
-module.exports = bible;
+
+javascripture.src.bible = bible;
