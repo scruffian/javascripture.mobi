@@ -21,6 +21,7 @@ var WordTracking = function() {
     api.on( 'change', function() {
         if ( api.searchResults ) {
             this.callback( api.searchResults );
+            api.searchResults = null;
         }
     }.bind( this ) );
 
