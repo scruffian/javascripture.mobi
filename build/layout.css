@@ -138,8 +138,9 @@ h1, h2, h3, h4, h5, h6 {
   .word-details header .remove {
     color: #fff;
     position: absolute;
-    top: 0;
-    right: 0; }
+    top: 5px;
+    right: 20px;
+    width: 25px; }
 
 .word-details .word-data {
   display: none;
