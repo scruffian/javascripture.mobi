@@ -38,7 +38,6 @@ Api.prototype.callback = function( event ) {
         this.references = event.data.result;
     }
     if ( event.data.task === 'search' ) {
-        console.log( event );
         this.searchResults = event;
     }
 

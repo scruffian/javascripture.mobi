@@ -66,7 +66,7 @@ var TrayTargets = React.createClass( {
 		return (
 			<div className="tray-targets">
 				<TrayTarget name="goto" open={ this.props.displayState.goto } content={ referenceSelector } />
-				<TrayTarget name="details" open={ this.props.displayState.details } content={ wordDetails } right="true" />
+				<TrayTarget name="details" open={ this.props.displayState.details } content={ wordDetails } />
 				<TrayTarget name="search" open={ this.props.displayState.search } content={ search } />
 				<TrayTarget name="bookmarks" open={ this.props.displayState.bookmarks } content={ bookmarks } />
 				<TrayTarget name="settings" open={ this.props.displayState.settings } content={ settings } />

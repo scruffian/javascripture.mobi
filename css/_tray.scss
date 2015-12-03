@@ -29,24 +29,24 @@
 			bottom: $tray-height;
 			left: -400px;
 			top: 0;
-		transition-propery: left, right;
+		transition-property: left, right;
 		transition-duration: 0.2s;
 		width: 100%;
+
 		@media ( min-width: 320px ) {
 			max-width: 320px;
 		}
 
+		@media ( min-width: 900px ) {
+			left: 0;
+
+			&.open {
+				z-index: 10;
+			}
+		}
+
 		&.open {
 			left: 0;
-		}
-
-		&.right {
-			left: auto;
-			right: -400px;
-		}
-
-		&.right.open {
-			right: 0;
 		}
 	}
 }

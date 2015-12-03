@@ -14,7 +14,9 @@ var BookControl = React.createClass( {
 	},
 	goToReference: function( event ) {
 		// hide the trays
-		this.props.onChangeDisplayState();
+		if ( window.innerWidth < 900 ) {
+			this.props.onChangeDisplayState();
+		}
 
 		// load the reference
 		var referenceObject = bible.parseReference( this.props.name + ' ' + this.state.chapter );

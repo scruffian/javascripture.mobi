@@ -25,8 +25,7 @@ var WordDetail = React.createClass( {
 				color: 'white',
 				backgroundColor: lemma ? strongsColor.get( lemma ) : null
 			};
-		console.log( strongsDictionary );
-		console.log( strongsData );
+
 		if ( strongsData ) { // Only show words we have data for?
 			return (
 				<div className="word-detail">

@@ -4,6 +4,10 @@
 		right: 0;
 		top: 1em;
 
+	@media ( min-width: 900px ) {
+		margin-left: 320px;
+	}
+
 	form {
 		text-align: center;
 		input {
