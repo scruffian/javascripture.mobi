@@ -2,7 +2,7 @@
 var React = require( 'react' );
 
 // Internal
-var strongsDictionary = require( '../data/strongs-dictionary.js' ),
+var strongsDictionary = javascripture.data.strongs,
 	wordTracking = require( './wordTracking.js' )(),
 	WordSearchResults = require( './wordSearchResults.jsx' ),
 	strongsColor = require( './strongsColor.js' );
@@ -25,7 +25,8 @@ var WordDetail = React.createClass( {
 				color: 'white',
 				backgroundColor: lemma ? strongsColor.get( lemma ) : null
 			};
-
+		console.log( strongsDictionary );
+		console.log( strongsData );
 		if ( strongsData ) { // Only show words we have data for?
 			return (
 				<div className="word-detail">
@@ -94,12 +95,14 @@ var WordDetails = React.createClass( {
 				open = ( this.state.open === lemma );
 
 			return (
+				<span>
 				<WordDetail
 					key={ lemma }
 					lemma={ lemma }
 					lemmaObject={ lemmaObject }
 					open={ open }
 					onSetOpenLemma={ this.setOpenLemma } />
+				</span>
 			);
 
 		}, this );
