@@ -44,7 +44,7 @@ var BookControl = React.createClass( {
 		} );
 	},
 	setChapter: function( clientX ) {
-		var width = this.getDOMNode().offsetWidth - 40,
+		var width = this.referenceSelector.offsetWidth - 40,
 			spacing = width / this.props.chapters,
 			chapter = Math.ceil( clientX / spacing );
 
@@ -69,7 +69,14 @@ var BookControl = React.createClass( {
 			} );
 
 		return (
-			<div className={ classes } onClick={ this.goToReference } onTouchStart={ this.handleTouchStart } onMouseMove={ this.handleMouseMove } onTouchMove={ this.handleTouchMove } onTouchEnd={ this.handleTouchEnd }>
+			<div
+				className={ classes }
+				onClick={ this.goToReference }
+				onTouchStart={ this.handleTouchStart }
+				onMouseMove={ this.handleMouseMove }
+				onTouchMove={ this.handleTouchMove }
+				onTouchEnd={ this.handleTouchEnd }
+				ref={ ( ref ) => this.referenceSelector = ref }>
 				{ this.props.name } <span onTouchEnd={ this.goToReference } className="chapter-number">{ this.state.chapter }</span>
 				<button onClick={ this.goToReference }>{ buttonText }</button>
 			</div>

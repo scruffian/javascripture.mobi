@@ -1,5 +1,6 @@
 // External
 var React = require( 'react' ),
+	ReactDOM = require( 'react-dom' ),
 	page = require( 'page' );
 
 // Internal
@@ -50,7 +51,7 @@ var Layout = React.createClass( {
 
 
 module.exports = function( context ) {
-	React.render(
+	ReactDOM.render(
 		<Layout context={ context } />,
 		document.getElementById( 'javascripture' )
 	);
