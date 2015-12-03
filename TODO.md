@@ -1,0 +1,3 @@
+- Add keyboard shortcuts
+- Add search
+- Get references faster
