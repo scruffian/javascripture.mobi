@@ -1,5 +1,5 @@
 // External
-var React = require( 'react/addons' );
+var React = require( 'react' );
 
 // Internal
 var ReferenceSelector = require( './referenceSelector.jsx' ),

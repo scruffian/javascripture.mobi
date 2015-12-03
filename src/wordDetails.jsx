@@ -1,5 +1,5 @@
 // External
-var React = require( 'react/addons' );
+var React = require( 'react' );
 
 // Internal
 var strongsDictionary = require( '../data/strongs-dictionary.js' ),

@@ -16,7 +16,6 @@ var boot = function( context, next ) {
 	}
 };
 
-
 // Routing
 page( '/', boot );
 page( '/:book', layout );
@@ -30,12 +29,22 @@ var start = function() {
 };
 
 var startButton = document.getElementById( 'start' );
-startButton.innerHTML = 'Start';
-startButton.onclick = start();
+startButton.onclick = start;
 
-if ( window.location.hash || localStorage.reference ) {
-	start();
-}
+worker.addEventListener( 'message', function(e) {
+  	if( e.data.task === 'loading' ) {
+  		startButton.innerHTML = e.data.html;
+  	}
+} );
+
+worker.addEventListener( 'message', function(e) {
+	if ( e.data.task === 'loaded' ) {
+		startButton.innerHTML = 'Start';
+		if ( window.location.hash || localStorage.reference ) {
+			start();
+		}
+	}
+} );
 
 // Reload if appcache updates
 window.applicationCache.addEventListener( 'updateready', function( event ) {

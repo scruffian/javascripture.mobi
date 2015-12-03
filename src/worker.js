@@ -10,6 +10,7 @@ importScripts('../src/bible.js');
 importScripts('../src/wordSearchAPI.js');
 importScripts('../src/referenceAPI.js');
 
+self.postMessage( { task: 'loaded' } );
 self.addEventListener( 'message', function( e ) {
 	var result;
 

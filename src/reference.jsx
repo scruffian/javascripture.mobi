@@ -56,7 +56,6 @@ module.exports = React.createClass( {
 	},
 
 	handleApiChange: function( apiResult ) {
-		console.log( apiResult );
 		var oldHeight = this.documentHeight(),
 			onlyOneReference = false,
 			insertedAtTheBeginning = false,
@@ -151,7 +150,6 @@ module.exports = React.createClass( {
 				reference.data.forEach( function( referenceData ) {
 					if ( ! referenceData.verses ) {
 						referenceData.version = reference.version;
-						console.log( referenceData );
 						api.getReference( referenceData );
 					}
 				} );
