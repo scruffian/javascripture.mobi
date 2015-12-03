@@ -6,7 +6,8 @@ var React = require( 'react' ),
 // Internal
 var Reference = require( './reference.jsx' ),
 	Tray = require( './tray.jsx' ),
-	wordTracking = require( './wordTracking.js' )();
+	wordTracking = require( './wordTracking.js' )(),
+	referenceTracking = require( './referenceTracking' );
 
 var Layout = React.createClass( {
 	getInitialState: function() {
@@ -51,6 +52,7 @@ var Layout = React.createClass( {
 
 
 module.exports = function( context ) {
+	referenceTracking.set( context.params );
 	ReactDOM.render(
 		<Layout context={ context } />,
 		document.getElementById( 'javascripture' )

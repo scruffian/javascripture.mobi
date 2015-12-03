@@ -60,6 +60,9 @@ h1, h2, h3, h4, h5, h6 {
     .reference .hebrew .verse__number {
       font-size: 80%; }
 
+.verse.current {
+  background: lightblue; }
+
 .reference-input {
   position: fixed;
   left: 0;

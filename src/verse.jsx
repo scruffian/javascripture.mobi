@@ -1,17 +1,32 @@
 // External
-var React = require( 'react' );
+var React = require( 'react' ),
+	classnames = require( 'classnames' );
 
 // Internal
-var WordString = require( './word-string.jsx' );
+var WordString = require( './word-string.jsx' ),
+	referenceTracking = require( './referenceTracking.js' );
 
 module.exports = React.createClass( {
+	isCurrentVerse: function() {
+		var currentReference = referenceTracking.get();
+
+		return currentReference.book == this.props.reference.book &&
+			currentReference.chapter == this.props.reference.chapter &&
+			currentReference.verse == this.props.verseNumber;
+	},
+
 	render: function() {
-		var className = "verse " + this.props.version + " ",
+		var classObject = {
+				verse: true,
+				columns: this.props.columns,
+				current: this.isCurrentVerse()
+			},
+			classes,
 			verse;
 
-		if ( this.props.columns ) {
-			className += " columns";
-		}
+		classObject[ this.props.version ] = true;
+
+		classes = classnames( classObject );
 
 		if ( this.props.verse ) {
 			verse = this.props.verse.map( function( word, index ) {
@@ -24,7 +39,7 @@ module.exports = React.createClass( {
 		}
 
 		return (
-			<div className={ className }>
+			<div className={ classes }>
 				<span className="verse__number">{ this.props.number }.</span> { verse }
 			</div>
 		);

@@ -4,3 +4,4 @@
 - Scroll to verse
 -added
 - reference selector
+- version selector

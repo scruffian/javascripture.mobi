@@ -24,6 +24,8 @@ module.exports = React.createClass( {
 			return this.props.references.map( function( reference, counter ) {
 				if ( counter > 0 && typeof reference.data[ chapterIndex ].verses !== 'undefined' ) {
 					return <Verse
+						reference={ chapter }
+						verseNumber={ verseIndex + 1 }
 						key={ counter }
 						verse={ reference.data[ chapterIndex ].verses[ verseIndex ] }
 						columns={ this.props.sync }
@@ -45,6 +47,8 @@ module.exports = React.createClass( {
 				return (
 					<li key={ verseIndex } ref={ this.ref() }>
 						<Verse
+							reference={ chapter }
+							verseNumber={ verseIndex + 1 }
 							verse={ verse }
 							columns={ this.props.sync }
 							number={ verseIndex + 1 }
@@ -70,7 +74,7 @@ module.exports = React.createClass( {
 					return (
 						<div key={ chapterIndex }>
 							<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
-							<ol>{ this.getVerses( chapter, chapterIndex ) }</ol>
+							<ol>{ this.getVerses( chapter, chapterIndex, chapter.book ) }</ol>
 						</div>
 					);
 				}

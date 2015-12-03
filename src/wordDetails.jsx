@@ -94,7 +94,6 @@ var WordDetails = React.createClass( {
 				open = ( this.state.open === lemma );
 
 			return (
-				<span>
 				<WordDetail
 					key={ lemma }
 					lemma={ lemma }
@@ -102,7 +101,6 @@ var WordDetails = React.createClass( {
 					open={ open }
 					onSetOpenLemma={ this.setOpenLemma }
 					context={ this.props.context } />
-				</span>
 			);
 
 		}, this );
