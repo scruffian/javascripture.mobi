@@ -2,3 +2,5 @@
 - Add search
 - Get references faster
 - Scroll to verse
+-added
+- reference selector

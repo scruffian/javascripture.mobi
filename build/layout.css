@@ -149,5 +149,10 @@ h1, h2, h3, h4, h5, h6 {
     display: block; }
   .word-details .word-data ol {
     list-style-position: inside; }
+    .word-details .word-data ol .current {
+      background: lightblue; }
+    .word-details .word-data ol a {
+      color: #000;
+      text-decoration: none; }
 
 /*# sourceMappingURL=layout.css.map */

@@ -42,7 +42,7 @@ var WordDetail = React.createClass( {
 						<div>
 							<strong>KJV Usage:</strong> { strongsDictionary[ lemma ].kjv_def }</div>
 						<div>
-							<strong>Search results:</strong> <WordSearchResults references={ this.props.lemmaObject[ lemma ] } />
+							<strong>Search results:</strong> <WordSearchResults context={ this.props.context } references={ this.props.lemmaObject[ lemma ] } />
 						</div>
 					</div>
 				</div>
@@ -100,7 +100,8 @@ var WordDetails = React.createClass( {
 					lemma={ lemma }
 					lemmaObject={ lemmaObject }
 					open={ open }
-					onSetOpenLemma={ this.setOpenLemma } />
+					onSetOpenLemma={ this.setOpenLemma }
+					context={ this.props.context } />
 				</span>
 			);
 
