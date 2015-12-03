@@ -4,8 +4,6 @@ var React = require( 'react' );
 var WordSearchResults = React.createClass( {
 	isCurrentReference: function( reference ) {
 		var currentReference = this.props.context.params;
-		console.log( currentReference );
-		console.log( reference );
 		if ( reference.book != currentReference.book ) {
 			return false;
 		}

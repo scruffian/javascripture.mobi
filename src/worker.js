@@ -17,8 +17,13 @@ self.addEventListener( 'message', function( e ) {
 	if ( e.data.task === 'search' ) {
 		result = javascripture.src.wordSearchApi.getReferences( e.data.parameters );
 	}
+
 	if ( e.data.task === 'reference' ) {
 		result = javascripture.src.referenceApi.get( e.data.parameters.references );
+	}
+
+	if ( e.data.task === 'references' ) {
+		result = javascripture.src.referenceApi.getReferences( e.data.parameters.references );
 	}
 
 	if ( result ) {

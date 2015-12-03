@@ -32,6 +32,8 @@ module.exports = React.createClass( {
 		};
 	},
 
+	pageY: 0,
+
 	componentWillMount: function() {
 		var _debouncedScroll = debounce( this.handleScroll, 100 );
 		window.addEventListener( 'scroll', _debouncedScroll, false );
@@ -47,8 +49,8 @@ module.exports = React.createClass( {
 		var self = this;
 		this.callApi( this.props.context );
 
-		this.loadReferences( this.getPreviousChapter() );
-		this.loadReferences( this.getNextChapter() );
+		//this.loadReferences( this.getPreviousChapter() );
+		//this.loadReferences( this.getNextChapter() );
 
 		api.on( 'change', function() {
 			self.handleApiChange( this );
@@ -61,27 +63,27 @@ module.exports = React.createClass( {
 			insertedAtTheBeginning = false,
 			references = [];
 
-		if ( this.state.references && this.state.references[0].data.length === 1) {
+		if ( this.state.references && this.state.references[ 0 ].data.length === 1 ) {
 			onlyOneReference = true;
 		}
 
-		references = this.state.references.map( function( reference ) {
-			reference.data.map( function( referenceData, index ) {
-				if ( this.referencesAreTheSame( referenceData, apiResult.references ) ) {
-					referenceData.verses = apiResult.references.verses;
-					if( index === 0 ) {
-						insertedAtTheBeginning = true;
+		apiResult.references.forEach( function( referenceFromApi ) {
+			references = this.state.references.map( function( reference, referenceIndex ) {
+				reference.data.map( function( referenceData, index ) {
+					if ( this.referencesAreTheSame( referenceData, referenceFromApi ) ) {
+						referenceData.verses = referenceFromApi.verses;
+						if( index === 0 && referenceIndex === 0 ) {
+							insertedAtTheBeginning = true;
+						}
 					}
-				}
-				return referenceData;
+					return referenceData;
+				}, this );
+				return reference;
 			}, this );
-			return reference;
 		}, this );
 
 		this.setState( { references: references }, function() {
-			if( insertedAtTheBeginning && ! onlyOneReference ) {
-				this.maintainScrollPosition( oldHeight );
-			}
+			this.maintainScrollPosition( oldHeight );
 		} );
 	},
 
@@ -97,8 +99,10 @@ module.exports = React.createClass( {
 	},
 
 	maintainScrollPosition: function( oldHeight ) {
-		var newHeight = this.documentHeight();
-		window.scrollBy( 0, newHeight - oldHeight );
+		if ( this.pageY < 500 ) {
+			var newHeight = this.documentHeight();
+			window.scrollBy( 0, newHeight - oldHeight );
+		}
 	},
 
 	getPreviousChapter: function() {
@@ -130,7 +134,9 @@ module.exports = React.createClass( {
 
 	handleScroll: function( event ) {
 		var scrollTolerance = 500,
-			references = [];
+			references = this.state.references;
+
+		this.pageY = event.pageY
 		if ( scrollTolerance >= event.pageY ) {
 			references = this.getPreviousChapter();
 		}
@@ -146,15 +152,7 @@ module.exports = React.createClass( {
 
 	loadReferences: function( references ) {
 		this.setState( { references: references }, function() {
-			this.state.references.forEach( function( reference ) {
-				reference.data.forEach( function( referenceData ) {
-					if ( ! referenceData.verses ) {
-						referenceData.version = reference.version;
-						api.getReference( referenceData );
-					}
-				} );
-			} );
-
+			api.getReferences( references );
 		} );
 	},
 
@@ -178,14 +176,16 @@ module.exports = React.createClass( {
 		var references = clone( this.getInitialState().references );
 		firstReference.data.push( {
 			book: firstReference.book,
-			chapter: firstReference.chapter
+			chapter: firstReference.chapter,
+			version: firstReference.version
 		} );
 		references[ 0 ] = firstReference;
 
 		var secondReference = assign( clone( this.getInitialState().references[ 1 ] ), context.params );
 		secondReference.data.push( {
 			book: secondReference.book,
-			chapter: secondReference.chapter
+			chapter: secondReference.chapter,
+			version: secondReference.version
 		} );
 		if ( this.state.sync ) {
 			references[ 1 ] = secondReference;

@@ -3,6 +3,17 @@ javascripture.src.referenceApi = {
 		return this.getChapter( reference );
 	},
 
+	getReferences: function( references ) {
+		var returnReferences = [];
+		references.forEach( reference => {
+			reference.data.forEach( referenceData => {
+				returnReferences.push( this.get( referenceData ) );
+			}, this );
+		}, this );
+
+		return returnReferences;
+	},
+
 	getThree: function( references ) {
 		return references.map( function( reference ) {
 			return this.getThreeChapters( reference );
