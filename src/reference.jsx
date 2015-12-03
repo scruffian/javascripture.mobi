@@ -34,6 +34,8 @@ module.exports = React.createClass( {
 
 	pageY: 0,
 
+	scrollTolerance: 500,
+
 	componentWillMount: function() {
 		var _debouncedScroll = debounce( this.handleScroll, 100 );
 		window.addEventListener( 'scroll', _debouncedScroll, false );
@@ -99,7 +101,7 @@ module.exports = React.createClass( {
 	},
 
 	maintainScrollPosition: function( oldHeight ) {
-		if ( this.pageY < 500 ) {
+		if ( this.pageY < this.scrollTolerance ) {
 			var newHeight = this.documentHeight();
 			window.scrollBy( 0, newHeight - oldHeight );
 		}
@@ -133,7 +135,7 @@ module.exports = React.createClass( {
 	},
 
 	handleScroll: function( event ) {
-		var scrollTolerance = 500,
+		var scrollTolerance = this.scrollTolerance,
 			references = this.state.references;
 
 		this.pageY = event.pageY
