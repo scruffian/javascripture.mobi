@@ -16,6 +16,11 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
+		console.log( this.props.ignoreScrollEvents );
+		if ( this.isCurrentVerse() && this.verseComponent && this.props.ignoreScrollEvents ) {
+			window.scrollTo( 0, this.verseComponent.offsetTop - 80 );
+		}
+
 		var classObject = {
 				verse: true,
 				columns: this.props.columns,
@@ -39,7 +44,8 @@ module.exports = React.createClass( {
 		}
 
 		return (
-			<div className={ classes }>
+			<div className={ classes }
+				ref={ ( ref ) => this.verseComponent = ref }>
 				<span className="verse__number">{ this.props.number }.</span> { verse }
 			</div>
 		);

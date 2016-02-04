@@ -31,7 +31,8 @@ module.exports = React.createClass( {
 						columns={ this.props.sync }
 						number={ verseIndex + 1 }
 						version={ this.getVersion( reference.version, reference.book ) }
-						onChangeDisplayState={ this.props.onChangeDisplayState } />;
+						onChangeDisplayState={ this.props.onChangeDisplayState }
+						ignoreScrollEvents={ this.props.ignoreScrollEvents } />;
 				}
 			}, this );
 		}
@@ -53,7 +54,8 @@ module.exports = React.createClass( {
 							columns={ this.props.sync }
 							number={ verseIndex + 1 }
 							version={ this.getVersion( this.props.reference.version, chapter.book ) }
-							onChangeDisplayState={ this.props.onChangeDisplayState } />
+							onChangeDisplayState={ this.props.onChangeDisplayState }
+							ignoreScrollEvents={ this.props.ignoreScrollEvents } />
 						{ this.getSyncedVerses( chapter, chapterIndex, verseIndex ) }
 					</li>
 				);
@@ -66,6 +68,10 @@ module.exports = React.createClass( {
 			chapters;
 		if ( ! this.props.sync ) {
 			classNames += ' columns';
+		}
+
+		if ( ! this.props.reference ) {
+			return null;
 		}
 
 		if ( this.props.reference.data ) {

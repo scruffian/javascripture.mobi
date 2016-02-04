@@ -1,3 +1,5 @@
+/*global javascripture*/
+
 // External
 var React = require( 'react' ),
 	assign = require( 'lodash-node/modern/object/assign' ),
@@ -13,6 +15,7 @@ module.exports = React.createClass( {
 	getInitialState: function() {
 		return {
 			sync: true,
+			ignoreScrollEvents: true,
 			references: [
 				{
 					book: 'Genesis',
@@ -43,7 +46,11 @@ module.exports = React.createClass( {
 
 	componentWillReceiveProps: function( nextProps ) {
 		if ( nextProps.context !== this.props.context ) {
-			this.callApi( nextProps.context );
+			this.setState( {
+				ignoreScrollEvents: true
+			}, function() {
+				this.callApi( nextProps.context );
+			} );
 		}
 	},
 
@@ -69,9 +76,9 @@ module.exports = React.createClass( {
 			onlyOneReference = true;
 		}
 
-		apiResult.references.forEach( function( referenceFromApi ) {
-			references = this.state.references.map( function( reference, referenceIndex ) {
-				reference.data.map( function( referenceData, index ) {
+		references = this.state.references.map( function( reference, referenceIndex ) {
+			reference.data.map( function( referenceData, index ) {
+				apiResult.references.forEach( function( referenceFromApi ) {
 					if ( this.referencesAreTheSame( referenceData, referenceFromApi ) ) {
 						referenceData.verses = referenceFromApi.verses;
 						if( index === 0 && referenceIndex === 0 ) {
@@ -80,12 +87,20 @@ module.exports = React.createClass( {
 					}
 					return referenceData;
 				}, this );
-				return reference;
 			}, this );
+			return reference;
 		}, this );
 
-		this.setState( { references: references }, function() {
-			this.maintainScrollPosition( oldHeight );
+		this.setState( {
+			references: references
+		}, function() {
+			if ( ! this.state.ignoreScrollEvents ) {
+				this.maintainScrollPosition( oldHeight );
+			} else {
+				this.setState( {
+					ignoreScrollEvents: false
+				} );
+			}
 		} );
 	},
 
@@ -101,9 +116,15 @@ module.exports = React.createClass( {
 	},
 
 	maintainScrollPosition: function( oldHeight ) {
+		if ( this.state.ignoreScrollEvents ) {
+			return;
+		}
+
 		if ( this.pageY < this.scrollTolerance ) {
 			var newHeight = this.documentHeight();
 			window.scrollBy( 0, newHeight - oldHeight );
+		} else {
+			console.log('scroll to verse');
 		}
 	},
 
@@ -135,8 +156,13 @@ module.exports = React.createClass( {
 	},
 
 	handleScroll: function( event ) {
+		if ( this.state.ignoreScrollEvents ) {
+			return;
+		}
+
+		console.log( 'handleScroll' );
 		var scrollTolerance = this.scrollTolerance,
-			references = this.state.references;
+			references;
 
 		this.pageY = event.pageY
 		if ( scrollTolerance >= event.pageY ) {
@@ -153,8 +179,19 @@ module.exports = React.createClass( {
 	},
 
 	loadReferences: function( references ) {
+		var referencesToFetch = [];
 		this.setState( { references: references }, function() {
-			api.getReferences( references );
+			references.forEach( function( reference ) {
+				reference.data.forEach( function( referenceData ) {
+					if ( ! referenceData.verses ) {
+						referencesToFetch.push( referenceData );
+					}
+				} );
+			} );
+			if ( referencesToFetch.length ) {
+				console.log('we should be able to get the references directly from the global');
+				api.getReferences( referencesToFetch );
+			}
 		} );
 	},
 
@@ -202,12 +239,15 @@ module.exports = React.createClass( {
 
 	chapters: function() {
 		if ( this.state.sync ) {
-			return <Chapter
-				references={ this.state.references }
-				reference={ this.state.references[ 0 ] }
-				sync={ this.state.sync }
-				onGoToReference={ this.props.onGoToReference }
-				onChangeDisplayState={ this.props.onChangeDisplayState } />;
+			return (
+				<Chapter
+					references={ this.state.references }
+					reference={ this.state.references[ 0 ] }
+					sync={ this.state.sync }
+					onGoToReference={ this.props.onGoToReference }
+					onChangeDisplayState={ this.props.onChangeDisplayState }
+					ignoreScrollEvents={ this.state.ignoreScrollEvents } />
+			);
 		}
 
 		return this.state.references.map( function( reference ) {
@@ -216,22 +256,20 @@ module.exports = React.createClass( {
 				reference={ reference }
 				sync={ this.state.sync }
 				onGoToReference={ this.props.onGoToReference }
-				onChangeDisplayState={ this.props.onChangeDisplayState } />;
+				onChangeDisplayState={ this.props.onChangeDisplayState }
+				ignoreScrollEvents={ this.state.ignoreScrollEvents } />;
 		}, this );
 	},
 
-	range: function() {
-		return this.chapters();
-	},
-
 	render: function() {
+		console.log( 'render reference' );
 		var className = "reference columns-" + this.state.references.length
 		return (
 			<div id="reference" className={ className }>
 				<span className="sync-checkbox">
 					<input type="checkbox" name="sync" checked={ this.state.sync } onChange={ this.toggleSync } /> Sync
 				</span>
-				{ this.range() }
+				{ this.chapters() }
 			</div>
 		);
 	}

@@ -17,7 +17,7 @@ module.exports = React.createClass( {
 
 	getLemma: function() {
 		if ( this.props.lemma ) {
-			return this.props.lemma.split( ' ' ).filter( lemma => {
+			return this.props.lemma.split( ' ' ).filter( function( lemma ) {
 				return lemma != 'G3588';
 			} );
 		}
@@ -27,7 +27,7 @@ module.exports = React.createClass( {
 
 	isTracked: function() {
 		return wordTracking.trackedWords.some( function( wordObject ) {
-			return this.getLemma().some( lemma => {
+			return this.getLemma().some( function( lemma ) {
 				if ( 'undefined' !== typeof wordObject[ lemma ] ) {
 					return true;
 				}

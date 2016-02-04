@@ -14,7 +14,6 @@ module.exports = React.createClass( {
 	},
 
 	componentWillMount: function() {
-		this.setStateFromProps( this.props.reference );
 	    window.addEventListener( 'keydown', this.boundKeyHandler, false );
 	},
 

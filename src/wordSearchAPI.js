@@ -1,3 +1,4 @@
+/*global javascripture*/
 javascripture.src.wordSearchApi = {
 	language: { //helper object to access different languages
 		kjv: javascripture.data.kjv,
@@ -170,8 +171,6 @@ javascripture.src.wordSearchApi = {
 							self.resetMatches(); //not sure if resetting is the right thing to do here - need to work out how to count matches in the same verse mulipule times
 						}
 					}
-
-
 				} );
 			} );
 		} );

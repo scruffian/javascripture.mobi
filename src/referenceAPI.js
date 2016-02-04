@@ -6,9 +6,7 @@ javascripture.src.referenceApi = {
 	getReferences: function( references ) {
 		var returnReferences = [];
 		references.forEach( reference => {
-			reference.data.forEach( referenceData => {
-				returnReferences.push( this.get( referenceData ) );
-			}, this );
+			returnReferences.push( this.get( reference ) );
 		}, this );
 
 		return returnReferences;
