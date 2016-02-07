@@ -16,7 +16,6 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-		console.log( this.props.ignoreScrollEvents );
 		if ( this.isCurrentVerse() && this.verseComponent && this.props.ignoreScrollEvents ) {
 			window.scrollTo( 0, this.verseComponent.offsetTop - 80 );
 		}

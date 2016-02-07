@@ -23,35 +23,9 @@ var Api = function() {
 
 Emitter( Api.prototype );
 
-Api.prototype.getReference = function( references ) {
-    worker.postMessage( {
-        task: 'reference',
-        type: 'change',
-        parameters: {
-            references: references
-        }
-    } ); // send the worker a message
-};
-
-Api.prototype.getReferences = function( references ) {
-    worker.postMessage( {
-        task: 'references',
-        type: 'change',
-        parameters: {
-            references: references
-        }
-    } ); // send the worker a message
-};
-
 Api.prototype.callback = function( event ) {
-    if ( event.data.task === 'reference' ) {
-        this.references = event.data.result;
-    }
     if ( event.data.task === 'search' ) {
         this.searchResults = event;
-    }
-    if ( event.data.task === 'references' ) {
-        this.references = event.data.result;
     }
 
     this.emit( 'change' );

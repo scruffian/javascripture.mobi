@@ -2,6 +2,6 @@
 - Add search
 - Get references faster
 - Scroll to verse
--added
+- added
 - reference selector
 - version selector

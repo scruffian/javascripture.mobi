@@ -36,8 +36,11 @@ var Layout = React.createClass( {
 
 	goToReference: function( referenceObject ) {
 		var url = referenceObject.toUrl();
-		page( url );
-		window.scrollTo( 0, 0 );
+		console.log( url );
+		setTimeout( function() {
+			page( url );
+		}, 1 )
+		//window.scrollTo( 0, 0 );
 	},
 
 	render: function() {

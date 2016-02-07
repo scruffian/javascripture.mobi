@@ -8,7 +8,7 @@ var React = require( 'react' ),
 
 // Internal
 var bible = javascripture.src.bible,
-	api = require( './api.js' )(),
+	referenceApi = require( './referenceAPI' ),
 	Chapter = require( './chapter.jsx' );
 
 module.exports = React.createClass( {
@@ -45,6 +45,7 @@ module.exports = React.createClass( {
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
+		console.log( 'componentWillReceiveProps' );
 		if ( nextProps.context !== this.props.context ) {
 			this.setState( {
 				ignoreScrollEvents: true
@@ -55,35 +56,21 @@ module.exports = React.createClass( {
 	},
 
 	componentDidMount: function() {
-		var self = this;
 		this.callApi( this.props.context );
 
 		//this.loadReferences( this.getPreviousChapter() );
 		//this.loadReferences( this.getNextChapter() );
-
-		api.on( 'change', function() {
-			self.handleApiChange( this );
-		} );
 	},
 
 	handleApiChange: function( apiResult ) {
 		var oldHeight = this.documentHeight(),
-			onlyOneReference = false,
-			insertedAtTheBeginning = false,
 			references = [];
 
-		if ( this.state.references && this.state.references[ 0 ].data.length === 1 ) {
-			onlyOneReference = true;
-		}
-
-		references = this.state.references.map( function( reference, referenceIndex ) {
-			reference.data.map( function( referenceData, index ) {
+		references = this.state.references.map( function( reference ) {
+			reference.data.map( function( referenceData ) {
 				apiResult.references.forEach( function( referenceFromApi ) {
 					if ( this.referencesAreTheSame( referenceData, referenceFromApi ) ) {
 						referenceData.verses = referenceFromApi.verses;
-						if( index === 0 && referenceIndex === 0 ) {
-							insertedAtTheBeginning = true;
-						}
 					}
 					return referenceData;
 				}, this );
@@ -189,8 +176,11 @@ module.exports = React.createClass( {
 				} );
 			} );
 			if ( referencesToFetch.length ) {
-				console.log('we should be able to get the references directly from the global');
-				api.getReferences( referencesToFetch );
+				var apiResult = {
+					references: referenceApi.getReferences( referencesToFetch )
+				};
+
+				this.handleApiChange( apiResult );
 			}
 		} );
 	},

@@ -51,3 +51,5 @@ javascripture.src.referenceApi = {
 		return sourceData[ reference.book ][ reference.chapter - 1 ];
 	}
 };
+
+module.exports = javascripture.src.referenceApi;
