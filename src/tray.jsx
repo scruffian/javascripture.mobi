@@ -1,11 +1,11 @@
 // External
-var React = require( 'react' );
+var React = require( 'react' ),
+	classnames = require( 'classnames' );
 
 // Internal
 var ReferenceSelector = require( './referenceSelector.jsx' ),
-	classnames = require( 'classnames' ),
-	WordDetails = require( './wordDetails.jsx' ),
-	settings = require( './settings.js' )();
+	WordDetails = require( './wordDetails.jsx' );
+//	settings = require( './settings.js' )();
 
 var TrayButton = React.createClass( {
 	handleClick: function() {
@@ -27,8 +27,8 @@ var TrayTarget = React.createClass( {
 	render: function() {
 		var classes = classnames( {
 			'tray-target': true,
-			'open': this.props.open,
-			'right': this.props.right
+			open: this.props.open,
+			right: this.props.right
 		} );
 
 		return (
@@ -53,22 +53,20 @@ var Settings = React.createClass( {
 	}
 } );
 
-
-
 var TrayTargets = React.createClass( {
 	render: function() {
 		var referenceSelector = <ReferenceSelector onChangeDisplayState={ this.props.onChangeDisplayState } onGoToReference={ this.props.onGoToReference } />,
 			wordDetails = <WordDetails context={ this.props.context } />,
 			search = 'search',
 			bookmarks = 'bookmarks',
-			settings = <Settings />;
+			settingsWha = <Settings />;
 
 		return (
 			<div className="tray-targets">
 				<TrayTarget name="details" open={ this.props.displayState.details } content={ wordDetails } />
 				<TrayTarget name="search" open={ this.props.displayState.search } content={ search } />
 				<TrayTarget name="bookmarks" open={ this.props.displayState.bookmarks } content={ bookmarks } />
-				<TrayTarget name="settings" open={ this.props.displayState.settings } content={ settings } />
+				<TrayTarget name="settings" open={ this.props.displayState.settings } content={ settingsWha } />
 				<TrayTarget name="goto" open={ this.props.displayState.goto } content={ referenceSelector } />
 			</div>
 		);

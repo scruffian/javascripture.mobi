@@ -50,7 +50,6 @@ var Layout = React.createClass( {
 	}
 } );
 
-
 module.exports = function( context ) {
 	referenceTracking.set( context.params );
 	ReactDOM.render(

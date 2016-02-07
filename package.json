@@ -11,6 +11,9 @@
     "classnames": "latest"
   },
   "devDependencies": {
+    "babel-preset-react": "latest",
+    "babel-preset-es2015": "latest",
+    "babelify": "latest",
     "browserify": "latest",
     "watchify": "latest",
     "reactify": "latest",
@@ -18,7 +21,7 @@
     "node-sass": "latest"
   },
   "scripts": {
-    "build-js": "browserify -t reactify src/bootstrap.js | uglifyjs > build/build.js && bash update-version-number.sh && node_modules/.bin/node-sass --output build --output-style compressed css/layout.scss",
+    "build-js": "browserify -t [ babelify --presets [ es2015 react ] ] src/bootstrap.js | uglifyjs > build/build.js && bash update-version-number.sh && node_modules/.bin/node-sass --output build --output-style compressed css/layout.scss",
     "watch-js": "watchify -t reactify src/bootstrap.js -o build/build.js -dv & node_modules/.bin/node-sass --watch -r --output build --source-map true css"
   }
 }

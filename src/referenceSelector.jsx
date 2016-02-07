@@ -1,7 +1,8 @@
+/*global javascripture*/
+
 // External
 var React = require( 'react' ),
-	classnames = require( 'classnames' ),
-	page = require( 'page' );
+	classnames = require( 'classnames' );
 
 // Internal
 var bible = javascripture.src.bible;
@@ -12,7 +13,7 @@ var BookControl = React.createClass( {
 			chapter: 1
 		};
 	},
-	goToReference: function( event ) {
+	goToReference: function() {
 		// hide the trays
 		if ( window.innerWidth < 900 ) {
 			this.props.onChangeDisplayState();
@@ -29,7 +30,7 @@ var BookControl = React.createClass( {
 	handleTouchMove: function( event ) {
 		if ( event.touches ) {
 			this.setState( {
-				'touchChapter': true
+				touchChapter: true
 			} );
 			this.setChapter( event.touches[ 0 ].clientX );
 		}
@@ -37,12 +38,12 @@ var BookControl = React.createClass( {
 	handleTouchStart: function() {
 		this.props.onSetActiveBook( this.props.index );
 		this.setState( {
-			'touched': true
+			touched: true
 		} );
 	},
 	handleTouchEnd: function( event ) {
 		this.setState( {
-			'touchChapter': false
+			touchChapter: false
 		} );
 	},
 	setChapter: function( clientX ) {
@@ -65,9 +66,9 @@ var BookControl = React.createClass( {
 	render: function() {
 		var buttonText = this.state.touchChapter ? this.state.chapter : 'Go',
 			classes = classnames( {
-				'book': true,
-				'active': this.props.active,
-				'touched': this.state.touched
+				book: true,
+				active: this.props.active,
+				touched: this.state.touched
 			} );
 
 		return (

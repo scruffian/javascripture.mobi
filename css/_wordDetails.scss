@@ -19,13 +19,16 @@
 		}
 
 		ol {
-			list-style-position: inside;
+			list-style-position: outside;
+			margin-left: 20px;
+
 			.current {
 				background: lightblue;
 			}
 
 			a {
 				color: #000;
+				display: block;
 				text-decoration: none;
 			}
 		}
