@@ -7,7 +7,7 @@
     "react": "latest",
     "react-dom": "latest",
     "page": "latest",
-    "lodash-node": "latest",
+    "lodash": "latest",
     "classnames": "latest"
   },
   "devDependencies": {
