@@ -2,9 +2,9 @@
 
 // External
 var React = require( 'react' ),
-	assign = require( 'lodash-node/modern/object/assign' ),
-	clone = require( 'lodash-node/modern/lang/clone' ),
-	debounce = require( 'lodash-node/modern/function/debounce' );
+	assign = require( 'lodash/assign' ),
+	clone = require( 'lodash/clone' ),
+	debounce = require( 'lodash/debounce' );
 
 // Internal
 var bible = javascripture.src.bible,
