@@ -1,18 +1,23 @@
+/*global javascripture*/
+
 // External
 var React = require( 'react' );
 
 // Internal
 var bible = javascripture.src.bible,
-	ReferenceInput = require( './reference-input.jsx' ),
 	Verse = require( './verse.jsx' );
 
 module.exports = React.createClass( {
+	ref: function() {
+		return this.props.chapter.book + ' ' + this.props.chapter.chapter;
+	},
+
 	getVersion: function( version, bookName ) {
 		if ( version !== 'original' ) {
 			return version;
 		}
 
-		if( bible.Data.otBooks.indexOf( bookName ) > -1 ) {
+		if ( bible.Data.otBooks.indexOf( bookName ) > -1 ) {
 			return 'hebrew';
 		}
 
@@ -38,10 +43,6 @@ module.exports = React.createClass( {
 		}
 	},
 
-	ref: function() {
-		return this.props.reference.book + ':' + this.props.reference.chapter;
-	},
-
 	getVerses: function( chapter, chapterIndex ) {
 		if ( chapter.verses ) {
 			return chapter.verses.map( function( verse, verseIndex ) {
@@ -64,34 +65,16 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-		var classNames = 'chapter',
-			chapters;
-		if ( ! this.props.sync ) {
-			classNames += ' columns';
-		}
-
-		if ( ! this.props.reference ) {
-			return null;
-		}
-
-		if ( this.props.reference.data ) {
-			chapters = this.props.reference.data.map( function( chapter, chapterIndex ) {
-				if ( chapter.verses ) {
-					return (
-						<div key={ chapterIndex }>
-							<h1>{ chapter.book } { parseInt( chapter.chapter ) }</h1>
-							<ol>{ this.getVerses( chapter, chapterIndex, chapter.book ) }</ol>
-						</div>
-					);
-				}
-			}, this );
-		}
-
 		return (
-			<div className={ classNames }>
-				<ReferenceInput reference={ this.props.reference } onGoToReference={ this.props.onGoToReference } />
-				{ chapters }
+			<div key={ this.props.chapterIndex }>
+				<h1>
+					{ this.props.chapter.book } { parseInt( this.props.chapter.chapter ) }
+				</h1>
+				<ol>
+					{ this.getVerses( this.props.chapter, this.props.chapterIndex, this.props.chapter.book ) }
+				</ol>
 			</div>
 		);
 	}
 } );
+

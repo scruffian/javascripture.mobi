@@ -9,7 +9,7 @@ var React = require( 'react' ),
 // Internal
 var bible = javascripture.src.bible,
 	referenceApi = require( './referenceAPI' ),
-	Chapter = require( './chapter.jsx' );
+	Chapters = require( './chapters.jsx' );
 
 module.exports = React.createClass( {
 	getInitialState: function() {
@@ -31,7 +31,8 @@ module.exports = React.createClass( {
 					version: 'original',
 					data: []
 				}
-			]
+			],
+			currentChapter: ''
 		};
 	},
 
@@ -40,12 +41,12 @@ module.exports = React.createClass( {
 	scrollTolerance: 500,
 
 	componentWillMount: function() {
+		this.chapterTracking = [];
 		var _debouncedScroll = debounce( this.handleScroll, 100 );
 		window.addEventListener( 'scroll', _debouncedScroll, false );
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
-		console.log( 'componentWillReceiveProps' );
 		if ( nextProps.context !== this.props.context ) {
 			this.setState( {
 				ignoreScrollEvents: true
@@ -147,7 +148,6 @@ module.exports = React.createClass( {
 			return;
 		}
 
-		console.log( 'handleScroll' );
 		var scrollTolerance = this.scrollTolerance,
 			references;
 
@@ -163,6 +163,18 @@ module.exports = React.createClass( {
 		if ( references && references.length > 0 ) {
 			this.loadReferences( references );
 		}
+
+		var currentChapter;
+		this.chapterTracking.forEach( function( chapter ) {
+			if ( event.pageY > chapter.getDOMNode().offsetTop ) {
+				currentChapter = chapter.ref();
+			}
+		}, this );
+
+		this.setState( {
+			currentChapter: currentChapter
+		} )
+
 	},
 
 	loadReferences: function( references ) {
@@ -230,7 +242,9 @@ module.exports = React.createClass( {
 	chapters: function() {
 		if ( this.state.sync ) {
 			return (
-				<Chapter
+				<Chapters
+					chapterTracking={ this.chapterTracking }
+					currentChapter={ this.state.currentChapter }
 					references={ this.state.references }
 					reference={ this.state.references[ 0 ] }
 					sync={ this.state.sync }
@@ -241,7 +255,9 @@ module.exports = React.createClass( {
 		}
 
 		return this.state.references.map( function( reference ) {
-			return <Chapter
+			return <Chapters
+				chapterTracking={ this.chapterTracking }
+				currentChapter={ this.state.currentChapter }
 				references={ this.state.references }
 				reference={ reference }
 				sync={ this.state.sync }
@@ -252,7 +268,6 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-		console.log( 'render reference' );
 		var className = "reference columns-" + this.state.references.length
 		return (
 			<div id="reference" className={ className }>

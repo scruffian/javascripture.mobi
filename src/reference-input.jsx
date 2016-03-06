@@ -59,7 +59,7 @@ module.exports = React.createClass( {
 					<input
 						type="text"
 						ref={ ( ref ) => this.referenceInput = ref }
-						value={ this.state.reference }
+						value={ this.props.currentChapter }
 						onChange={ this.handleChange }
 						onFocus={ this.handleFocus } />
 				</form>
