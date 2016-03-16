@@ -47,6 +47,7 @@ module.exports = React.createClass( {
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
+		this.chapterTracking = [];
 		if ( nextProps.context !== this.props.context ) {
 			this.setState( {
 				ignoreScrollEvents: true
