@@ -13,6 +13,12 @@ module.exports = React.createClass( {
 		};
 	},
 
+	componentWillReceiveProps: function( nextProps ) {
+		this.setState( {
+			reference: nextProps.reference
+		} );
+	},
+
 	render: function() {
 		var classNames = 'chapter',
 			chapters;
