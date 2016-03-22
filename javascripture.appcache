@@ -1,13 +1,13 @@
 CACHE MANIFEST
 
-#version: 0.1.1457302973
+#version: 0.1.1458687259
 
 index.html
 css/build.css
 data/kjv.js
 data/hebrew.js
 data/greek.js
-src/bible.js');
+src/bible.js
 src/wordSearchAPI.js
 src/referenceAPI.js
 src/worker.js
