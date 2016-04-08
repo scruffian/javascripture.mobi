@@ -1,0 +1,45 @@
+{
+  "name": "SPAtest",
+  "version": "0.0.1",
+  "description": "A SPA test",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "build": "node_modules/.bin/webpack --config webpack.config.js",
+    "start": "npm install && webpack-dev-server --port 7777"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scruffian/spa-test.git"
+  },
+  "author": "@automattic",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/Automattic/scruffian/spa-test"
+  },
+  "homepage": "https://github.com/Automattic/scruffian/spa-test#readme",
+  "devDependencies": {
+    "babel-core": "^6.7.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-1": "^6.5.0",
+    "babel-preset-stage-2": "^6.5.0",
+    "lodash": "^4.6.1",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "debug": "^2.2.0",
+    "inherits": "^2.0.1",
+    "json-loader": "^0.5.4",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-redux": "^4.4.1",
+    "react-router": "^2.0.1",
+    "react-router-redux": "^4.0.0",
+    "redux": "^3.3.1",
+    "redux-thunk": "^2.0.1",
+    "webpack": "^1.12.14"
+  }
+}
