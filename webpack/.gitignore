@@ -21,7 +21,7 @@ coverage
 .lock-wscript
 
 # Compiled JS directory
-build
+# build
 
 # Dependency directory
 node_modules
